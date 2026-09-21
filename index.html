@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width,
-    initial-scale=1.0,
-    maximum-scale=1.0,
-    minimum-scale=1.0,
-    user-scalable=no,
-    viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
   >
 
   <title>RoboFactory</title>
@@ -178,6 +174,19 @@
       width: 190px;
       height: 190px;
 
+      /*
+        ВАЖНО:
+        запрещаем Telegram/iPhone
+        обрабатывать жесты на роботе
+      */
+
+      touch-action: none;
+
+      -webkit-user-select: none;
+      user-select: none;
+
+      -webkit-touch-callout: none;
+
       border-radius: 50%;
 
       border:
@@ -204,8 +213,7 @@
     }
 
     #robotButton:active {
-      transform:
-        scale(0.92);
+      transform: scale(0.92);
     }
 
     .clickText {
@@ -214,8 +222,7 @@
       left: 50%;
       top: 34%;
 
-      transform:
-        translateX(-50%);
+      transform: translateX(-50%);
 
       font-size: 34px;
 
@@ -343,8 +350,6 @@
       font-size: 17px;
 
       font-weight: bold;
-
-      cursor: pointer;
     }
 
     .buyButton {
@@ -362,8 +367,7 @@
     .buyButton:active,
     .claimButton:active,
     .bonusButton:active {
-      transform:
-        scale(0.97);
+      transform: scale(0.97);
     }
 
     .buyButton:disabled,
@@ -524,8 +528,7 @@
       left: 50%;
       bottom: 0;
 
-      transform:
-        translateX(-50%);
+      transform: translateX(-50%);
 
       width: 100%;
       max-width: 460px;
@@ -583,11 +586,14 @@
       background: #111c31;
     }
   </style>
+
 </head>
+
 
 <body>
 
 <div class="app">
+
 
   <!-- ГЛАВНАЯ -->
 
@@ -601,20 +607,28 @@
     </h1>
 
     <div class="levelText">
+
       Уровень робота:
+
       <span id="level">
         1
       </span>
+
     </div>
 
+
     <div class="xpBar">
+
       <div
         id="xpFill"
         class="xpFill"
       ></div>
+
     </div>
 
+
     <div class="xpText">
+
       XP:
 
       <span id="xp">
@@ -626,66 +640,88 @@
       <span id="xpNeed">
         100
       </span>
+
     </div>
 
+
     <div class="balance">
+
       ⚙️
+
       <span id="coins">
         0
       </span>
+
     </div>
+
 
     <div class="robotWrap">
 
-      <button id="robotButton">
+      <button
+        id="robotButton"
+        type="button"
+      >
         🤖
       </button>
 
     </div>
+
 
     <div class="stats">
 
       👆 За клик:
 
       <b>
+
         <span id="perClick">
           1
         </span>
+
       </b>
 
       <br>
+
 
       ⚙️ Производство:
 
       <b>
+
         <span id="passiveIncome">
           0
         </span>/сек
+
       </b>
 
       <br>
+
 
       🖱 Всего кликов:
 
       <b>
+
         <span id="totalClicks">
           0
         </span>
+
       </b>
 
       <br>
 
+
       🚀 Множитель:
 
       <b>
+
         x<span id="multiplier">
           1
         </span>
+
       </b>
 
     </div>
 
   </section>
+
 
 
   <!-- МАГАЗИН -->
@@ -708,6 +744,7 @@
           👆
         </div>
 
+
         <div class="grow">
 
           <div class="cardTitle">
@@ -719,28 +756,38 @@
           </div>
 
           <div class="levelSmall">
+
             Улучшений:
+
             <span id="clickLevel">
               0
             </span>
+
           </div>
 
         </div>
 
       </div>
 
+
       <button
         id="clickUpgradeButton"
         class="buyButton"
+        type="button"
       >
+
         Улучшить •
+
         <span id="clickCost">
           10
         </span>
+
         ⚙️
+
       </button>
 
     </div>
+
 
 
     <div class="card">
@@ -750,6 +797,7 @@
         <div class="icon">
           🤖
         </div>
+
 
         <div class="grow">
 
@@ -762,28 +810,38 @@
           </div>
 
           <div class="levelSmall">
+
             Куплено:
+
             <span id="autoLevel">
               0
             </span>
+
           </div>
 
         </div>
 
       </div>
 
+
       <button
         id="autoButton"
         class="buyButton"
+        type="button"
       >
+
         Купить •
+
         <span id="autoCost">
           25
         </span>
+
         ⚙️
+
       </button>
 
     </div>
+
 
 
     <div
@@ -797,6 +855,7 @@
           📦
         </div>
 
+
         <div class="grow">
 
           <div class="cardTitle">
@@ -808,26 +867,36 @@
           </div>
 
           <div class="levelSmall">
+
             Куплено:
+
             <span id="conveyorLevel">
               0
             </span>
+
           </div>
 
         </div>
 
       </div>
 
+
       <button
         id="conveyorButton"
         class="buyButton"
+        type="button"
       >
+
         Купить •
+
         <span id="conveyorCost">
           800
         </span>
+
         ⚙️
+
       </button>
+
 
       <div
         id="conveyorLock"
@@ -837,6 +906,7 @@
       </div>
 
     </div>
+
 
 
     <div
@@ -850,6 +920,7 @@
           🦾
         </div>
 
+
         <div class="grow">
 
           <div class="cardTitle">
@@ -861,26 +932,36 @@
           </div>
 
           <div class="levelSmall">
+
             Куплено:
+
             <span id="armLevel">
               0
             </span>
+
           </div>
 
         </div>
 
       </div>
 
+
       <button
         id="armButton"
         class="buyButton"
+        type="button"
       >
+
         Купить •
+
         <span id="armCost">
           3000
         </span>
+
         ⚙️
+
       </button>
+
 
       <div
         id="armLock"
@@ -890,6 +971,7 @@
       </div>
 
     </div>
+
 
 
     <div
@@ -903,6 +985,7 @@
           🏭
         </div>
 
+
         <div class="grow">
 
           <div class="cardTitle">
@@ -914,26 +997,36 @@
           </div>
 
           <div class="levelSmall">
+
             Куплено:
+
             <span id="factoryLevel">
               0
             </span>
+
           </div>
 
         </div>
 
       </div>
 
+
       <button
         id="factoryButton"
         class="buyButton"
+        type="button"
       >
+
         Купить •
+
         <span id="factoryCost">
           12000
         </span>
+
         ⚙️
+
       </button>
+
 
       <div
         id="factoryLock"
@@ -945,6 +1038,7 @@
     </div>
 
   </section>
+
 
 
   <!-- ЗАДАНИЯ -->
@@ -970,17 +1064,22 @@
       </div>
 
       <div class="taskProgress">
+
         <div
           id="taskClicksFill"
           class="taskFill"
         ></div>
+
       </div>
 
       <div class="taskNumbers">
+
         <span id="taskClicksText">
           0
         </span>
+
         / 100
+
       </div>
 
       <div class="reward">
@@ -990,6 +1089,7 @@
       <button
         id="taskClicksButton"
         class="claimButton"
+        type="button"
       >
         Забрать награду
       </button>
@@ -1005,6 +1105,7 @@
     </div>
 
 
+
     <div class="card">
 
       <div class="cardTitle">
@@ -1016,17 +1117,22 @@
       </div>
 
       <div class="taskProgress">
+
         <div
           id="taskAutoFill"
           class="taskFill"
         ></div>
+
       </div>
 
       <div class="taskNumbers">
+
         <span id="taskAutoText">
           0
         </span>
+
         / 3
+
       </div>
 
       <div class="reward">
@@ -1036,6 +1142,7 @@
       <button
         id="taskAutoButton"
         class="claimButton"
+        type="button"
       >
         Забрать награду
       </button>
@@ -1051,6 +1158,7 @@
     </div>
 
 
+
     <div class="card">
 
       <div class="cardTitle">
@@ -1062,18 +1170,24 @@
       </div>
 
       <div class="taskProgress">
+
         <div
           id="taskLevelFill"
           class="taskFill"
         ></div>
+
       </div>
 
       <div class="taskNumbers">
+
         Уровень
+
         <span id="taskLevelText">
           1
         </span>
+
         / 5
+
       </div>
 
       <div class="reward">
@@ -1083,6 +1197,7 @@
       <button
         id="taskLevelButton"
         class="claimButton"
+        type="button"
       >
         Забрать награду
       </button>
@@ -1098,6 +1213,7 @@
     </div>
 
   </section>
+
 
 
   <!-- БОНУСЫ -->
@@ -1125,13 +1241,19 @@
         Ежедневная награда
       </div>
 
+
       <div class="streak">
+
         🔥 Серия:
+
         <span id="streak">
           0
         </span>
+
         дней
+
       </div>
+
 
       <div
         class="cardText"
@@ -1139,6 +1261,7 @@
       >
         Заходи каждый день и увеличивай награду.
       </div>
+
 
       <div class="daysRow">
 
@@ -1207,6 +1330,7 @@
 
       </div>
 
+
       <div
         class="reward"
         style="
@@ -1214,20 +1338,28 @@
           margin-top:15px;
         "
       >
+
         Сегодня:
+
         +
+
         <span id="dailyRewardAmount">
           500
         </span>
+
         ⚙️
+
       </div>
+
 
       <button
         id="dailyButton"
         class="claimButton"
+        type="button"
       >
         Забрать ежедневный бонус
       </button>
+
 
       <div
         id="dailyDone"
@@ -1241,6 +1373,7 @@
       </div>
 
     </div>
+
 
 
     <div class="card">
@@ -1268,20 +1401,26 @@
       <button
         id="boostButton"
         class="bonusButton"
+        type="button"
       >
         ⚡ Активировать x2 на 5 минут
       </button>
+
 
       <div
         id="boostActive"
         class="boostActive"
         style="display:none;"
       >
+
         x2 активно:
+
         <span id="boostTimer">
           05:00
         </span>
+
       </div>
+
 
       <div
         id="boostUsed"
@@ -1299,6 +1438,7 @@
   </section>
 
 
+
   <!-- НИЖНЕЕ МЕНЮ -->
 
   <nav class="bottomNav">
@@ -1306,45 +1446,60 @@
     <button
       class="navButton active"
       data-screen="homeScreen"
+      type="button"
     >
+
       <span>
         🏠
       </span>
 
       Главная
+
     </button>
+
 
     <button
       class="navButton"
       data-screen="shopScreen"
+      type="button"
     >
+
       <span>
         🛒
       </span>
 
       Магазин
+
     </button>
+
 
     <button
       class="navButton"
       data-screen="tasksScreen"
+      type="button"
     >
+
       <span>
         📋
       </span>
 
       Задания
+
     </button>
+
 
     <button
       class="navButton"
       data-screen="bonusScreen"
+      type="button"
     >
+
       <span>
         🎁
       </span>
 
       Бонусы
+
     </button>
 
   </nav>
@@ -1352,17 +1507,21 @@
 </div>
 
 
+
 <script>
 
   /*
-    ЗАЩИТА ОТ МАСШТАБИРОВАНИЯ
-    НА IPHONE / TELEGRAM
+    ====================================
+    ЗАЩИТА ОТ ЗУМА TELEGRAM / IPHONE
+    ====================================
   */
 
   document.addEventListener(
     "dblclick",
     function(event) {
+
       event.preventDefault();
+
     },
     {
       passive: false
@@ -1373,7 +1532,9 @@
   document.addEventListener(
     "gesturestart",
     function(event) {
+
       event.preventDefault();
+
     },
     {
       passive: false
@@ -1384,7 +1545,9 @@
   document.addEventListener(
     "gesturechange",
     function(event) {
+
       event.preventDefault();
+
     },
     {
       passive: false
@@ -1395,7 +1558,9 @@
   document.addEventListener(
     "gestureend",
     function(event) {
+
       event.preventDefault();
+
     },
     {
       passive: false
@@ -1405,7 +1570,9 @@
 
 
   /*
+    ====================================
     ОСНОВНЫЕ ДАННЫЕ
+    ====================================
   */
 
   let coins =
@@ -1458,7 +1625,9 @@
 
 
   /*
+    ====================================
     МАГАЗИН
+    ====================================
   */
 
   let clickLevel =
@@ -1551,7 +1720,9 @@
 
 
   /*
+    ====================================
     ЗАДАНИЯ
+    ====================================
   */
 
   let taskClicksClaimed =
@@ -1574,7 +1745,9 @@
 
 
   /*
+    ====================================
     БОНУСЫ
+    ====================================
   */
 
   let streak =
@@ -1607,7 +1780,9 @@
 
 
   /*
+    ====================================
     ЭЛЕМЕНТЫ
+    ====================================
   */
 
   const coinsText =
@@ -1678,7 +1853,9 @@
 
 
   /*
+    ====================================
     ДАТЫ
+    ====================================
   */
 
   function getToday() {
@@ -1710,10 +1887,14 @@
 
 
     return (
-      year +
-      "-" +
-      month +
-      "-" +
+      year
+      +
+      "-"
+      +
+      month
+      +
+      "-"
+      +
       day
     );
 
@@ -1755,10 +1936,14 @@
 
 
     return (
-      year +
-      "-" +
-      month +
-      "-" +
+      year
+      +
+      "-"
+      +
+      month
+      +
+      "-"
+      +
       day
     );
 
@@ -1767,13 +1952,16 @@
 
 
   /*
-    X2
+    ====================================
+    БУСТ X2
+    ====================================
   */
 
   function isBoostActive() {
 
     return (
-      Date.now() <
+      Date.now()
+      <
       boostEnd
     );
 
@@ -1799,7 +1987,9 @@
 
 
   /*
+    ====================================
     ПАССИВНЫЙ ДОХОД
+    ====================================
   */
 
   function getPassiveIncome() {
@@ -1819,51 +2009,156 @@
 
 
   /*
-    КЛИК ПО РОБОТУ
+    ====================================
+    КЛИК / ТАП ПО РОБОТУ
+    ====================================
+
+    Это главная правка.
+
+    На телефоне используем touchstart,
+    а не обычный click.
+
+    preventDefault не даёт Telegram
+    превратить быстрые касания
+    в double-tap zoom.
+  */
+
+
+  function tapRobot() {
+
+    const earned =
+      perClick
+      *
+      getMultiplier();
+
+
+    coins +=
+      earned;
+
+
+    xp +=
+      5;
+
+
+    totalClicks +=
+      1;
+
+
+    showClickText(
+      "+"
+      +
+      earned
+    );
+
+
+    checkLevel();
+
+
+    saveGame();
+
+
+    updateUI();
+
+  }
+
+
+
+  /*
+    IPHONE / TELEGRAM / TOUCH
+  */
+
+  if (
+    "ontouchstart"
+    in window
+  ) {
+
+    robotButton.addEventListener(
+      "touchstart",
+      function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        tapRobot();
+
+      },
+      {
+        passive: false
+      }
+    );
+
+  } else {
+
+    /*
+      ПК И ОБЫЧНЫЙ БРАУЗЕР
+    */
+
+    robotButton.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        tapRobot();
+
+      }
+    );
+
+  }
+
+
+
+  /*
+    Дополнительная защита
+    конкретно кнопки робота
   */
 
   robotButton.addEventListener(
-    "click",
-    function() {
+    "dblclick",
+    function(event) {
 
-      const earned =
-        perClick
-        *
-        getMultiplier();
+      event.preventDefault();
 
+      event.stopPropagation();
 
-      coins +=
-        earned;
-
-
-      xp +=
-        5;
+    },
+    {
+      passive: false
+    }
+  );
 
 
-      totalClicks +=
-        1;
+  robotButton.addEventListener(
+    "touchmove",
+    function(event) {
 
+      /*
+        Если палец начинает двигаться,
+        Telegram не должен превращать
+        это в жест масштабирования.
+      */
 
-      showClickText(
-        "+" + earned
-      );
+      if (
+        event.touches.length > 1
+      ) {
 
+        event.preventDefault();
 
-      checkLevel();
+      }
 
-
-      saveGame();
-
-
-      updateUI();
-
+    },
+    {
+      passive: false
     }
   );
 
 
 
   /*
-    СИЛА КЛИКА
+    ====================================
+    СИЛА РОБОТА
+    ====================================
   */
 
   document
@@ -1912,7 +2207,9 @@
 
 
   /*
-    АВТО РОБОТ
+    ====================================
+    АВТО-РОБОТ
+    ====================================
   */
 
   document
@@ -1957,7 +2254,9 @@
 
 
   /*
+    ====================================
     КОНВЕЙЕР
+    ====================================
   */
 
   document
@@ -2004,7 +2303,9 @@
 
 
   /*
+    ====================================
     МАНИПУЛЯТОР
+    ====================================
   */
 
   document
@@ -2051,7 +2352,9 @@
 
 
   /*
-    ЦЕХ
+    ====================================
+    СБОРОЧНЫЙ ЦЕХ
+    ====================================
   */
 
   document
@@ -2098,7 +2401,9 @@
 
 
   /*
-    ЗАДАНИЯ
+    ====================================
+    ЗАДАНИЕ 100 КЛИКОВ
+    ====================================
   */
 
   document
@@ -2135,6 +2440,12 @@
 
 
 
+  /*
+    ====================================
+    ЗАДАНИЕ 3 АВТО-РОБОТА
+    ====================================
+  */
+
   document
     .getElementById(
       "taskAutoButton"
@@ -2168,6 +2479,12 @@
     );
 
 
+
+  /*
+    ====================================
+    ЗАДАНИЕ 5 УРОВЕНЬ
+    ====================================
+  */
 
   document
     .getElementById(
@@ -2204,7 +2521,9 @@
 
 
   /*
+    ====================================
     ЕЖЕДНЕВНЫЙ БОНУС
+    ====================================
   */
 
   document
@@ -2261,7 +2580,9 @@
 
 
         const reward =
-          streak * 500;
+          streak
+          *
+          500;
 
 
         coins +=
@@ -2283,7 +2604,9 @@
 
 
   /*
-    X2 БУСТ
+    ====================================
+    X2 НА 5 МИНУТ
+    ====================================
   */
 
   document
@@ -2333,7 +2656,9 @@
 
 
   /*
+    ====================================
     НИЖНЕЕ МЕНЮ
+    ====================================
   */
 
   document
@@ -2410,7 +2735,10 @@
 
 
   /*
-    ДОХОД КАЖДУЮ СЕКУНДУ
+    ====================================
+    ПАССИВНЫЙ ДОХОД
+    КАЖДУЮ СЕКУНДУ
+    ====================================
   */
 
   setInterval(
@@ -2423,7 +2751,8 @@
 
 
       if (
-        income > 0
+        income >
+        0
       ) {
 
         coins +=
@@ -2444,7 +2773,9 @@
 
 
   /*
-    АНИМАЦИЯ +ЧИСЛО
+    ====================================
+    АНИМАЦИЯ +10 / +20...
+    ====================================
   */
 
   function showClickText(
@@ -2452,10 +2783,9 @@
   ) {
 
     const el =
-      document
-        .createElement(
-          "div"
-        );
+      document.createElement(
+        "div"
+      );
 
 
     el.className =
@@ -2466,10 +2796,9 @@
       text;
 
 
-    robotWrap
-      .appendChild(
-        el
-      );
+    robotWrap.appendChild(
+      el
+    );
 
 
     setTimeout(
@@ -2486,7 +2815,9 @@
 
 
   /*
+    ====================================
     УРОВНИ
+    ====================================
   */
 
   function checkLevel() {
@@ -2522,7 +2853,9 @@
 
 
   /*
+    ====================================
     СОХРАНЕНИЕ
+    ====================================
   */
 
   function saveGame() {
@@ -2669,7 +3002,9 @@
 
 
   /*
-    ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+    ====================================
+    ОБНОВЛЕНИЕ UI
+    ====================================
   */
 
   function updateUI() {
@@ -2710,7 +3045,6 @@
       xpNeed;
 
 
-
     const xpPercent =
       Math.min(
         (
@@ -2728,7 +3062,6 @@
       xpPercent
       +
       "%";
-
 
 
     document
@@ -2811,7 +3144,6 @@
       factoryCost;
 
 
-
     updateLock(
       "conveyor",
       3
@@ -2840,7 +3172,9 @@
 
 
   /*
+    ====================================
     ЗАДАНИЯ UI
+    ====================================
   */
 
   function updateTasks() {
@@ -2871,47 +3205,36 @@
       "%";
 
 
-
     const clickButton =
-      document
-        .getElementById(
-          "taskClicksButton"
-        );
+      document.getElementById(
+        "taskClicksButton"
+      );
 
 
     const clickDone =
-      document
-        .getElementById(
-          "taskClicksDone"
-        );
+      document.getElementById(
+        "taskClicksDone"
+      );
 
 
     if (
       taskClicksClaimed
     ) {
 
-      clickButton
-        .style
-        .display =
+      clickButton.style.display =
         "none";
 
 
-      clickDone
-        .style
-        .display =
+      clickDone.style.display =
         "block";
 
     } else {
 
-      clickButton
-        .style
-        .display =
+      clickButton.style.display =
         "block";
 
 
-      clickDone
-        .style
-        .display =
+      clickDone.style.display =
         "none";
 
 
@@ -2955,51 +3278,40 @@
       "%";
 
 
-
-    const autoTaskButton =
-      document
-        .getElementById(
-          "taskAutoButton"
-        );
+    const autoButton =
+      document.getElementById(
+        "taskAutoButton"
+      );
 
 
     const autoDone =
-      document
-        .getElementById(
-          "taskAutoDone"
-        );
+      document.getElementById(
+        "taskAutoDone"
+      );
 
 
     if (
       taskAutoClaimed
     ) {
 
-      autoTaskButton
-        .style
-        .display =
+      autoButton.style.display =
         "none";
 
 
-      autoDone
-        .style
-        .display =
+      autoDone.style.display =
         "block";
 
     } else {
 
-      autoTaskButton
-        .style
-        .display =
+      autoButton.style.display =
         "block";
 
 
-      autoDone
-        .style
-        .display =
+      autoDone.style.display =
         "none";
 
 
-      autoTaskButton.disabled =
+      autoButton.disabled =
         autoLevel <
         3;
 
@@ -3039,47 +3351,36 @@
       "%";
 
 
-
     const levelButton =
-      document
-        .getElementById(
-          "taskLevelButton"
-        );
+      document.getElementById(
+        "taskLevelButton"
+      );
 
 
     const levelDone =
-      document
-        .getElementById(
-          "taskLevelDone"
-        );
+      document.getElementById(
+        "taskLevelDone"
+      );
 
 
     if (
       taskLevelClaimed
     ) {
 
-      levelButton
-        .style
-        .display =
+      levelButton.style.display =
         "none";
 
 
-      levelDone
-        .style
-        .display =
+      levelDone.style.display =
         "block";
 
     } else {
 
-      levelButton
-        .style
-        .display =
+      levelButton.style.display =
         "block";
 
 
-      levelDone
-        .style
-        .display =
+      levelDone.style.display =
         "none";
 
 
@@ -3094,7 +3395,9 @@
 
 
   /*
+    ====================================
     БОНУСЫ UI
+    ====================================
   */
 
   function updateBonuses() {
@@ -3104,18 +3407,15 @@
 
 
     const dailyButton =
-      document
-        .getElementById(
-          "dailyButton"
-        );
+      document.getElementById(
+        "dailyButton"
+      );
 
 
     const dailyDone =
-      document
-        .getElementById(
-          "dailyDone"
-        );
-
+      document.getElementById(
+        "dailyDone"
+      );
 
 
     let nextStreak =
@@ -3158,14 +3458,12 @@
     }
 
 
-
     document
       .getElementById(
         "streak"
       )
       .textContent =
       streak;
-
 
 
     document
@@ -3178,7 +3476,6 @@
       500;
 
 
-
     for (
       let i = 1;
       i <= 7;
@@ -3186,20 +3483,17 @@
     ) {
 
       const box =
-        document
-          .getElementById(
-            "day"
-            +
-            i
-          );
-
-
-      box
-        .classList
-        .remove(
-          "current",
-          "doneDay"
+        document.getElementById(
+          "day"
+          +
+          i
         );
+
+
+      box.classList.remove(
+        "current",
+        "doneDay"
+      );
 
 
       if (
@@ -3207,32 +3501,28 @@
         streak
       ) {
 
-        box
-          .classList
-          .add(
-            "doneDay"
-          );
+        box.classList.add(
+          "doneDay"
+        );
 
       }
 
 
       if (
-        i === nextStreak
+        i ===
+        nextStreak
         &&
         lastDailyDate !==
         today
       ) {
 
-        box
-          .classList
-          .add(
-            "current"
-          );
+        box.classList.add(
+          "current"
+        );
 
       }
 
     }
-
 
 
     if (
@@ -3240,28 +3530,20 @@
       today
     ) {
 
-      dailyButton
-        .style
-        .display =
+      dailyButton.style.display =
         "none";
 
 
-      dailyDone
-        .style
-        .display =
+      dailyDone.style.display =
         "block";
 
     } else {
 
-      dailyButton
-        .style
-        .display =
+      dailyButton.style.display =
         "block";
 
 
-      dailyDone
-        .style
-        .display =
+      dailyDone.style.display =
         "none";
 
     }
@@ -3269,48 +3551,37 @@
 
 
     const boostButton =
-      document
-        .getElementById(
-          "boostButton"
-        );
+      document.getElementById(
+        "boostButton"
+      );
 
 
     const boostActive =
-      document
-        .getElementById(
-          "boostActive"
-        );
+      document.getElementById(
+        "boostActive"
+      );
 
 
     const boostUsed =
-      document
-        .getElementById(
-          "boostUsed"
-        );
-
+      document.getElementById(
+        "boostUsed"
+      );
 
 
     if (
       isBoostActive()
     ) {
 
-      boostButton
-        .style
-        .display =
+      boostButton.style.display =
         "none";
 
 
-      boostUsed
-        .style
-        .display =
+      boostUsed.style.display =
         "none";
 
 
-      boostActive
-        .style
-        .display =
+      boostActive.style.display =
         "block";
-
 
 
       const remaining =
@@ -3367,9 +3638,7 @@
 
     } else {
 
-      boostActive
-        .style
-        .display =
+      boostActive.style.display =
         "none";
 
 
@@ -3378,28 +3647,20 @@
         today
       ) {
 
-        boostButton
-          .style
-          .display =
+        boostButton.style.display =
           "none";
 
 
-        boostUsed
-          .style
-          .display =
+        boostUsed.style.display =
           "block";
 
       } else {
 
-        boostButton
-          .style
-          .display =
+        boostButton.style.display =
           "block";
 
 
-        boostUsed
-          .style
-          .display =
+        boostUsed.style.display =
           "none";
 
       }
@@ -3411,7 +3672,9 @@
 
 
   /*
+    ====================================
     БЛОКИРОВКА ПО УРОВНЮ
+    ====================================
   */
 
   function updateLock(
@@ -3420,30 +3683,27 @@
   ) {
 
     const card =
-      document
-        .getElementById(
-          name
-          +
-          "Card"
-        );
+      document.getElementById(
+        name
+        +
+        "Card"
+      );
 
 
     const button =
-      document
-        .getElementById(
-          name
-          +
-          "Button"
-        );
+      document.getElementById(
+        name
+        +
+        "Button"
+      );
 
 
     const lock =
-      document
-        .getElementById(
-          name
-          +
-          "Lock"
-        );
+      document.getElementById(
+        name
+        +
+        "Lock"
+      );
 
 
     if (
@@ -3451,38 +3711,30 @@
       requiredLevel
     ) {
 
-      card
-        .classList
-        .remove(
-          "locked"
-        );
+      card.classList.remove(
+        "locked"
+      );
 
 
       button.disabled =
         false;
 
 
-      lock
-        .style
-        .display =
+      lock.style.display =
         "none";
 
     } else {
 
-      card
-        .classList
-        .add(
-          "locked"
-        );
+      card.classList.add(
+        "locked"
+      );
 
 
       button.disabled =
         true;
 
 
-      lock
-        .style
-        .display =
+      lock.style.display =
         "block";
 
     }
@@ -3492,12 +3744,16 @@
 
 
   /*
-    ПЕРВЫЙ ЗАПУСК
+    ====================================
+    ЗАПУСК
+    ====================================
   */
 
   updateUI();
 
 </script>
 
+
 </body>
+
 </html>
