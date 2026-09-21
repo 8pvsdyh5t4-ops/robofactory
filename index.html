@@ -1,1038 +1,1538 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>RoboFactory</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+    :root{
+      --bg:#07111d;
+      --panel:#0f1d2e;
+      --panel2:#13253a;
+      --line:#27425d;
+      --text:#f4f8ff;
+      --muted:#93a7bd;
+      --green:#24d56c;
+      --green2:#0e9f4b;
+      --blue:#2aa9ff;
+      --yellow:#ffd04d;
+      --orange:#ff9c32;
+      --shadow:0 14px 30px rgba(0,0,0,.35);
     }
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      touch-action: manipulation;
-      overscroll-behavior: none;
-
-      -webkit-user-select: none;
-      user-select: none;
-
-      -webkit-touch-callout: none;
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
     }
 
-    body {
-      min-height: 100vh;
+    html,body{
+      margin:0;
+      min-height:100%;
+      background:#050b12;
+      color:var(--text);
+      font-family:Arial,Helvetica,sans-serif;
+      touch-action:manipulation;
+      overscroll-behavior:none;
+      -webkit-user-select:none;
+      user-select:none;
+      -webkit-touch-callout:none;
+    }
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    button{
+      font:inherit;
+      color:inherit;
+      border:none;
+      touch-action:manipulation;
+      -webkit-user-select:none;
+      user-select:none;
+      -webkit-touch-callout:none;
+    }
 
+    .app{
+      width:100%;
+      max-width:460px;
+      min-height:100vh;
+      margin:0 auto;
+      background:linear-gradient(180deg,#07111d 0%,#081421 100%);
+      position:relative;
+      overflow:hidden;
+      padding-bottom:calc(76px + env(safe-area-inset-bottom));
+    }
+
+    .screen{
+      display:none;
+      min-height:calc(100vh - 76px);
+      padding:14px 12px 24px;
+    }
+
+    .screen.active{
+      display:block;
+    }
+
+    .topbar{
+      display:grid;
+      grid-template-columns:46px 1fr auto;
+      gap:8px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .iconBtn{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:rgba(12,29,46,.92);
+      border:1px solid rgba(90,130,165,.25);
+      box-shadow:var(--shadow);
+      font-size:22px;
+    }
+
+    .wallet{
+      min-width:0;
+      background:rgba(9,24,39,.94);
+      border:1px solid rgba(90,130,165,.25);
+      border-radius:16px;
+      padding:7px 12px;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    .walletMain{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:7px;
+      font-size:21px;
+      font-weight:900;
+    }
+
+    .walletRate{
+      color:#44ef83;
+      font-size:13px;
+      font-weight:800;
+      margin-top:2px;
+    }
+
+    .gems{
+      min-width:94px;
+      height:46px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      background:rgba(9,24,39,.94);
+      border:1px solid rgba(90,130,165,.25);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      font-weight:900;
+    }
+
+    .plus{
+      width:24px;
+      height:24px;
+      border-radius:8px;
+      background:var(--green);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      color:#042512;
+    }
+
+    .hero{
+      position:relative;
+      min-height:690px;
+      border-radius:24px;
+      overflow:hidden;
       background:
-        linear-gradient(
-          180deg,
-          #0f172a,
-          #111827
-        );
-
-      color: white;
+        radial-gradient(circle at 74% 17%,rgba(73,142,210,.23),transparent 26%),
+        linear-gradient(180deg,#172a3e 0%,#0a1623 70%,#07101a 100%);
+      border:1px solid rgba(104,145,179,.22);
+      box-shadow:var(--shadow);
     }
 
-    button {
-      touch-action: manipulation;
-
-      -webkit-user-select: none;
-      user-select: none;
-
-      -webkit-touch-callout: none;
+    .factoryScene{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      pointer-events:none;
     }
 
-    .app {
-      width: 100%;
-      max-width: 460px;
-
-      margin: 0 auto;
-
-      min-height: 100vh;
-
-      padding-bottom:
-        calc(
-          95px +
-          env(safe-area-inset-bottom)
-        );
+    .bonusRow{
+      position:absolute;
+      top:14px;
+      left:12px;
+      right:12px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:9px;
+      z-index:3;
     }
 
-    .screen {
-      display: none;
-
-      padding:
-        22px
-        18px
-        30px;
+    .bonusCard{
+      min-height:66px;
+      background:linear-gradient(180deg,rgba(53,41,20,.97),rgba(35,27,14,.97));
+      border:2px solid #d89b28;
+      border-radius:14px;
+      padding:9px 10px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      box-shadow:0 7px 18px rgba(0,0,0,.34);
     }
 
-    .screen.active {
-      display: block;
+    .bonusIcon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,184,57,.14);
+      font-size:27px;
     }
 
-    h1 {
-      text-align: center;
-
-      font-size: 31px;
-
-      margin:
-        8px
-        0
-        20px;
+    .bonusTitle{
+      font-weight:900;
+      font-size:14px;
     }
 
-    .levelText {
-      text-align: center;
-
-      font-size: 18px;
-
-      font-weight: bold;
-
-      margin-bottom: 8px;
+    .bonusSub{
+      font-size:12px;
+      color:#f2d18c;
+      margin-top:3px;
+      font-weight:700;
     }
 
-    .xpBar {
-      height: 14px;
-
-      background: #1e293b;
-
-      border:
-        1px
-        solid
-        #475569;
-
-      border-radius: 999px;
-
-      overflow: hidden;
+    .sideActions{
+      position:absolute;
+      right:10px;
+      top:175px;
+      display:flex;
+      flex-direction:column;
+      gap:9px;
+      z-index:4;
     }
 
-    .xpFill {
-      height: 100%;
-
-      width: 0%;
-
-      background:
-        linear-gradient(
-          90deg,
-          #38bdf8,
-          #22c55e
-        );
-
-      transition:
-        width
-        0.25s
-        ease;
+    .sideBtn{
+      width:62px;
+      min-height:67px;
+      border-radius:15px;
+      background:rgba(11,27,43,.95);
+      border:1px solid rgba(87,132,171,.35);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
+      font-size:11px;
+      font-weight:800;
     }
 
-    .xpText {
-      text-align: center;
-
-      margin-top: 7px;
-
-      font-size: 14px;
-
-      opacity: 0.75;
+    .sideBtn span{
+      font-size:27px;
     }
 
-    .balance {
-      text-align: center;
-
-      font-size: 30px;
-
-      font-weight: bold;
-
-      margin:
-        28px
-        0
-        24px;
+    .tapZone{
+      position:absolute;
+      left:50%;
+      top:52%;
+      transform:translate(-50%,-50%);
+      width:230px;
+      height:290px;
+      z-index:5;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      touch-action:none;
     }
 
-    .robotWrap {
-      position: relative;
-
-      width: max-content;
-
-      margin: 0 auto;
-    }
-
-    #robotButton {
-      width: 190px;
-      height: 190px;
-
-      /*
-        ВАЖНО:
-        запрещаем Telegram/iPhone
-        обрабатывать жесты на роботе
-      */
-
-      touch-action: none;
-
-      -webkit-user-select: none;
-      user-select: none;
-
-      -webkit-touch-callout: none;
-
-      border-radius: 50%;
-
-      border:
-        4px
-        solid
-        #38bdf8;
-
-      background: #1e293b;
-
-      font-size: 95px;
-
+    .machine{
+      width:182px;
+      height:208px;
+      position:relative;
+      border-radius:26px 26px 34px 34px;
+      background:linear-gradient(90deg,#27384a 0 12%,#45586a 12% 88%,#213140 88%);
+      border:4px solid #0b1118;
       box-shadow:
-        0
-        0
-        28px
-        rgba(
-          56,
-          189,
-          248,
-          0.28
-        );
-
-      cursor: pointer;
+        inset 0 0 0 3px rgba(255,255,255,.05),
+        0 16px 28px rgba(0,0,0,.45);
     }
 
-    #robotButton:active {
-      transform: scale(0.92);
+    .machineTop{
+      position:absolute;
+      left:25px;
+      right:25px;
+      top:-23px;
+      height:48px;
+      border-radius:18px 18px 8px 8px;
+      background:linear-gradient(180deg,#576a7a,#2b3e50);
+      border:4px solid #0b1118;
     }
 
-    .clickText {
-      position: absolute;
-
-      left: 50%;
-      top: 34%;
-
-      transform: translateX(-50%);
-
-      font-size: 34px;
-
-      font-weight: bold;
-
-      color: #facc15;
-
-      pointer-events: none;
-
-      animation:
-        fly
-        0.7s
-        ease
-        forwards;
+    .machineGlow{
+      position:absolute;
+      left:24px;
+      right:24px;
+      top:38px;
+      height:76px;
+      border-radius:50%;
+      background:radial-gradient(circle,#fff7a9 0%,#ffc13f 35%,rgba(255,149,0,.18) 70%,transparent 72%);
+      filter:drop-shadow(0 0 18px rgba(255,174,46,.8));
+      animation:pulse 1.5s ease-in-out infinite;
     }
 
-    @keyframes fly {
-      from {
-        opacity: 1;
+    .machineDoor{
+      position:absolute;
+      left:28px;
+      right:28px;
+      bottom:20px;
+      height:70px;
+      border-radius:16px;
+      background:linear-gradient(180deg,#1a2631,#0b131b);
+      border:3px solid #253849;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:31px;
+      font-weight:1000;
+      transform:rotate(-7deg);
+    }
 
-        transform:
-          translate(
-            -50%,
-            10px
-          );
+    .tapText{
+      position:absolute;
+      top:103px;
+      left:50%;
+      transform:translateX(-50%) rotate(-8deg);
+      font-size:34px;
+      font-weight:1000;
+      color:#fff;
+      text-shadow:
+        -2px -2px 0 #111,
+        2px -2px 0 #111,
+        -2px 2px 0 #111,
+        2px 2px 0 #111;
+    }
+
+    .tapHand{
+      position:absolute;
+      right:-2px;
+      top:155px;
+      font-size:52px;
+      transform:rotate(-22deg);
+      animation:hand 1s ease-in-out infinite;
+    }
+
+    .levelBadge{
+      position:absolute;
+      bottom:-44px;
+      left:50%;
+      transform:translateX(-50%);
+      width:118px;
+      padding:7px 8px;
+      border-radius:12px;
+      background:#18293b;
+      border:2px solid #344c62;
+      text-align:center;
+      font-weight:900;
+      font-size:12px;
+    }
+
+    .levelBar{
+      margin-top:5px;
+      height:8px;
+      background:#0b141e;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .levelBar div{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#7fe63d,#24d56c);
+    }
+
+    @keyframes pulse{
+      0%,100%{transform:scale(.96)}
+      50%{transform:scale(1.05)}
+    }
+
+    @keyframes hand{
+      0%,100%{transform:rotate(-22deg) translateY(0)}
+      50%{transform:rotate(-22deg) translateY(-8px)}
+    }
+
+    .floating{
+      position:absolute;
+      left:50%;
+      top:40%;
+      transform:translateX(-50%);
+      font-size:30px;
+      font-weight:1000;
+      color:#ffd04d;
+      pointer-events:none;
+      animation:fly .65s ease forwards;
+      z-index:10;
+    }
+
+    @keyframes fly{
+      from{
+        opacity:1;
+        transform:translate(-50%,10px)
       }
 
-      to {
-        opacity: 0;
-
-        transform:
-          translate(
-            -50%,
-            -80px
-          );
+      to{
+        opacity:0;
+        transform:translate(-50%,-70px)
       }
     }
 
-    .stats {
-      text-align: center;
-
-      margin:
-        22px
-        0;
-
-      font-size: 19px;
-
-      line-height: 1.7;
+    .statsRow{
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:12px;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:7px;
+      z-index:6;
     }
 
-    .card {
-      background: #1e293b;
-
-      border:
-        1px
-        solid
-        #334155;
-
-      border-radius: 18px;
-
-      padding: 16px;
-
-      margin-bottom: 14px;
+    .statCard{
+      background:rgba(11,27,43,.96);
+      border:1px solid rgba(83,126,162,.35);
+      border-radius:15px;
+      padding:10px 8px;
+      text-align:center;
     }
 
-    .cardTitle {
-      font-size: 19px;
-
-      font-weight: bold;
+    .statLabel{
+      font-size:11px;
+      color:#d3dfeb;
+      font-weight:800;
     }
 
-    .cardText {
-      opacity: 0.72;
-
-      font-size: 14px;
-
-      margin-top: 5px;
-
-      line-height: 1.4;
+    .statValue{
+      margin:6px 0 8px;
+      font-size:18px;
+      font-weight:1000;
+      color:#78ed75;
     }
 
-    .shopRow {
-      display: flex;
-
-      gap: 12px;
-
-      align-items: center;
+    .greenBtn{
+      width:100%;
+      border-radius:11px;
+      padding:9px 6px;
+      font-weight:1000;
+      background:linear-gradient(180deg,#2ee775,#12a84e);
+      color:#fff;
     }
 
-    .icon {
-      font-size: 38px;
-
-      width: 50px;
-
-      text-align: center;
+    .greenBtn:disabled{
+      opacity:.5;
     }
 
-    .grow {
-      flex: 1;
+    .sectionTitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:6px 0 14px;
+      font-size:24px;
+      font-weight:1000;
     }
 
-    .levelSmall {
-      color: #38bdf8;
-
-      font-size: 13px;
-
-      margin-top: 5px;
+    .backMini{
+      width:42px;
+      height:42px;
+      border-radius:13px;
+      background:#0e1e2e;
+      border:1px solid #27425d;
+      font-size:23px;
     }
 
-    .buyButton,
-    .claimButton,
-    .bonusButton {
-      width: 100%;
-
-      margin-top: 12px;
-
-      padding: 14px;
-
-      border: none;
-
-      border-radius: 12px;
-
-      color: white;
-
-      font-size: 17px;
-
-      font-weight: bold;
+    .tabs{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:4px;
+      background:#0c1b2a;
+      padding:4px;
+      border-radius:14px;
+      margin-bottom:12px;
     }
 
-    .buyButton {
-      background: #22c55e;
+    .tab{
+      padding:12px 8px;
+      border-radius:11px;
+      background:transparent;
+      color:#8fa6bc;
+      font-weight:900;
     }
 
-    .claimButton {
-      background: #f59e0b;
+    .tab.active{
+      background:#1c85ef;
+      color:#fff;
     }
 
-    .bonusButton {
-      background: #8b5cf6;
+    .upgradeCard{
+      display:grid;
+      grid-template-columns:66px 1fr auto;
+      gap:10px;
+      align-items:center;
+      background:linear-gradient(180deg,#13253a,#0f1e2e);
+      border:1px solid #233d55;
+      border-radius:16px;
+      padding:10px;
+      margin-bottom:10px;
     }
 
-    .buyButton:active,
-    .claimButton:active,
-    .bonusButton:active {
-      transform: scale(0.97);
+    .upgradeIcon{
+      width:66px;
+      height:66px;
+      border-radius:13px;
+      background:#1e344b;
+      display:grid;
+      place-items:center;
+      font-size:36px;
     }
 
-    .buyButton:disabled,
-    .claimButton:disabled,
-    .bonusButton:disabled {
-      background: #475569;
-
-      opacity: 0.55;
+    .upgradeName{
+      font-size:16px;
+      font-weight:1000;
     }
 
-    .locked {
-      opacity: 0.55;
+    .upgradeMeta{
+      font-size:13px;
+      color:#aac0d3;
     }
 
-    .lockedText {
-      text-align: center;
-
-      color: #facc15;
-
-      font-size: 14px;
-
-      margin-top: 9px;
+    .upgradeGain{
+      color:#54ec81;
+      font-weight:900;
+      font-size:14px;
     }
 
-    .taskProgress {
-      margin-top: 13px;
-
-      height: 10px;
-
-      border-radius: 999px;
-
-      background: #0f172a;
-
-      overflow: hidden;
+    .upgradeBuy{
+      min-width:108px;
+      padding:11px 8px;
+      border-radius:12px;
+      background:linear-gradient(180deg,#28d96b,#109944);
+      font-weight:1000;
     }
 
-    .taskFill {
-      height: 100%;
-
-      width: 0%;
-
-      background: #38bdf8;
-
-      transition:
-        width
-        0.25s
-        ease;
+    .upgradeBuy small{
+      display:block;
+      margin-top:3px;
     }
 
-    .taskNumbers {
-      margin-top: 7px;
-
-      font-size: 13px;
-
-      color: #94a3b8;
+    .upgradeBuy:disabled{
+      opacity:.5;
     }
 
-    .reward {
-      margin-top: 8px;
-
-      color: #facc15;
-
-      font-weight: bold;
+    .mapScene{
+      position:relative;
+      min-height:660px;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid #23405a;
+      background:
+        linear-gradient(180deg,#1f6f77 0 18%,#318c68 18% 35%,#265a74 35% 48%,#314d69 48% 63%,#15263f 63% 100%);
     }
 
-    .done {
-      color: #22c55e;
-
-      font-weight: bold;
-
-      margin-top: 10px;
+    .island{
+      position:absolute;
+      width:240px;
+      height:145px;
+      border-radius:50%;
+      background:#69a64a;
+      border:10px solid #c1a66a;
+      box-shadow:0 12px 0 #2c7084;
     }
 
-    .streak {
-      text-align: center;
-
-      font-size: 26px;
-
-      font-weight: bold;
-
-      color: #facc15;
-
-      margin:
-        12px
-        0;
+    .i1{
+      top:55px;
+      left:-25px;
     }
 
-    .bonusBig {
-      text-align: center;
-
-      font-size: 42px;
-
-      margin:
-        10px
-        0;
+    .i2{
+      top:245px;
+      right:-45px;
     }
 
-    .boostActive {
-      color: #22c55e;
-
-      text-align: center;
-
-      font-weight: bold;
-
-      margin-top: 12px;
-
-      font-size: 18px;
+    .i3{
+      top:450px;
+      left:-60px;
+      background:#364c5e;
+      border-color:#293646;
+      box-shadow:none;
     }
 
-    .daysRow {
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          7,
-          1fr
-        );
-
-      gap: 5px;
-
-      margin-top: 15px;
+    .route{
+      position:absolute;
+      left:50%;
+      top:120px;
+      width:5px;
+      height:420px;
+      background:repeating-linear-gradient(
+        180deg,
+        #fff 0 8px,
+        transparent 8px 18px
+      );
     }
 
-    .dayBox {
-      background: #0f172a;
-
-      border:
-        1px
-        solid
-        #334155;
-
-      border-radius: 10px;
-
-      padding:
-        8px
-        2px;
-
-      text-align: center;
-
-      font-size: 11px;
+    .mapNode{
+      position:absolute;
+      width:170px;
+      background:rgba(8,20,33,.92);
+      border-radius:15px;
+      padding:11px;
     }
 
-    .dayBox.current {
-      border-color: #facc15;
-
-      color: #facc15;
+    .mapNode b{
+      display:block;
+      font-size:17px;
+      margin-bottom:5px;
     }
 
-    .dayBox.doneDay {
-      background: #14532d;
-
-      border-color: #22c55e;
+    .node1{
+      top:55px;
+      right:16px;
     }
 
-    .bottomNav {
-      position: fixed;
-
-      left: 50%;
-      bottom: 0;
-
-      transform: translateX(-50%);
-
-      width: 100%;
-      max-width: 460px;
-
-      height:
-        calc(
-          82px +
-          env(safe-area-inset-bottom)
-        );
-
-      padding-bottom:
-        env(safe-area-inset-bottom);
-
-      background: #0b1220;
-
-      border-top:
-        1px
-        solid
-        #334155;
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          4,
-          1fr
-        );
-
-      z-index: 20;
+    .node2{
+      top:245px;
+      left:16px;
     }
 
-    .navButton {
-      border: none;
-
-      background: transparent;
-
-      color: #94a3b8;
-
-      font-size: 12px;
-
-      font-weight: bold;
+    .node3{
+      top:425px;
+      right:16px;
     }
 
-    .navButton span {
-      display: block;
-
-      font-size: 25px;
-
-      margin-bottom: 5px;
+    .panel{
+      background:linear-gradient(180deg,#13253a,#0f1e2e);
+      border:1px solid #233d55;
+      border-radius:16px;
+      padding:14px;
+      margin-bottom:10px;
     }
 
-    .navButton.active {
-      color: #38bdf8;
+    .panelTitle{
+      font-size:17px;
+      font-weight:1000;
+    }
 
-      background: #111c31;
+    .panelSub{
+      color:#9eb4c8;
+      font-size:13px;
+      margin-top:4px;
+    }
+
+    .progress{
+      height:9px;
+      background:#08121c;
+      border-radius:999px;
+      margin-top:10px;
+      overflow:hidden;
+    }
+
+    .progress div{
+      height:100%;
+      background:linear-gradient(90deg,#29a7ff,#2bdc72);
+      width:0%;
+    }
+
+    .claim{
+      margin-top:10px;
+      width:100%;
+      padding:11px;
+      border-radius:11px;
+      background:linear-gradient(180deg,#ffb441,#dd7a13);
+      font-weight:1000;
+    }
+
+    .claim:disabled{
+      opacity:.45;
+    }
+
+    .bottomNav{
+      position:fixed;
+      left:50%;
+      bottom:0;
+      transform:translateX(-50%);
+      width:100%;
+      max-width:460px;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      background:#091522;
+      border-top:1px solid #243b51;
+      height:calc(70px + env(safe-area-inset-bottom));
+      padding-bottom:env(safe-area-inset-bottom);
+      z-index:30;
+    }
+
+    .navBtn{
+      background:transparent;
+      color:#8398ad;
+      font-size:10px;
+      font-weight:900;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:3px;
+    }
+
+    .navBtn span{
+      font-size:23px;
+    }
+
+    .navBtn.active{
+      color:#fff;
+      background:linear-gradient(180deg,#0d5595,#0a3156);
     }
   </style>
-
 </head>
-
-
 <body>
 
 <div class="app">
 
-
-  <!-- ГЛАВНАЯ -->
+  <!-- ФАБРИКА -->
 
   <section
-    id="homeScreen"
+    id="factoryScreen"
     class="screen active"
   >
 
-    <h1>
-      🤖 RoboFactory
-    </h1>
+    <div class="topbar">
 
-    <div class="levelText">
-
-      Уровень робота:
-
-      <span id="level">
-        1
-      </span>
-
-    </div>
-
-
-    <div class="xpBar">
-
-      <div
-        id="xpFill"
-        class="xpFill"
-      ></div>
-
-    </div>
-
-
-    <div class="xpText">
-
-      XP:
-
-      <span id="xp">
-        0
-      </span>
-
-      /
-
-      <span id="xpNeed">
-        100
-      </span>
-
-    </div>
-
-
-    <div class="balance">
-
-      ⚙️
-
-      <span id="coins">
-        0
-      </span>
-
-    </div>
-
-
-    <div class="robotWrap">
-
-      <button
-        id="robotButton"
-        type="button"
-      >
-        🤖
+      <button class="iconBtn">
+        ⚙️
       </button>
 
+      <div class="wallet">
+
+        <div class="walletMain">
+          ⚙️
+          <span id="coins">
+            0
+          </span>
+        </div>
+
+        <div class="walletRate">
+          +
+          <span id="topIncome">
+            0
+          </span>
+          /с
+        </div>
+
+      </div>
+
+      <div class="gems">
+
+        💎
+
+        <span id="gems">
+          120
+        </span>
+
+        <div class="plus">
+          +
+        </div>
+
+      </div>
+
     </div>
 
 
-    <div class="stats">
+    <div class="hero">
 
-      👆 За клик:
+      <svg
+        class="factoryScene"
+        viewBox="0 0 460 690"
+        preserveAspectRatio="none"
+      >
 
-      <b>
+        <defs>
 
-        <span id="perClick">
-          1
-        </span>
+          <linearGradient
+            id="wall"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
 
-      </b>
+            <stop
+              offset="0"
+              stop-color="#26394c"
+            />
 
-      <br>
+            <stop
+              offset="1"
+              stop-color="#0c1722"
+            />
 
-
-      ⚙️ Производство:
-
-      <b>
-
-        <span id="passiveIncome">
-          0
-        </span>/сек
-
-      </b>
-
-      <br>
-
-
-      🖱 Всего кликов:
-
-      <b>
-
-        <span id="totalClicks">
-          0
-        </span>
-
-      </b>
-
-      <br>
+          </linearGradient>
 
 
-      🚀 Множитель:
+          <linearGradient
+            id="floor"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
 
-      <b>
+            <stop
+              offset="0"
+              stop-color="#27333c"
+            />
 
-        x<span id="multiplier">
-          1
-        </span>
+            <stop
+              offset="1"
+              stop-color="#111920"
+            />
 
-      </b>
+          </linearGradient>
+
+        </defs>
+
+
+        <rect
+          width="460"
+          height="690"
+          fill="url(#wall)"
+        />
+
+
+        <rect
+          y="440"
+          width="460"
+          height="250"
+          fill="url(#floor)"
+        />
+
+
+        <rect
+          x="315"
+          y="92"
+          width="108"
+          height="138"
+          rx="4"
+          fill="#6fb8d7"
+          opacity=".75"
+        />
+
+
+        <line
+          x1="369"
+          y1="92"
+          x2="369"
+          y2="230"
+          stroke="#26394c"
+          stroke-width="8"
+        />
+
+
+        <line
+          x1="315"
+          y1="160"
+          x2="423"
+          y2="160"
+          stroke="#26394c"
+          stroke-width="8"
+        />
+
+
+        <rect
+          x="28"
+          y="125"
+          width="80"
+          height="180"
+          rx="10"
+          fill="#162838"
+        />
+
+
+        <rect
+          x="40"
+          y="145"
+          width="56"
+          height="22"
+          rx="4"
+          fill="#253f55"
+        />
+
+
+        <text
+          x="68"
+          y="160"
+          text-anchor="middle"
+          fill="#d7e8f6"
+          font-size="9"
+          font-weight="700"
+        >
+          ROBO
+        </text>
+
+
+        <path
+          d="M0 334 H118 Q140 334 140 312 V278 H205"
+          fill="none"
+          stroke="#b97123"
+          stroke-width="18"
+          stroke-linecap="round"
+        />
+
+
+        <path
+          d="M0 334 H118 Q140 334 140 312 V278 H205"
+          fill="none"
+          stroke="#f0aa49"
+          stroke-width="7"
+          stroke-linecap="round"
+        />
+
+
+        <path
+          d="M460 305 H385 Q360 305 360 328 V370 H305"
+          fill="none"
+          stroke="#4f6477"
+          stroke-width="20"
+          stroke-linecap="round"
+        />
+
+
+        <path
+          d="M460 305 H385 Q360 305 360 328 V370 H305"
+          fill="none"
+          stroke="#8597a8"
+          stroke-width="6"
+          stroke-linecap="round"
+        />
+
+
+        <rect
+          x="-20"
+          y="525"
+          width="500"
+          height="54"
+          rx="16"
+          fill="#202d38"
+        />
+
+
+        <rect
+          x="-20"
+          y="543"
+          width="500"
+          height="12"
+          fill="#0e171f"
+        />
+
+
+        <rect
+          x="20"
+          y="506"
+          width="56"
+          height="43"
+          rx="6"
+          fill="#c98a3d"
+        />
+
+
+        <rect
+          x="93"
+          y="520"
+          width="56"
+          height="43"
+          rx="6"
+          fill="#c98a3d"
+        />
+
+
+        <rect
+          x="318"
+          y="514"
+          width="56"
+          height="43"
+          rx="6"
+          fill="#c98a3d"
+        />
+
+
+        <rect
+          x="385"
+          y="528"
+          width="56"
+          height="43"
+          rx="6"
+          fill="#c98a3d"
+        />
+
+      </svg>
+
+
+      <div class="bonusRow">
+
+        <button
+          class="bonusCard"
+          id="boostShortcut"
+        >
+
+          <div class="bonusIcon">
+            ⚡
+          </div>
+
+          <div>
+
+            <div class="bonusTitle">
+              x2 ДОХОД
+            </div>
+
+            <div
+              class="bonusSub"
+              id="boostShortcutText"
+            >
+              Активировать
+            </div>
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="bonusCard"
+          data-go="eventsScreen"
+        >
+
+          <div class="bonusIcon">
+            🎁
+          </div>
+
+          <div>
+
+            <div class="bonusTitle">
+              Ежедневный бонус
+            </div>
+
+            <div
+              class="bonusSub"
+              id="dailyShortcutText"
+            >
+              Забрать
+            </div>
+
+          </div>
+
+        </button>
+
+      </div>
+
+
+      <div class="sideActions">
+
+        <button
+          class="sideBtn"
+          data-go="eventsScreen"
+        >
+
+          <span>
+            📋
+          </span>
+
+          Задания
+
+        </button>
+
+
+        <button
+          class="sideBtn"
+          data-go="eventsScreen"
+        >
+
+          <span>
+            🏆
+          </span>
+
+          Достижения
+
+        </button>
+
+
+        <button
+          class="sideBtn"
+          data-go="shopScreen"
+        >
+
+          <span>
+            🛒
+          </span>
+
+          Магазин
+
+        </button>
+
+      </div>
+
+
+      <div
+        id="tapZone"
+        class="tapZone"
+      >
+
+        <div class="machine">
+
+          <div class="machineTop"></div>
+
+          <div class="machineGlow"></div>
+
+          <div class="tapText">
+            КЛИК!
+          </div>
+
+          <div class="machineDoor">
+            🤖
+          </div>
+
+          <div class="tapHand">
+            👆
+          </div>
+
+
+          <div class="levelBadge">
+
+            УРОВЕНЬ
+
+            <span id="level">
+              1
+            </span>
+
+
+            <div class="levelBar">
+
+              <div id="xpFill"></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="statsRow">
+
+        <div class="statCard">
+
+          <div class="statLabel">
+            Доход с клика
+          </div>
+
+          <div class="statValue">
+
+            +
+
+            <span id="perClick">
+              1
+            </span>
+
+          </div>
+
+          <button
+            id="clickUpgradeButton"
+            class="greenBtn"
+          >
+
+            Улучшить
+
+            <br>
+
+            ⚙️
+
+            <span id="clickCost">
+              10
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div class="statCard">
+
+          <div class="statLabel">
+            Доход в секунду
+          </div>
+
+          <div class="statValue">
+
+            +
+
+            <span id="passiveIncome">
+              0
+            </span>
+
+            /с
+
+          </div>
+
+          <button
+            id="autoButton"
+            class="greenBtn"
+          >
+
+            Улучшить
+
+            <br>
+
+            ⚙️
+
+            <span id="autoCost">
+              25
+            </span>
+
+          </button>
+
+        </div>
+
+
+        <div class="statCard">
+
+          <div class="statLabel">
+            Рабочие
+          </div>
+
+          <div class="statValue">
+
+            <span id="workersCount">
+              0
+            </span>
+
+            /10
+
+          </div>
+
+          <button
+            id="workerHireButton"
+            class="greenBtn"
+          >
+
+            Нанять
+
+            <br>
+
+            ⚙️
+
+            <span id="workerCost">
+              50
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
   </section>
 
 
-
-  <!-- МАГАЗИН -->
+  <!-- УЛУЧШЕНИЯ -->
 
   <section
-    id="shopScreen"
+    id="upgradesScreen"
     class="screen"
   >
 
-    <h1>
-      🛒 Магазин
-    </h1>
-
-
-    <div class="card">
-
-      <div class="shopRow">
-
-        <div class="icon">
-          👆
-        </div>
-
-
-        <div class="grow">
-
-          <div class="cardTitle">
-            Сила робота
-          </div>
-
-          <div class="cardText">
-            +1 к доходу за клик
-          </div>
-
-          <div class="levelSmall">
-
-            Улучшений:
-
-            <span id="clickLevel">
-              0
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
+    <div class="sectionTitle">
 
       <button
-        id="clickUpgradeButton"
-        class="buyButton"
-        type="button"
+        class="backMini"
+        data-go="factoryScreen"
       >
+        ←
+      </button>
 
-        Улучшить •
+      Улучшения
 
-        <span id="clickCost">
-          10
-        </span>
+    </div>
 
-        ⚙️
 
+    <div class="tabs">
+
+      <button class="tab active">
+        Производство
+      </button>
+
+      <button class="tab">
+        Рабочие
+      </button>
+
+      <button class="tab">
+        Особые
       </button>
 
     </div>
 
 
+    <div class="upgradeCard">
 
-    <div class="card">
+      <div class="upgradeIcon">
+        📦
+      </div>
 
-      <div class="shopRow">
+      <div>
 
-        <div class="icon">
-          🤖
+        <div class="upgradeName">
+          Конвейер
         </div>
 
+        <div class="upgradeMeta">
 
-        <div class="grow">
+          Ур.
 
-          <div class="cardTitle">
-            Авто-робот
-          </div>
+          <span id="conveyorLevel">
+            0
+          </span>
 
-          <div class="cardText">
-            +1 деталь в секунду
-          </div>
+        </div>
 
-          <div class="levelSmall">
-
-            Куплено:
-
-            <span id="autoLevel">
-              0
-            </span>
-
-          </div>
-
+        <div class="upgradeGain">
+          +5/с за уровень
         </div>
 
       </div>
-
-
-      <button
-        id="autoButton"
-        class="buyButton"
-        type="button"
-      >
-
-        Купить •
-
-        <span id="autoCost">
-          25
-        </span>
-
-        ⚙️
-
-      </button>
-
-    </div>
-
-
-
-    <div
-      id="conveyorCard"
-      class="card locked"
-    >
-
-      <div class="shopRow">
-
-        <div class="icon">
-          📦
-        </div>
-
-
-        <div class="grow">
-
-          <div class="cardTitle">
-            Быстрый конвейер
-          </div>
-
-          <div class="cardText">
-            +5 деталей в секунду
-          </div>
-
-          <div class="levelSmall">
-
-            Куплено:
-
-            <span id="conveyorLevel">
-              0
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
 
       <button
         id="conveyorButton"
-        class="buyButton"
-        type="button"
+        class="upgradeBuy"
       >
 
-        Купить •
+        Улучшить
 
-        <span id="conveyorCost">
-          800
-        </span>
+        <small>
 
-        ⚙️
+          ⚙️
+
+          <span id="conveyorCost">
+            800
+          </span>
+
+        </small>
 
       </button>
-
-
-      <div
-        id="conveyorLock"
-        class="lockedText"
-      >
-        🔒 Открывается на 3 уровне
-      </div>
 
     </div>
 
 
+    <div class="upgradeCard">
 
-    <div
-      id="armCard"
-      class="card locked"
-    >
+      <div class="upgradeIcon">
+        🦾
+      </div>
 
-      <div class="shopRow">
+      <div>
 
-        <div class="icon">
-          🦾
+        <div class="upgradeName">
+          Роборука
         </div>
 
+        <div class="upgradeMeta">
 
-        <div class="grow">
+          Ур.
 
-          <div class="cardTitle">
-            Робо-манипулятор
-          </div>
+          <span id="armLevel">
+            0
+          </span>
 
-          <div class="cardText">
-            +25 деталей в секунду
-          </div>
+        </div>
 
-          <div class="levelSmall">
-
-            Куплено:
-
-            <span id="armLevel">
-              0
-            </span>
-
-          </div>
-
+        <div class="upgradeGain">
+          +25/с за уровень
         </div>
 
       </div>
-
 
       <button
         id="armButton"
-        class="buyButton"
-        type="button"
+        class="upgradeBuy"
       >
 
-        Купить •
+        Улучшить
 
-        <span id="armCost">
-          3000
-        </span>
+        <small>
 
-        ⚙️
+          ⚙️
+
+          <span id="armCost">
+            3000
+          </span>
+
+        </small>
 
       </button>
-
-
-      <div
-        id="armLock"
-        class="lockedText"
-      >
-        🔒 Открывается на 5 уровне
-      </div>
 
     </div>
 
 
+    <div class="upgradeCard">
 
-    <div
-      id="factoryCard"
-      class="card locked"
-    >
+      <div class="upgradeIcon">
+        🏭
+      </div>
 
-      <div class="shopRow">
+      <div>
 
-        <div class="icon">
-          🏭
+        <div class="upgradeName">
+          Сборочный цех
         </div>
 
+        <div class="upgradeMeta">
 
-        <div class="grow">
+          Ур.
 
-          <div class="cardTitle">
-            Сборочный цех
-          </div>
+          <span id="factoryLevel">
+            0
+          </span>
 
-          <div class="cardText">
-            +100 деталей в секунду
-          </div>
+        </div>
 
-          <div class="levelSmall">
-
-            Куплено:
-
-            <span id="factoryLevel">
-              0
-            </span>
-
-          </div>
-
+        <div class="upgradeGain">
+          +100/с за уровень
         </div>
 
       </div>
 
-
       <button
         id="factoryButton"
-        class="buyButton"
-        type="button"
+        class="upgradeBuy"
       >
 
-        Купить •
+        Улучшить
 
-        <span id="factoryCost">
-          12000
-        </span>
+        <small>
 
-        ⚙️
+          ⚙️
+
+          <span id="factoryCost">
+            12000
+          </span>
+
+        </small>
 
       </button>
 
+    </div>
 
-      <div
-        id="factoryLock"
-        class="lockedText"
+
+    <div class="upgradeCard">
+
+      <div class="upgradeIcon">
+        📡
+      </div>
+
+      <div>
+
+        <div class="upgradeName">
+          Новый цех
+        </div>
+
+        <div class="upgradeMeta">
+          Открывает новый вид производства
+        </div>
+
+        <div class="upgradeGain">
+          Скоро
+        </div>
+
+      </div>
+
+      <button
+        class="upgradeBuy"
+        disabled
       >
-        🔒 Открывается на 8 уровне
+
+        Открыть
+
+        <small>
+          ⚙️ 1.0M
+        </small>
+
+      </button>
+
+    </div>
+
+  </section>
+    <!-- КАРТА -->
+
+  <section
+    id="mapScreen"
+    class="screen"
+  >
+
+    <div class="sectionTitle">
+
+      <button
+        class="backMini"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      Карта
+
+    </div>
+
+    <div class="mapScene">
+
+      <div class="island i1"></div>
+      <div class="island i2"></div>
+      <div class="island i3"></div>
+
+      <div class="route"></div>
+
+      <div class="mapNode node1">
+
+        <b>
+          1. Гараж
+        </b>
+
+        <div>
+          ✅ Текущая локация
+        </div>
+
+      </div>
+
+      <div class="mapNode node2">
+
+        <b>
+          2. Техногород
+        </b>
+
+        <div>
+          🔒 Требуется уровень 8
+        </div>
+
+      </div>
+
+      <div class="mapNode node3">
+
+        <b>
+          3. Космопорт
+        </b>
+
+        <div>
+          🔒 Требуется уровень 20
+        </div>
+
       </div>
 
     </div>
@@ -1040,145 +1540,110 @@
   </section>
 
 
-
-  <!-- ЗАДАНИЯ -->
+  <!-- СОБЫТИЯ -->
 
   <section
-    id="tasksScreen"
+    id="eventsScreen"
     class="screen"
   >
 
-    <h1>
-      📋 Задания
-    </h1>
+    <div class="sectionTitle">
+
+      <button
+        class="backMini"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      События
+
+    </div>
 
 
-    <div class="card">
+    <div class="panel">
 
-      <div class="cardTitle">
+      <div class="panelTitle">
         👆 Рабочая смена
       </div>
 
-      <div class="cardText">
-        Сделай 100 кликов по роботу
+      <div class="panelSub">
+        Сделай 100 кликов по производственной машине.
       </div>
 
-      <div class="taskProgress">
-
-        <div
-          id="taskClicksFill"
-          class="taskFill"
-        ></div>
-
+      <div class="progress">
+        <div id="taskClicksFill"></div>
       </div>
 
-      <div class="taskNumbers">
+      <div class="panelSub">
 
         <span id="taskClicksText">
           0
         </span>
 
-        / 100
+        /100 · Награда 500 ⚙️
 
-      </div>
-
-      <div class="reward">
-        Награда: +500 ⚙️
       </div>
 
       <button
         id="taskClicksButton"
-        class="claimButton"
-        type="button"
+        class="claim"
       >
         Забрать награду
       </button>
 
-      <div
-        id="taskClicksDone"
-        class="done"
-        style="display:none;"
-      >
-        ✅ Выполнено
-      </div>
-
     </div>
 
 
+    <div class="panel">
 
-    <div class="card">
-
-      <div class="cardTitle">
+      <div class="panelTitle">
         🤖 Автоматизация
       </div>
 
-      <div class="cardText">
-        Купи 3 авто-робота
+      <div class="panelSub">
+        Купи 3 авто-робота.
       </div>
 
-      <div class="taskProgress">
-
-        <div
-          id="taskAutoFill"
-          class="taskFill"
-        ></div>
-
+      <div class="progress">
+        <div id="taskAutoFill"></div>
       </div>
 
-      <div class="taskNumbers">
+      <div class="panelSub">
 
         <span id="taskAutoText">
           0
         </span>
 
-        / 3
+        /3 · Награда 1000 ⚙️
 
-      </div>
-
-      <div class="reward">
-        Награда: +1000 ⚙️
       </div>
 
       <button
         id="taskAutoButton"
-        class="claimButton"
-        type="button"
+        class="claim"
       >
         Забрать награду
       </button>
 
-      <div
-        id="taskAutoDone"
-        class="done"
-        style="display:none;"
-      >
-        ✅ Выполнено
-      </div>
-
     </div>
 
 
+    <div class="panel">
 
-    <div class="card">
-
-      <div class="cardTitle">
+      <div class="panelTitle">
         🏆 Опытный инженер
       </div>
 
-      <div class="cardText">
-        Достигни 5 уровня
+      <div class="panelSub">
+        Достигни 5 уровня.
       </div>
 
-      <div class="taskProgress">
-
-        <div
-          id="taskLevelFill"
-          class="taskFill"
-        ></div>
-
+      <div class="progress">
+        <div id="taskLevelFill"></div>
       </div>
 
-      <div class="taskNumbers">
+      <div class="panelSub">
 
         Уровень
 
@@ -1186,162 +1651,41 @@
           1
         </span>
 
-        / 5
+        /5 · Награда 2500 ⚙️
 
-      </div>
-
-      <div class="reward">
-        Награда: +2500 ⚙️
       </div>
 
       <button
         id="taskLevelButton"
-        class="claimButton"
-        type="button"
+        class="claim"
       >
         Забрать награду
       </button>
 
-      <div
-        id="taskLevelDone"
-        class="done"
-        style="display:none;"
-      >
-        ✅ Выполнено
-      </div>
-
     </div>
 
-  </section>
 
+    <div class="panel">
 
-
-  <!-- БОНУСЫ -->
-
-  <section
-    id="bonusScreen"
-    class="screen"
-  >
-
-    <h1>
-      🎁 Бонусы
-    </h1>
-
-
-    <div class="card">
-
-      <div class="bonusBig">
-        🎁
+      <div class="panelTitle">
+        🎁 Ежедневная награда
       </div>
 
-      <div
-        class="cardTitle"
-        style="text-align:center;"
-      >
-        Ежедневная награда
-      </div>
+      <div class="panelSub">
 
+        Текущая серия:
 
-      <div class="streak">
+        <b>
+          <span id="streak">
+            0
+          </span>
 
-        🔥 Серия:
+          дней
+        </b>
 
-        <span id="streak">
-          0
-        </span>
+        <br><br>
 
-        дней
-
-      </div>
-
-
-      <div
-        class="cardText"
-        style="text-align:center;"
-      >
-        Заходи каждый день и увеличивай награду.
-      </div>
-
-
-      <div class="daysRow">
-
-        <div
-          id="day1"
-          class="dayBox"
-        >
-          1
-          <br>
-          500
-        </div>
-
-        <div
-          id="day2"
-          class="dayBox"
-        >
-          2
-          <br>
-          1000
-        </div>
-
-        <div
-          id="day3"
-          class="dayBox"
-        >
-          3
-          <br>
-          1500
-        </div>
-
-        <div
-          id="day4"
-          class="dayBox"
-        >
-          4
-          <br>
-          2000
-        </div>
-
-        <div
-          id="day5"
-          class="dayBox"
-        >
-          5
-          <br>
-          2500
-        </div>
-
-        <div
-          id="day6"
-          class="dayBox"
-        >
-          6
-          <br>
-          3000
-        </div>
-
-        <div
-          id="day7"
-          class="dayBox"
-        >
-          7
-          <br>
-          3500
-        </div>
-
-      </div>
-
-
-      <div
-        class="reward"
-        style="
-          text-align:center;
-          margin-top:15px;
-        "
-      >
-
-        Сегодня:
-
-        +
+        Следующая награда:
 
         <span id="dailyRewardAmount">
           500
@@ -1351,86 +1695,38 @@
 
       </div>
 
-
       <button
         id="dailyButton"
-        class="claimButton"
-        type="button"
+        class="claim"
       >
         Забрать ежедневный бонус
       </button>
 
-
-      <div
-        id="dailyDone"
-        class="done"
-        style="
-          display:none;
-          text-align:center;
-        "
-      >
-        ✅ Награда сегодня уже получена
-      </div>
-
     </div>
 
 
+    <div class="panel">
 
-    <div class="card">
-
-      <div class="bonusBig">
-        ⚡
+      <div class="panelTitle">
+        ⚡ Энергобуст x2
       </div>
 
-      <div
-        class="cardTitle"
-        style="text-align:center;"
-      >
-        Энергобуст x2
-      </div>
-
-      <div
-        class="cardText"
-        style="text-align:center;"
-      >
-        Удваивает доход за клики
-        и автоматическое производство
-        на 5 минут.
+      <div class="panelSub">
+        Удваивает доход с клика и производство на 5 минут.
       </div>
 
       <button
         id="boostButton"
-        class="bonusButton"
-        type="button"
+        class="claim"
       >
-        ⚡ Активировать x2 на 5 минут
+        Активировать x2
       </button>
 
-
       <div
-        id="boostActive"
-        class="boostActive"
-        style="display:none;"
+        class="panelSub"
+        id="boostStatus"
       >
-
-        x2 активно:
-
-        <span id="boostTimer">
-          05:00
-        </span>
-
-      </div>
-
-
-      <div
-        id="boostUsed"
-        class="done"
-        style="
-          display:none;
-          text-align:center;
-        "
-      >
-        ✅ Сегодняшний энергобуст уже использован
+        Доступен сегодня
       </div>
 
     </div>
@@ -1438,30 +1734,161 @@
   </section>
 
 
+  <!-- МАГАЗИН -->
+
+  <section
+    id="shopScreen"
+    class="screen"
+  >
+
+    <div class="sectionTitle">
+
+      <button
+        class="backMini"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      Магазин
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panelTitle">
+        💎 Алмазы
+      </div>
+
+      <div class="panelSub">
+        Позже сюда добавим реальные покупки и Telegram Stars.
+      </div>
+
+    </div>
+
+
+    <div class="upgradeCard">
+
+      <div class="upgradeIcon">
+        💎
+      </div>
+
+      <div>
+
+        <div class="upgradeName">
+          Набор алмазов
+        </div>
+
+        <div class="upgradeMeta">
+          500 💎
+        </div>
+
+      </div>
+
+      <button
+        class="upgradeBuy"
+        disabled
+      >
+        Скоро
+      </button>
+
+    </div>
+
+
+    <div class="upgradeCard">
+
+      <div class="upgradeIcon">
+        ⚙️
+      </div>
+
+      <div>
+
+        <div class="upgradeName">
+          Ящик деталей
+        </div>
+
+        <div class="upgradeMeta">
+          50 000 ⚙️
+        </div>
+
+      </div>
+
+      <button
+        class="upgradeBuy"
+        disabled
+      >
+        Скоро
+      </button>
+
+    </div>
+
+  </section>
+
 
   <!-- НИЖНЕЕ МЕНЮ -->
 
   <nav class="bottomNav">
 
     <button
-      class="navButton active"
-      data-screen="homeScreen"
-      type="button"
+      class="navBtn active"
+      data-screen="factoryScreen"
     >
 
       <span>
-        🏠
+        🏭
       </span>
 
-      Главная
+      Фабрика
 
     </button>
 
 
     <button
-      class="navButton"
+      class="navBtn"
+      data-screen="upgradesScreen"
+    >
+
+      <span>
+        🛠️
+      </span>
+
+      Улучшения
+
+    </button>
+
+
+    <button
+      class="navBtn"
+      data-screen="mapScreen"
+    >
+
+      <span>
+        🗺️
+      </span>
+
+      Карта
+
+    </button>
+
+
+    <button
+      class="navBtn"
+      data-screen="eventsScreen"
+    >
+
+      <span>
+        ⭐
+      </span>
+
+      События
+
+    </button>
+
+
+    <button
+      class="navBtn"
       data-screen="shopScreen"
-      type="button"
     >
 
       <span>
@@ -1472,59 +1899,20 @@
 
     </button>
 
-
-    <button
-      class="navButton"
-      data-screen="tasksScreen"
-      type="button"
-    >
-
-      <span>
-        📋
-      </span>
-
-      Задания
-
-    </button>
-
-
-    <button
-      class="navButton"
-      data-screen="bonusScreen"
-      type="button"
-    >
-
-      <span>
-        🎁
-      </span>
-
-      Бонусы
-
-    </button>
-
   </nav>
 
 </div>
 
 
-
 <script>
-
-  /*
-    ====================================
-    ЗАЩИТА ОТ ЗУМА TELEGRAM / IPHONE
-    ====================================
-  */
 
   document.addEventListener(
     "dblclick",
     function(event) {
-
       event.preventDefault();
-
     },
     {
-      passive: false
+      passive:false
     }
   );
 
@@ -1532,12 +1920,10 @@
   document.addEventListener(
     "gesturestart",
     function(event) {
-
       event.preventDefault();
-
     },
     {
-      passive: false
+      passive:false
     }
   );
 
@@ -1545,12 +1931,10 @@
   document.addEventListener(
     "gesturechange",
     function(event) {
-
       event.preventDefault();
-
     },
     {
-      passive: false
+      passive:false
     }
   );
 
@@ -1558,22 +1942,14 @@
   document.addEventListener(
     "gestureend",
     function(event) {
-
       event.preventDefault();
-
     },
     {
-      passive: false
+      passive:false
     }
   );
 
 
-
-  /*
-    ====================================
-    ОСНОВНЫЕ ДАННЫЕ
-    ====================================
-  */
 
   let coins =
     Number(
@@ -1622,13 +1998,6 @@
       )
     ) || 0;
 
-
-
-  /*
-    ====================================
-    МАГАЗИН
-    ====================================
-  */
 
   let clickLevel =
     Number(
@@ -1718,13 +2087,6 @@
     ) || 12000;
 
 
-
-  /*
-    ====================================
-    ЗАДАНИЯ
-    ====================================
-  */
-
   let taskClicksClaimed =
     localStorage.getItem(
       "taskClicksClaimed"
@@ -1742,13 +2104,6 @@
       "taskLevelClaimed"
     ) === "true";
 
-
-
-  /*
-    ====================================
-    БОНУСЫ
-    ====================================
-  */
 
   let streak =
     Number(
@@ -1778,85 +2133,36 @@
     ) || 0;
 
 
-
-  /*
-    ====================================
-    ЭЛЕМЕНТЫ
-    ====================================
-  */
-
-  const coinsText =
-    document.getElementById(
-      "coins"
-    );
+  let workers =
+    Number(
+      localStorage.getItem(
+        "workers"
+      )
+    ) || 0;
 
 
-  const perClickText =
-    document.getElementById(
-      "perClick"
-    );
+  let workerCost =
+    Number(
+      localStorage.getItem(
+        "workerCost"
+      )
+    ) || 50;
 
 
-  const passiveIncomeText =
-    document.getElementById(
-      "passiveIncome"
-    );
-
-
-  const totalClicksText =
-    document.getElementById(
-      "totalClicks"
-    );
-
-
-  const multiplierText =
-    document.getElementById(
-      "multiplier"
-    );
-
-
-  const levelText =
-    document.getElementById(
-      "level"
-    );
-
-
-  const xpText =
-    document.getElementById(
-      "xp"
-    );
-
-
-  const xpNeedText =
-    document.getElementById(
-      "xpNeed"
-    );
-
-
-  const xpFill =
-    document.getElementById(
-      "xpFill"
-    );
-
-
-  const robotButton =
-    document.getElementById(
-      "robotButton"
-    );
-
-
-  const robotWrap =
-    document.querySelector(
-      ".robotWrap"
-    );
+  let gems =
+    Number(
+      localStorage.getItem(
+        "gems"
+      )
+    ) || 120;
 
 
 
-  /*
-    ====================================
-    ДАТЫ
-    ====================================
-  */
+  function el(id) {
+    return document.getElementById(id);
+  }
+
+
 
   function getToday() {
 
@@ -1951,12 +2257,6 @@
 
 
 
-  /*
-    ====================================
-    БУСТ X2
-    ====================================
-  */
-
   function isBoostActive() {
 
     return (
@@ -1986,16 +2286,12 @@
 
 
 
-  /*
-    ====================================
-    ПАССИВНЫЙ ДОХОД
-    ====================================
-  */
-
   function getPassiveIncome() {
 
     return (
       autoLevel
+      +
+      workers * 2
       +
       conveyorLevel * 5
       +
@@ -2008,817 +2304,75 @@
 
 
 
-  /*
-    ====================================
-    КЛИК / ТАП ПО РОБОТУ
-    ====================================
-
-    Это главная правка.
-
-    На телефоне используем touchstart,
-    а не обычный click.
-
-    preventDefault не даёт Telegram
-    превратить быстрые касания
-    в double-tap zoom.
-  */
-
-
-  function tapRobot() {
-
-    const earned =
-      perClick
-      *
-      getMultiplier();
-
-
-    coins +=
-      earned;
-
-
-    xp +=
-      5;
-
-
-    totalClicks +=
-      1;
-
-
-    showClickText(
-      "+"
-      +
-      earned
-    );
-
-
-    checkLevel();
-
-
-    saveGame();
-
-
-    updateUI();
-
-  }
-
-
-
-  /*
-    IPHONE / TELEGRAM / TOUCH
-  */
-
-  if (
-    "ontouchstart"
-    in window
-  ) {
-
-    robotButton.addEventListener(
-      "touchstart",
-      function(event) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        tapRobot();
-
-      },
-      {
-        passive: false
-      }
-    );
-
-  } else {
-
-    /*
-      ПК И ОБЫЧНЫЙ БРАУЗЕР
-    */
-
-    robotButton.addEventListener(
-      "click",
-      function(event) {
-
-        event.preventDefault();
-
-        tapRobot();
-
-      }
-    );
-
-  }
-
-
-
-  /*
-    Дополнительная защита
-    конкретно кнопки робота
-  */
-
-  robotButton.addEventListener(
-    "dblclick",
-    function(event) {
-
-      event.preventDefault();
-
-      event.stopPropagation();
-
-    },
-    {
-      passive: false
-    }
-  );
-
-
-  robotButton.addEventListener(
-    "touchmove",
-    function(event) {
-
-      /*
-        Если палец начинает двигаться,
-        Telegram не должен превращать
-        это в жест масштабирования.
-      */
-
-      if (
-        event.touches.length > 1
-      ) {
-
-        event.preventDefault();
-
-      }
-
-    },
-    {
-      passive: false
-    }
-  );
-
-
-
-  /*
-    ====================================
-    СИЛА РОБОТА
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "clickUpgradeButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          coins >=
-          clickCost
-        ) {
-
-          coins -=
-            clickCost;
-
-
-          perClick +=
-            1;
-
-
-          clickLevel +=
-            1;
-
-
-          clickCost =
-            Math.floor(
-              clickCost
-              *
-              1.5
-            );
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    АВТО-РОБОТ
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "autoButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          coins >=
-          autoCost
-        ) {
-
-          coins -=
-            autoCost;
-
-
-          autoLevel +=
-            1;
-
-
-          autoCost =
-            Math.floor(
-              autoCost
-              *
-              1.7
-            );
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    КОНВЕЙЕР
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "conveyorButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          level >= 3
-          &&
-          coins >=
-          conveyorCost
-        ) {
-
-          coins -=
-            conveyorCost;
-
-
-          conveyorLevel +=
-            1;
-
-
-          conveyorCost =
-            Math.floor(
-              conveyorCost
-              *
-              1.8
-            );
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    МАНИПУЛЯТОР
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "armButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          level >= 5
-          &&
-          coins >=
-          armCost
-        ) {
-
-          coins -=
-            armCost;
-
-
-          armLevel +=
-            1;
-
-
-          armCost =
-            Math.floor(
-              armCost
-              *
-              1.85
-            );
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    СБОРОЧНЫЙ ЦЕХ
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "factoryButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          level >= 8
-          &&
-          coins >=
-          factoryCost
-        ) {
-
-          coins -=
-            factoryCost;
-
-
-          factoryLevel +=
-            1;
-
-
-          factoryCost =
-            Math.floor(
-              factoryCost
-              *
-              1.9
-            );
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    ЗАДАНИЕ 100 КЛИКОВ
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "taskClicksButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          totalClicks >= 100
-          &&
-          !taskClicksClaimed
-        ) {
-
-          coins +=
-            500;
-
-
-          taskClicksClaimed =
-            true;
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    ЗАДАНИЕ 3 АВТО-РОБОТА
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "taskAutoButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          autoLevel >= 3
-          &&
-          !taskAutoClaimed
-        ) {
-
-          coins +=
-            1000;
-
-
-          taskAutoClaimed =
-            true;
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    ЗАДАНИЕ 5 УРОВЕНЬ
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "taskLevelButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        if (
-          level >= 5
-          &&
-          !taskLevelClaimed
-        ) {
-
-          coins +=
-            2500;
-
-
-          taskLevelClaimed =
-            true;
-
-
-          saveGame();
-
-
-          updateUI();
-
-        }
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    ЕЖЕДНЕВНЫЙ БОНУС
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "dailyButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        const today =
-          getToday();
-
-
-        if (
-          lastDailyDate ===
-          today
-        ) {
-
-          return;
-
-        }
-
-
-        const yesterday =
-          getYesterday();
-
-
-        if (
-          lastDailyDate ===
-          yesterday
-        ) {
-
-          streak +=
-            1;
-
-        } else {
-
-          streak =
-            1;
-
-        }
-
-
-        if (
-          streak >
-          7
-        ) {
-
-          streak =
-            7;
-
-        }
-
-
-        const reward =
-          streak
-          *
-          500;
-
-
-        coins +=
-          reward;
-
-
-        lastDailyDate =
-          today;
-
-
-        saveGame();
-
-
-        updateUI();
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    X2 НА 5 МИНУТ
-    ====================================
-  */
-
-  document
-    .getElementById(
-      "boostButton"
-    )
-    .addEventListener(
-      "click",
-      function() {
-
-        const today =
-          getToday();
-
-
-        if (
-          lastBoostDate ===
-          today
-        ) {
-
-          return;
-
-        }
-
-
-        boostEnd =
-          Date.now()
-          +
-          5
-          *
-          60
-          *
-          1000;
-
-
-        lastBoostDate =
-          today;
-
-
-        saveGame();
-
-
-        updateUI();
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    НИЖНЕЕ МЕНЮ
-    ====================================
-  */
-
-  document
-    .querySelectorAll(
-      ".navButton"
-    )
-    .forEach(
-      function(button) {
-
-        button.addEventListener(
-          "click",
-          function() {
-
-            const screenId =
-              button.dataset.screen;
-
-
-            document
-              .querySelectorAll(
-                ".screen"
-              )
-              .forEach(
-                function(screen) {
-
-                  screen
-                    .classList
-                    .remove(
-                      "active"
-                    );
-
-                }
-              );
-
-
-            document
-              .querySelectorAll(
-                ".navButton"
-              )
-              .forEach(
-                function(nav) {
-
-                  nav
-                    .classList
-                    .remove(
-                      "active"
-                    );
-
-                }
-              );
-
-
-            document
-              .getElementById(
-                screenId
-              )
-              .classList
-              .add(
-                "active"
-              );
-
-
-            button
-              .classList
-              .add(
-                "active"
-              );
-
-          }
-        );
-
-      }
-    );
-
-
-
-  /*
-    ====================================
-    ПАССИВНЫЙ ДОХОД
-    КАЖДУЮ СЕКУНДУ
-    ====================================
-  */
-
-  setInterval(
-    function() {
-
-      const income =
-        getPassiveIncome()
-        *
-        getMultiplier();
-
-
-      if (
-        income >
-        0
-      ) {
-
-        coins +=
-          income;
-
-
-        saveGame();
-
-      }
-
-
-      updateUI();
-
-    },
-    1000
-  );
-
-
-
-  /*
-    ====================================
-    АНИМАЦИЯ +10 / +20...
-    ====================================
-  */
-
-  function showClickText(
-    text
-  ) {
-
-    const el =
-      document.createElement(
-        "div"
+  function compact(number) {
+
+    number =
+      Math.floor(
+        number
       );
 
 
-    el.className =
-      "clickText";
+    if (
+      number >=
+      1000000000
+    ) {
+
+      return (
+        number / 1000000000
+      ).toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "B";
+
+    }
 
 
-    el.textContent =
-      text;
+    if (
+      number >=
+      1000000
+    ) {
+
+      return (
+        number / 1000000
+      ).toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "M";
+
+    }
 
 
-    robotWrap.appendChild(
-      el
-    );
+    if (
+      number >=
+      1000
+    ) {
+
+      return (
+        number / 1000
+      ).toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "K";
+
+    }
 
 
-    setTimeout(
-      function() {
-
-        el.remove();
-
-      },
-      700
+    return String(
+      number
     );
 
   }
 
 
-
-  /*
-    ====================================
-    УРОВНИ
-    ====================================
-  */
 
   function checkLevel() {
 
@@ -2851,12 +2405,6 @@
   }
 
 
-
-  /*
-    ====================================
-    СОХРАНЕНИЕ
-    ====================================
-  */
 
   function saveGame() {
 
@@ -2997,252 +2545,797 @@
       boostEnd
     );
 
+
+    localStorage.setItem(
+      "workers",
+      workers
+    );
+
+
+    localStorage.setItem(
+      "workerCost",
+      workerCost
+    );
+
+
+    localStorage.setItem(
+      "gems",
+      gems
+    );
+
   }
 
 
 
-  /*
-    ====================================
-    ОБНОВЛЕНИЕ UI
-    ====================================
-  */
+  function showFloating(
+    text
+  ) {
 
-  function updateUI() {
-
-    coinsText.textContent =
-      Math.floor(
-        coins
+    const floating =
+      document.createElement(
+        "div"
       );
 
 
-    perClickText.textContent =
-      perClick;
+    floating.className =
+      "floating";
 
 
-    passiveIncomeText.textContent =
-      getPassiveIncome()
+    floating.textContent =
+      text;
+
+
+    el(
+      "tapZone"
+    ).appendChild(
+      floating
+    );
+
+
+    setTimeout(
+      function() {
+
+        floating.remove();
+
+      },
+      650
+    );
+
+  }
+
+
+
+  function tapRobot() {
+
+    const earned =
+      perClick
       *
       getMultiplier();
 
 
-    totalClicksText.textContent =
-      totalClicks;
+    coins +=
+      earned;
 
 
-    multiplierText.textContent =
-      getMultiplier();
+    xp +=
+      5;
 
 
-    levelText.textContent =
-      level;
+    totalClicks +=
+      1;
 
 
-    xpText.textContent =
-      xp;
-
-
-    xpNeedText.textContent =
-      xpNeed;
-
-
-    const xpPercent =
-      Math.min(
-        (
-          xp
-          /
-          xpNeed
-        )
-        *
-        100,
-        100
-      );
-
-
-    xpFill.style.width =
-      xpPercent
+    showFloating(
+      "+"
       +
-      "%";
-
-
-    document
-      .getElementById(
-        "clickLevel"
+      compact(
+        earned
       )
-      .textContent =
-      clickLevel;
-
-
-    document
-      .getElementById(
-        "clickCost"
-      )
-      .textContent =
-      clickCost;
-
-
-    document
-      .getElementById(
-        "autoLevel"
-      )
-      .textContent =
-      autoLevel;
-
-
-    document
-      .getElementById(
-        "autoCost"
-      )
-      .textContent =
-      autoCost;
-
-
-    document
-      .getElementById(
-        "conveyorLevel"
-      )
-      .textContent =
-      conveyorLevel;
-
-
-    document
-      .getElementById(
-        "conveyorCost"
-      )
-      .textContent =
-      conveyorCost;
-
-
-    document
-      .getElementById(
-        "armLevel"
-      )
-      .textContent =
-      armLevel;
-
-
-    document
-      .getElementById(
-        "armCost"
-      )
-      .textContent =
-      armCost;
-
-
-    document
-      .getElementById(
-        "factoryLevel"
-      )
-      .textContent =
-      factoryLevel;
-
-
-    document
-      .getElementById(
-        "factoryCost"
-      )
-      .textContent =
-      factoryCost;
-
-
-    updateLock(
-      "conveyor",
-      3
+      +
+      " ⚙️"
     );
 
 
-    updateLock(
-      "arm",
-      5
-    );
+    checkLevel();
 
 
-    updateLock(
-      "factory",
-      8
-    );
+    saveGame();
 
 
-    updateTasks();
-
-
-    updateBonuses();
+    updateUI();
 
   }
 
 
 
-  /*
-    ====================================
-    ЗАДАНИЯ UI
-    ====================================
-  */
+  const tapZone =
+    el(
+      "tapZone"
+    );
+
+
+  if (
+    "ontouchstart"
+    in window
+  ) {
+
+    tapZone.addEventListener(
+      "touchstart",
+      function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        tapRobot();
+
+      },
+      {
+        passive:false
+      }
+    );
+
+  } else {
+
+    tapZone.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        tapRobot();
+
+      }
+    );
+
+  }
+
+
+
+  tapZone.addEventListener(
+    "dblclick",
+    function(event) {
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+    },
+    {
+      passive:false
+    }
+  );
+
+
+
+  el(
+    "clickUpgradeButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        coins <
+        clickCost
+      ) {
+
+        return;
+
+      }
+
+
+      coins -=
+        clickCost;
+
+
+      perClick +=
+        1;
+
+
+      clickLevel +=
+        1;
+
+
+      clickCost =
+        Math.floor(
+          clickCost
+          *
+          1.5
+        );
+
+
+      saveGame();
+
+      updateUI();
+
+    }
+  );
+
+
+
+  el(
+    "autoButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        coins <
+        autoCost
+      ) {
+
+        return;
+
+      }
+
+
+      coins -=
+        autoCost;
+
+
+      autoLevel +=
+        1;
+
+
+      autoCost =
+        Math.floor(
+          autoCost
+          *
+          1.7
+        );
+
+
+      saveGame();
+
+      updateUI();
+
+    }
+  );
+
+
+
+  el(
+    "workerHireButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        workers >=
+        10
+        ||
+        coins <
+        workerCost
+      ) {
+
+        return;
+
+      }
+
+
+      coins -=
+        workerCost;
+
+
+      workers +=
+        1;
+
+
+      workerCost =
+        Math.floor(
+          workerCost
+          *
+          1.8
+        );
+
+
+      saveGame();
+
+      updateUI();
+
+    }
+  );
+
+
+
+  el(
+    "conveyorButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        level <
+        3
+        ||
+        coins <
+        conveyorCost
+      ) {
+
+        return;
+
+      }
+
+
+      coins -=
+        conveyorCost;
+
+
+      conveyorLevel +=
+        1;
+
+
+      conveyorCost =
+        Math.floor(
+          conveyorCost
+          *
+          1.8
+        );
+
+
+      saveGame();
+
+      updateUI();
+
+    }
+  );
+
+
+
+  el(
+    "armButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        level <
+        5
+        ||
+        coins <
+        armCost
+      ) {
+
+        return;
+
+      }
+
+
+      coins -=
+        armCost;
+
+
+      armLevel +=
+        1;
+
+
+      armCost =
+        Math.floor(
+          armCost
+          *
+          1.85
+        );
+
+
+      saveGame();
+
+      updateUI();
+
+    }
+  );
+
+
+
+  el(
+    "factoryButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        level <
+        8
+        ||
+        coins <
+        factoryCost
+      ) {
+
+        return;
+
+      }
+
+
+      coins -=
+        factoryCost;
+
+
+      factoryLevel +=
+        1;
+
+
+      factoryCost =
+        Math.floor(
+          factoryCost
+          *
+          1.9
+        );
+
+
+      saveGame();
+
+      updateUI();
+
+    }
+  );
+
+
+
+  el(
+    "taskClicksButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        totalClicks >=
+        100
+        &&
+        !taskClicksClaimed
+      ) {
+
+        coins +=
+          500;
+
+
+        taskClicksClaimed =
+          true;
+
+
+        saveGame();
+
+        updateUI();
+
+      }
+
+    }
+  );
+
+
+
+  el(
+    "taskAutoButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        autoLevel >=
+        3
+        &&
+        !taskAutoClaimed
+      ) {
+
+        coins +=
+          1000;
+
+
+        taskAutoClaimed =
+          true;
+
+
+        saveGame();
+
+        updateUI();
+
+      }
+
+    }
+  );
+
+
+
+  el(
+    "taskLevelButton"
+  ).addEventListener(
+    "click",
+    function() {
+
+      if (
+        level >=
+        5
+        &&
+        !taskLevelClaimed
+      ) {
+
+        coins +=
+          2500;
+
+
+        taskLevelClaimed =
+          true;
+
+
+        saveGame();
+
+        updateUI();
+
+      }
+
+    }
+  );
+
+
+
+  function takeDaily() {
+
+    const today =
+      getToday();
+
+
+    if (
+      lastDailyDate ===
+      today
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      lastDailyDate ===
+      getYesterday()
+    ) {
+
+      streak +=
+        1;
+
+    } else {
+
+      streak =
+        1;
+
+    }
+
+
+    if (
+      streak >
+      7
+    ) {
+
+      streak =
+        7;
+
+    }
+
+
+    coins +=
+      streak
+      *
+      500;
+
+
+    lastDailyDate =
+      today;
+
+
+    saveGame();
+
+    updateUI();
+
+  }
+
+
+
+  el(
+    "dailyButton"
+  ).addEventListener(
+    "click",
+    takeDaily
+  );
+
+
+
+  function activateBoost() {
+
+    const today =
+      getToday();
+
+
+    if (
+      lastBoostDate ===
+      today
+    ) {
+
+      return;
+
+    }
+
+
+    boostEnd =
+      Date.now()
+      +
+      5
+      *
+      60
+      *
+      1000;
+
+
+    lastBoostDate =
+      today;
+
+
+    saveGame();
+
+    updateUI();
+
+  }
+
+
+
+  el(
+    "boostButton"
+  ).addEventListener(
+    "click",
+    activateBoost
+  );
+
+
+  el(
+    "boostShortcut"
+  ).addEventListener(
+    "click",
+    activateBoost
+  );
+
+
+
+  function openScreen(
+    screenId
+  ) {
+
+    document
+      .querySelectorAll(
+        ".screen"
+      )
+      .forEach(
+        function(screen) {
+
+          screen
+            .classList
+            .remove(
+              "active"
+            );
+
+        }
+      );
+
+
+    el(
+      screenId
+    )
+      .classList
+      .add(
+        "active"
+      );
+
+
+    document
+      .querySelectorAll(
+        ".navBtn"
+      )
+      .forEach(
+        function(button) {
+
+          button
+            .classList
+            .toggle(
+              "active",
+              button.dataset.screen
+              ===
+              screenId
+            );
+
+        }
+      );
+
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }
+
+
+
+  document
+    .querySelectorAll(
+      "[data-screen]"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            openScreen(
+              button.dataset.screen
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+
+  document
+    .querySelectorAll(
+      "[data-go]"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            openScreen(
+              button.dataset.go
+            );
+
+          }
+        );
+
+      }
+    );
+
+
 
   function updateTasks() {
 
-    const clickProgress =
+    const clicksProgress =
       Math.min(
         totalClicks,
         100
       );
 
 
-    document
-      .getElementById(
-        "taskClicksText"
-      )
-      .textContent =
-      clickProgress;
+    el(
+      "taskClicksText"
+    ).textContent =
+      clicksProgress;
 
 
-    document
-      .getElementById(
-        "taskClicksFill"
-      )
-      .style
-      .width =
-      clickProgress
+    el(
+      "taskClicksFill"
+    ).style.width =
+      clicksProgress
       +
       "%";
 
 
-    const clickButton =
-      document.getElementById(
-        "taskClicksButton"
-      );
+    el(
+      "taskClicksButton"
+    ).disabled =
+      totalClicks <
+      100
+      ||
+      taskClicksClaimed;
 
 
-    const clickDone =
-      document.getElementById(
-        "taskClicksDone"
-      );
-
-
-    if (
+    el(
+      "taskClicksButton"
+    ).textContent =
       taskClicksClaimed
-    ) {
-
-      clickButton.style.display =
-        "none";
-
-
-      clickDone.style.display =
-        "block";
-
-    } else {
-
-      clickButton.style.display =
-        "block";
-
-
-      clickDone.style.display =
-        "none";
-
-
-      clickButton.disabled =
-        totalClicks <
-        100;
-
-    }
+      ?
+      "✅ Получено"
+      :
+      "Забрать награду";
 
 
 
@@ -3253,20 +3346,15 @@
       );
 
 
-    document
-      .getElementById(
-        "taskAutoText"
-      )
-      .textContent =
+    el(
+      "taskAutoText"
+    ).textContent =
       autoProgress;
 
 
-    document
-      .getElementById(
-        "taskAutoFill"
-      )
-      .style
-      .width =
+    el(
+      "taskAutoFill"
+    ).style.width =
       (
         autoProgress
         /
@@ -3278,44 +3366,23 @@
       "%";
 
 
-    const autoButton =
-      document.getElementById(
-        "taskAutoButton"
-      );
+    el(
+      "taskAutoButton"
+    ).disabled =
+      autoLevel <
+      3
+      ||
+      taskAutoClaimed;
 
 
-    const autoDone =
-      document.getElementById(
-        "taskAutoDone"
-      );
-
-
-    if (
+    el(
+      "taskAutoButton"
+    ).textContent =
       taskAutoClaimed
-    ) {
-
-      autoButton.style.display =
-        "none";
-
-
-      autoDone.style.display =
-        "block";
-
-    } else {
-
-      autoButton.style.display =
-        "block";
-
-
-      autoDone.style.display =
-        "none";
-
-
-      autoButton.disabled =
-        autoLevel <
-        3;
-
-    }
+      ?
+      "✅ Получено"
+      :
+      "Забрать награду";
 
 
 
@@ -3326,20 +3393,15 @@
       );
 
 
-    document
-      .getElementById(
-        "taskLevelText"
-      )
-      .textContent =
+    el(
+      "taskLevelText"
+    ).textContent =
       levelProgress;
 
 
-    document
-      .getElementById(
-        "taskLevelFill"
-      )
-      .style
-      .width =
+    el(
+      "taskLevelFill"
+    ).style.width =
       (
         levelProgress
         /
@@ -3351,71 +3413,32 @@
       "%";
 
 
-    const levelButton =
-      document.getElementById(
-        "taskLevelButton"
-      );
+    el(
+      "taskLevelButton"
+    ).disabled =
+      level <
+      5
+      ||
+      taskLevelClaimed;
 
 
-    const levelDone =
-      document.getElementById(
-        "taskLevelDone"
-      );
-
-
-    if (
+    el(
+      "taskLevelButton"
+    ).textContent =
       taskLevelClaimed
-    ) {
-
-      levelButton.style.display =
-        "none";
-
-
-      levelDone.style.display =
-        "block";
-
-    } else {
-
-      levelButton.style.display =
-        "block";
-
-
-      levelDone.style.display =
-        "none";
-
-
-      levelButton.disabled =
-        level <
-        5;
-
-    }
+      ?
+      "✅ Получено"
+      :
+      "Забрать награду";
 
   }
 
 
 
-  /*
-    ====================================
-    БОНУСЫ UI
-    ====================================
-  */
-
   function updateBonuses() {
 
     const today =
       getToday();
-
-
-    const dailyButton =
-      document.getElementById(
-        "dailyButton"
-      );
-
-
-    const dailyDone =
-      document.getElementById(
-        "dailyDone"
-      );
 
 
     let nextStreak =
@@ -3458,131 +3481,67 @@
     }
 
 
-    document
-      .getElementById(
-        "streak"
-      )
-      .textContent =
+    el(
+      "streak"
+    ).textContent =
       streak;
 
 
-    document
-      .getElementById(
-        "dailyRewardAmount"
-      )
-      .textContent =
+    el(
+      "dailyRewardAmount"
+    ).textContent =
       nextStreak
       *
       500;
 
 
-    for (
-      let i = 1;
-      i <= 7;
-      i++
-    ) {
-
-      const box =
-        document.getElementById(
-          "day"
-          +
-          i
-        );
-
-
-      box.classList.remove(
-        "current",
-        "doneDay"
-      );
-
-
-      if (
-        i <=
-        streak
-      ) {
-
-        box.classList.add(
-          "doneDay"
-        );
-
-      }
-
-
-      if (
-        i ===
-        nextStreak
-        &&
-        lastDailyDate !==
-        today
-      ) {
-
-        box.classList.add(
-          "current"
-        );
-
-      }
-
-    }
-
-
-    if (
+    const dailyUsed =
       lastDailyDate ===
-      today
-    ) {
-
-      dailyButton.style.display =
-        "none";
+      today;
 
 
-      dailyDone.style.display =
-        "block";
-
-    } else {
-
-      dailyButton.style.display =
-        "block";
+    el(
+      "dailyButton"
+    ).disabled =
+      dailyUsed;
 
 
-      dailyDone.style.display =
-        "none";
-
-    }
-
-
-
-    const boostButton =
-      document.getElementById(
-        "boostButton"
-      );
+    el(
+      "dailyButton"
+    ).textContent =
+      dailyUsed
+      ?
+      "✅ Уже получено сегодня"
+      :
+      "Забрать ежедневный бонус";
 
 
-    const boostActive =
-      document.getElementById(
-        "boostActive"
-      );
+    el(
+      "dailyShortcutText"
+    ).textContent =
+      dailyUsed
+      ?
+      "Получено"
+      :
+      "+"
+      +
+      compact(
+        nextStreak
+        *
+        500
+      )
+      +
+      " ⚙️";
 
 
-    const boostUsed =
-      document.getElementById(
-        "boostUsed"
-      );
+    const boostUsedToday =
+      lastBoostDate ===
+      today;
 
 
     if (
       isBoostActive()
     ) {
-
-      boostButton.style.display =
-        "none";
-
-
-      boostUsed.style.display =
-        "none";
-
-
-      boostActive.style.display =
-        "block";
-
 
       const remaining =
         Math.max(
@@ -3602,140 +3561,115 @@
 
 
       const minutes =
-        Math.floor(
-          totalSeconds
-          /
-          60
+        String(
+          Math.floor(
+            totalSeconds
+            /
+            60
+          )
+        ).padStart(
+          2,
+          "0"
         );
 
 
       const seconds =
-        totalSeconds
-        %
-        60;
-
-
-      document
-        .getElementById(
-          "boostTimer"
-        )
-        .textContent =
         String(
-          minutes
-        ).padStart(
-          2,
-          "0"
-        )
-        +
-        ":"
-        +
-        String(
-          seconds
+          totalSeconds
+          %
+          60
         ).padStart(
           2,
           "0"
         );
 
-    } else {
 
-      boostActive.style.display =
-        "none";
-
-
-      if (
-        lastBoostDate ===
-        today
-      ) {
-
-        boostButton.style.display =
-          "none";
-
-
-        boostUsed.style.display =
-          "block";
-
-      } else {
-
-        boostButton.style.display =
-          "block";
-
-
-        boostUsed.style.display =
-          "none";
-
-      }
-
-    }
-
-  }
-
-
-
-  /*
-    ====================================
-    БЛОКИРОВКА ПО УРОВНЮ
-    ====================================
-  */
-
-  function updateLock(
-    name,
-    requiredLevel
-  ) {
-
-    const card =
-      document.getElementById(
-        name
+      el(
+        "boostStatus"
+      ).textContent =
+        "⚡ x2 активно "
         +
-        "Card"
-      );
-
-
-    const button =
-      document.getElementById(
-        name
+        minutes
         +
-        "Button"
-      );
-
-
-    const lock =
-      document.getElementById(
-        name
+        ":"
         +
-        "Lock"
-      );
+        seconds;
 
 
-    if (
-      level >=
-      requiredLevel
-    ) {
-
-      card.classList.remove(
-        "locked"
-      );
-
-
-      button.disabled =
-        false;
+      el(
+        "boostShortcutText"
+      ).textContent =
+        "Активно "
+        +
+        minutes
+        +
+        ":"
+        +
+        seconds;
 
 
-      lock.style.display =
-        "none";
-
-    } else {
-
-      card.classList.add(
-        "locked"
-      );
-
-
-      button.disabled =
+      el(
+        "boostButton"
+      ).disabled =
         true;
 
 
-      lock.style.display =
-        "block";
+      el(
+        "boostButton"
+      ).textContent =
+        "⚡ x2 активно";
+
+    } else if (
+      boostUsedToday
+    ) {
+
+      el(
+        "boostStatus"
+      ).textContent =
+        "✅ Сегодня уже использован";
+
+
+      el(
+        "boostShortcutText"
+      ).textContent =
+        "Использовано";
+
+
+      el(
+        "boostButton"
+      ).disabled =
+        true;
+
+
+      el(
+        "boostButton"
+      ).textContent =
+        "✅ Использовано";
+
+    } else {
+
+      el(
+        "boostStatus"
+      ).textContent =
+        "Доступен сегодня";
+
+
+      el(
+        "boostShortcutText"
+      ).textContent =
+        "Активировать";
+
+
+      el(
+        "boostButton"
+      ).disabled =
+        false;
+
+
+      el(
+        "boostButton"
+      ).textContent =
+        "Активировать x2";
 
     }
 
@@ -3743,17 +3677,245 @@
 
 
 
-  /*
-    ====================================
-    ЗАПУСК
-    ====================================
-  */
+  function updateUI() {
+
+    el(
+      "coins"
+    ).textContent =
+      compact(
+        coins
+      );
+
+
+    el(
+      "gems"
+    ).textContent =
+      compact(
+        gems
+      );
+
+
+    el(
+      "topIncome"
+    ).textContent =
+      compact(
+        getPassiveIncome()
+        *
+        getMultiplier()
+      );
+
+
+    el(
+      "passiveIncome"
+    ).textContent =
+      compact(
+        getPassiveIncome()
+        *
+        getMultiplier()
+      );
+
+
+    el(
+      "perClick"
+    ).textContent =
+      compact(
+        perClick
+        *
+        getMultiplier()
+      );
+
+
+    el(
+      "level"
+    ).textContent =
+      level;
+
+
+    el(
+      "xpFill"
+    ).style.width =
+      Math.min(
+        (
+          xp
+          /
+          xpNeed
+        )
+        *
+        100,
+        100
+      )
+      +
+      "%";
+
+
+    el(
+      "clickCost"
+    ).textContent =
+      compact(
+        clickCost
+      );
+
+
+    el(
+      "autoCost"
+    ).textContent =
+      compact(
+        autoCost
+      );
+
+
+    el(
+      "workersCount"
+    ).textContent =
+      workers;
+
+
+    el(
+      "workerCost"
+    ).textContent =
+      compact(
+        workerCost
+      );
+
+
+    el(
+      "conveyorLevel"
+    ).textContent =
+      conveyorLevel;
+
+
+    el(
+      "conveyorCost"
+    ).textContent =
+      compact(
+        conveyorCost
+      );
+
+
+    el(
+      "armLevel"
+    ).textContent =
+      armLevel;
+
+
+    el(
+      "armCost"
+    ).textContent =
+      compact(
+        armCost
+      );
+
+
+    el(
+      "factoryLevel"
+    ).textContent =
+      factoryLevel;
+
+
+    el(
+      "factoryCost"
+    ).textContent =
+      compact(
+        factoryCost
+      );
+
+
+    el(
+      "clickUpgradeButton"
+    ).disabled =
+      coins <
+      clickCost;
+
+
+    el(
+      "autoButton"
+    ).disabled =
+      coins <
+      autoCost;
+
+
+    el(
+      "workerHireButton"
+    ).disabled =
+      workers >=
+      10
+      ||
+      coins <
+      workerCost;
+
+
+    el(
+      "conveyorButton"
+    ).disabled =
+      level <
+      3
+      ||
+      coins <
+      conveyorCost;
+
+
+    el(
+      "armButton"
+    ).disabled =
+      level <
+      5
+      ||
+      coins <
+      armCost;
+
+
+    el(
+      "factoryButton"
+    ).disabled =
+      level <
+      8
+      ||
+      coins <
+      factoryCost;
+
+
+    updateTasks();
+
+    updateBonuses();
+
+  }
+
+
+
+  setInterval(
+    function() {
+
+      const income =
+        getPassiveIncome()
+        *
+        getMultiplier();
+
+
+      if (
+        income >
+        0
+      ) {
+
+        coins +=
+          income;
+
+
+        saveGame();
+
+      }
+
+
+      updateUI();
+
+    },
+    1000
+  );
+
+
 
   updateUI();
 
 </script>
 
-
 </body>
-
 </html>
