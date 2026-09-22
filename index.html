@@ -5952,5 +5952,69 @@ update();
 
 })();
 </script>  
+<style>
+/* ===== FIX v12 ===== */
+
+/* Робота немного ниже */
+.rf-center-robot{
+  top:48% !important;
+  margin-top:0 !important;
+}
+
+/* КЛИК возвращаем и ставим над роботом */
+.rf-click{
+  display:block !important;
+  top:34% !important;
+  margin-top:0 !important;
+  font-size:23px !important;
+  z-index:40 !important;
+}
+
+/* Руки симметрично */
+.rf-arm-rig.left{
+  left:5px !important;
+  top:42% !important;
+  margin-top:0 !important;
+}
+
+.rf-arm-rig.right{
+  right:5px !important;
+  top:42% !important;
+  margin-top:0 !important;
+}
+
+/* Коробки ставим прямо на синюю ленту */
+.rf-box{
+  top:73% !important;
+  margin-top:0 !important;
+  width:54px !important;
+  height:46px !important;
+}
+
+/* Коробка едет через весь конвейер */
+.rf-box.left,
+.rf-box.right{
+  left:-65px !important;
+  right:auto !important;
+}
+
+.rf-box.left{
+  animation:rfBoxBeltV12 6s linear infinite !important;
+}
+
+.rf-box.right{
+  animation:rfBoxBeltV12 6s linear -3s infinite !important;
+}
+
+@keyframes rfBoxBeltV12{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(540px);
+  }
+}
+</style>  
 </body>
 </html>
