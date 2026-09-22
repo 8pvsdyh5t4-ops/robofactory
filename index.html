@@ -4505,5 +4505,122 @@ update();
   background:rgba(7,25,40,.96) !important;
 }
 </style>  
+<style>
+#liveRobot{
+  position:absolute;
+  left:50%;
+  top:56%;
+  width:120px;
+  height:auto;
+  transform:translate(-50%,-50%);
+  transform-origin:50% 85%;
+  z-index:16;
+  pointer-events:none;
+
+  filter:
+    drop-shadow(0 8px 10px rgba(0,0,0,.45))
+    drop-shadow(0 0 10px rgba(0,190,255,.35));
+
+  animation:robotIdle 1.8s ease-in-out infinite;
+}
+
+#liveRobot.robotHit{
+  animation:robotHit .22s ease-out;
+}
+
+@keyframes robotIdle{
+  0%,100%{
+    transform:
+      translate(-50%,-50%)
+      translateY(0)
+      rotate(-1deg);
+  }
+
+  50%{
+    transform:
+      translate(-50%,-50%)
+      translateY(-7px)
+      rotate(1deg);
+  }
+}
+
+@keyframes robotHit{
+  0%{
+    transform:
+      translate(-50%,-50%)
+      scale(1);
+  }
+
+  45%{
+    transform:
+      translate(-50%,-50%)
+      translateY(-13px)
+      scale(1.09);
+  }
+
+  100%{
+    transform:
+      translate(-50%,-50%)
+      scale(1);
+  }
+}
+</style>
+
+<script>
+(function(){
+
+  const hero =
+    document.querySelector(".hero");
+
+  const tapZone =
+    document.getElementById("tapZone");
+
+  if(!hero || !tapZone){
+    return;
+  }
+
+  let robot =
+    document.getElementById("liveRobot");
+
+  if(!robot){
+
+    robot =
+      document.createElement("img");
+
+    robot.id =
+      "liveRobot";
+
+    robot.src =
+      "./assets/robot.png.PNG?v=1";
+
+    robot.alt =
+      "RoboFactory robot";
+
+    hero.appendChild(robot);
+  }
+
+  function animateRobot(){
+
+    robot.classList.remove("robotHit");
+
+    void robot.offsetWidth;
+
+    robot.classList.add("robotHit");
+
+    setTimeout(
+      () => {
+        robot.classList.remove("robotHit");
+      },
+      230
+    );
+  }
+
+  tapZone.addEventListener(
+    "pointerdown",
+    animateRobot
+  );
+
+})();
+</script>  
 </body>
 </html>
