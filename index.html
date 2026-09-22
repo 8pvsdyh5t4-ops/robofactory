@@ -2,26 +2,22 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>RoboFactory</title>
 
 <style>
 :root{
   --bg:#07111d;
-  --panel:#0c1c2d;
-  --panel2:#14283d;
-  --line:#31516c;
+  --panel:#081c2d;
+  --panel2:#0d2940;
+  --line:#315c7d;
   --text:#f7fbff;
-  --muted:#9fb3c6;
-  --green:#28dc70;
-  --green2:#0d9f47;
-  --blue:#199cf8;
-  --yellow:#ffd45a;
+  --muted:#98aec2;
+  --green:#29e46f;
+  --green2:#0ca746;
+  --blue:#149cff;
+  --yellow:#ffc23a;
+  --orange:#ff8b1f;
 }
 
 *{
@@ -29,7 +25,8 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   margin:0;
   min-height:100%;
   background:#04090f;
@@ -46,7 +43,13 @@ button{
   font:inherit;
   color:inherit;
   border:0;
+  cursor:pointer;
   touch-action:manipulation;
+}
+
+button:disabled{
+  opacity:.48;
+  cursor:default;
 }
 
 .app{
@@ -55,21 +58,19 @@ button{
   min-height:100vh;
   margin:auto;
   background:linear-gradient(#07111d,#091521);
-  padding-bottom:calc(74px + env(safe-area-inset-bottom));
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
   overflow:hidden;
 }
 
 .screen{
   display:none;
-  min-height:calc(100vh - 74px);
+  min-height:calc(100vh - 76px);
   padding:10px;
 }
 
 .screen.active{
   display:block;
 }
-
-/* TOP */
 
 .topbar{
   display:grid;
@@ -82,22 +83,20 @@ button{
 .square,
 .wallet,
 .gems{
-  background:#0a1a2a;
+  height:48px;
+  background:#091c2d;
   border:1px solid #31516c;
+  border-radius:15px;
   box-shadow:0 8px 18px rgba(0,0,0,.35);
 }
 
 .square{
-  width:48px;
-  height:48px;
-  border-radius:14px;
   font-size:23px;
 }
 
 .wallet{
-  border-radius:16px;
   text-align:center;
-  padding:6px 10px;
+  padding:5px 8px;
 }
 
 .balance{
@@ -106,15 +105,13 @@ button{
 }
 
 .rate{
-  color:#57ef84;
+  color:#54ef84;
   font-size:13px;
   font-weight:900;
   margin-top:2px;
 }
 
 .gems{
-  height:48px;
-  border-radius:14px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -123,16 +120,17 @@ button{
 }
 
 .plus{
-  width:24px;
-  height:24px;
+  width:26px;
+  height:26px;
   border-radius:7px;
   background:#35df77;
   color:#042512;
-  display:grid;
-  place-items:center;
+  font-weight:900;
 }
 
-/* FACTORY */
+/* ===========================
+   ГЛАВНАЯ ФАБРИКА
+   =========================== */
 
 .hero{
   height:704px;
@@ -140,1577 +138,845 @@ button{
   overflow:hidden;
   border-radius:22px;
   border:1px solid #2c4a63;
-  background:#152230;
+  background:#111d29;
   box-shadow:0 16px 30px rgba(0,0,0,.4);
 }
 
-.scene{
+.factory-bg{
   position:absolute;
   inset:0;
-  overflow:hidden;
-
-  background:
-    radial-gradient(
-      circle at 50% 44%,
-      rgba(255,177,43,.17),
-      transparent 24%
-    ),
-    radial-gradient(
-      circle at 78% 15%,
-      rgba(73,161,220,.22),
-      transparent 25%
-    ),
-    linear-gradient(
-      180deg,
-      #263e54 0%,
-      #152b3c 49%,
-      #09141f 100%
-    );
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  z-index:0;
 }
 
-.grid{
-  position:absolute;
-  inset:0;
-  opacity:.22;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 58px,
-      rgba(255,255,255,.045) 58px 60px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 78px,
-      rgba(255,255,255,.03) 78px 80px
-    );
-}
-
-/* WINDOW */
-
-.window{
-  position:absolute;
-  right:22px;
-  top:145px;
-  width:112px;
-  height:140px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #9fe8f0,
-      #4c91bb
-    );
-
-  border:9px solid #294052;
-  box-shadow:inset 0 0 0 3px #4c6c82;
-}
-
-.window:before,
-.window:after{
+.hero:after{
   content:"";
   position:absolute;
-  background:#294052;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3,10,18,.08),
+      transparent 22%,
+      transparent 70%,
+      rgba(3,10,18,.28)
+    );
 }
 
-.window:before{
-  width:8px;
-  height:100%;
-  left:47px;
-}
+/* БОНУСЫ */
 
-.window:after{
-  height:8px;
-  width:100%;
-  top:60px;
-}
-
-/* SIGN */
-
-.sign{
+.bonus-row{
   position:absolute;
-  left:17px;
+  top:12px;
+  left:12px;
+  right:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  z-index:40;
+}
+
+.bonus{
+  min-height:68px;
+  border-radius:16px;
+  border:2px solid #d9a229;
+  background:linear-gradient(#503913,#2e200d);
+  padding:8px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  text-align:left;
+  box-shadow:0 8px 16px rgba(0,0,0,.3);
+}
+
+.bonus-icon{
+  font-size:30px;
+}
+
+.bonus-title{
+  font-size:13px;
+  font-weight:900;
+}
+
+.bonus-sub{
+  display:block;
+  font-size:11px;
+  color:#f7da92;
+  font-weight:800;
+  margin-top:3px;
+}
+
+/* БОКОВЫЕ КНОПКИ */
+
+.side{
+  position:absolute;
+  right:9px;
+  top:188px;
+  z-index:42;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.side button{
+  width:68px;
+  height:72px;
+  border-radius:17px;
+  background:rgba(7,24,39,.96);
+  border:1px solid #31516d;
+  font-size:10px;
+  font-weight:900;
+  box-shadow:0 8px 16px rgba(0,0,0,.25);
+}
+
+.side button span{
+  display:block;
+  font-size:28px;
+  margin-bottom:4px;
+}
+
+/* КЛИК */
+
+.click-word{
+  position:absolute;
+  z-index:35;
   top:176px;
+  left:50%;
+  transform:translateX(-50%) rotate(-5deg);
+  font-size:24px;
+  font-weight:1000;
+  color:#fff;
+  -webkit-text-stroke:2px #111;
+  text-shadow:
+    0 3px 0 #111,
+    0 6px 12px rgba(0,0,0,.5);
+  pointer-events:none;
+  animation:clickIdle 1.7s ease-in-out infinite;
+}
 
-  width:116px;
-  height:178px;
+/* РОБОТ */
 
-  padding:13px 9px;
+.robot-sprite{
+  position:absolute;
+  z-index:30;
+  left:50%;
+  top:250px;
+  width:104px;
+  height:auto;
+  transform:translateX(-50%);
+  transform-origin:50% 86%;
+  pointer-events:none;
+
+  filter:
+    drop-shadow(0 8px 8px rgba(0,0,0,.35))
+    drop-shadow(0 0 10px rgba(30,205,255,.25));
+
+  animation:robotIdle 1.8s ease-in-out infinite;
+}
+
+.robot-sprite.hit{
+  animation:
+    robotHit
+    .3s
+    cubic-bezier(.2,.85,.3,1.25);
+}
+
+/* ОБЛАСТЬ КЛИКА */
+
+.tap-zone{
+  position:absolute;
+  z-index:29;
+  left:50%;
+  top:145px;
+  width:250px;
+  height:335px;
+  transform:translateX(-50%);
+  background:transparent;
+  border:0;
+  touch-action:none;
+}
+
+/* ===========================
+   РОБО-РУКИ
+   =========================== */
+
+.arm-rig{
+  position:absolute;
+  z-index:24;
+
+  /* Положение основания руки */
+  top:300px;
+
+  width:185px;
+  height:185px;
+
+  pointer-events:none;
+}
+
+.arm-rig.left{
+  left:-2px;
+}
+
+.arm-rig.right{
+  right:-2px;
+  transform:scaleX(-1);
+}
+
+/*
+Нижняя часть руки статичная.
+Верхняя часть является отдельным слоем.
+*/
+
+.arm-base,
+.arm-upper-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  pointer-events:none;
+}
+
+.arm-base{
+  z-index:1;
+
+  /* показываем только основание */
+  clip-path:inset(60% 0 0 0);
+}
+
+.arm-upper{
+  position:absolute;
+  inset:0;
+  z-index:2;
+
+  /*
+  Точка вращения находится возле
+  механического шарнира.
+  */
+
+  transform-origin:27% 64%;
+
+  animation:
+    upperArm
+    1.65s
+    ease-in-out
+    infinite;
+}
+
+.arm-upper-img{
+  /*
+  От верхнего слоя отрезаем основание,
+  чтобы оно не двигалось второй раз.
+  */
+
+  clip-path:inset(0 0 34% 0);
+}
+
+.arm-rig.right .arm-upper{
+  animation-delay:-.82s;
+}
+
+/* СВАРКА */
+
+.weld-spark{
+  position:absolute;
+
+  left:84%;
+  top:62%;
+
+  width:32px;
+  height:32px;
+
+  border-radius:50%;
+
+  opacity:.25;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff 0,
+      #fff2a8 15%,
+      #ffb01c 36%,
+      rgba(255,119,0,.25) 62%,
+      transparent 74%
+    );
+
+  filter:
+    drop-shadow(0 0 9px #ffad18);
+
+  animation:
+    weldFlash
+    .72s
+    steps(2)
+    infinite;
+}
+
+.arm-rig.right .weld-spark{
+  animation-delay:-.36s;
+}
+
+/* ===========================
+   КОРОБКИ НА ЛЕНТЕ
+   =========================== */
+
+/*
+Это отдельная линия движения коробок.
+Если потом понадобится поднять/опустить
+коробки, меняем ТОЛЬКО top здесь.
+*/
+
+.box-lane{
+  position:absolute;
+
+  left:0;
+  right:0;
+
+  /* положение коробок ровно по ленте */
+  top:500px;
+
+  height:54px;
+
+  z-index:26;
+
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.moving-box{
+  position:absolute;
+
+  left:-66px;
+  top:2px;
+
+  width:58px;
+  height:46px;
 
   border-radius:8px;
 
   background:
     linear-gradient(
-      #343f49,
-      #202a33
+      145deg,
+      #d99a4b,
+      #a96528
     );
 
-  border:5px solid #141d24;
+  border:3px solid #70461f;
 
-  transform:rotate(-2deg);
+  display:grid;
+  place-items:center;
+
+  font-size:21px;
 
   box-shadow:
-    0 10px 20px rgba(0,0,0,.3);
+    0 7px 12px rgba(0,0,0,.3);
 
-  color:#cbd6df;
-
-  font-size:12px;
-  font-weight:900;
-  line-height:1.25;
-  text-align:center;
+  animation:
+    boxMove
+    6.3s
+    linear
+    infinite;
 }
 
-.sign b{
-  display:block;
-  color:#fff;
-  font-size:23px;
-  line-height:.98;
-  margin-bottom:10px;
+.moving-box.b2{
+  animation-delay:-2.1s;
 }
 
-/* LAMP */
+.moving-box.b3{
+  animation-delay:-4.2s;
+}
 
-.lamp{
+/* УРОВЕНЬ */
+
+.level-card{
   position:absolute;
+  z-index:38;
 
   left:50%;
-  top:-15px;
-
-  width:7px;
-  height:145px;
-
-  background:#11171d;
+  top:532px;
 
   transform:translateX(-50%);
-  transform-origin:top center;
 
-  animation:
-    lampSwing
-    3.2s
-    ease-in-out
-    infinite;
-}
+  width:168px;
 
-.lamp:after{
-  content:"";
+  padding:9px 10px;
 
-  position:absolute;
+  border-radius:16px;
 
-  left:-46px;
-  bottom:-19px;
-
-  width:100px;
-  height:49px;
-
-  border-radius:
-    52% 52% 28% 28%;
-
-  background:
-    linear-gradient(
-      #3e4c58,
-      #1b2730
-    );
-
-  border:5px solid #11171d;
-}
-
-.lamp:before{
-  content:"";
-
-  position:absolute;
-
-  left:-15px;
-  bottom:-8px;
-
-  width:37px;
-  height:26px;
-
-  border-radius:50%;
-
-  background:#ffe68b;
-
-  box-shadow:
-    0 0 22px 9px rgba(255,191,67,.8),
-    0 35px 55px 19px rgba(255,154,35,.16);
-
-  animation:
-    lampGlow
-    1.7s
-    ease-in-out
-    infinite;
-}
-
-/* PIPES */
-
-.pipe{
-  position:absolute;
-  border-radius:30px;
-
-  box-shadow:
-    inset 0 4px 0 rgba(255,255,255,.12);
-
-  animation:
-    pipeShake
-    2.8s
-    ease-in-out
-    infinite;
-}
-
-.p1{
-  left:-38px;
-  top:314px;
-
-  width:228px;
-  height:30px;
-
-  background:#c98226;
-
-  border:
-    6px solid #754817;
-}
-
-.p2{
-  right:-42px;
-  top:370px;
-
-  width:195px;
-  height:31px;
-
-  background:#718596;
-
-  border:
-    6px solid #354759;
-
-  animation-delay:-.8s;
-}
-
-.p3{
-  left:102px;
-  top:248px;
-
-  width:108px;
-  height:23px;
-
-  background:#d78e2e;
-
-  border:
-    5px solid #754817;
-
-  transform:rotate(90deg);
-
-  animation-delay:-1.4s;
-}
-
-/* ARMS */
-
-.arm{
-  position:absolute;
-  top:382px;
-
-  width:118px;
-  height:112px;
-
-  z-index:3;
-
-  transform-origin:
-    26px 90px;
-
-  animation:
-    armMove
-    2.4s
-    ease-in-out
-    infinite;
-}
-
-.arm.left{
-  left:8px;
-}
-
-.arm.right{
-  right:9px;
-
-  transform:scaleX(-1);
-
-  transform-origin:
-    92px 90px;
-
-  animation-direction:reverse;
-  animation-duration:2.7s;
-}
-
-.armBase{
-  position:absolute;
-
-  left:3px;
-  bottom:0;
-
-  width:48px;
-  height:36px;
-
-  border-radius:10px;
-
-  background:
-    linear-gradient(
-      #ee9a2c,
-      #ae611e
-    );
-
-  border:
-    5px solid #6f4017;
-}
-
-.armSeg{
-  position:absolute;
-
-  left:36px;
-  bottom:29px;
-
-  width:20px;
-  height:79px;
-
-  border-radius:10px;
-
-  background:
-    linear-gradient(
-      #ffae3a,
-      #d77b20
-    );
-
-  border:
-    4px solid #814917;
-
-  transform:
-    rotate(-29deg);
-
-  transform-origin:
-    bottom center;
-}
-
-.armHead{
-  position:absolute;
-
-  left:81px;
-  top:0;
-
-  font-size:35px;
-
-  transform:
-    rotate(20deg);
-}
-
-.arm.right .armHead{
-  transform:
-    scaleX(-1)
-    rotate(20deg);
-}
-
-/* SPARKS */
-
-.spark{
-  position:absolute;
-
-  width:5px;
-  height:5px;
-
-  border-radius:50%;
-
-  background:#ffd65f;
-
-  box-shadow:
-    0 0 9px #ffad1f;
-
-  opacity:0;
-}
-
-.sp1{
-  left:159px;
-  top:374px;
-
-  animation:
-    spark
-    2.3s
-    infinite
-    .3s;
-}
-
-.sp2{
-  right:126px;
-  top:392px;
-
-  animation:
-    spark
-    2.7s
-    infinite
-    1.1s;
-}
-
-.sp3{
-  left:220px;
-  top:298px;
-
-  animation:
-    spark
-    3.1s
-    infinite
-    1.7s;
-}
-
-/* STEAM */
-
-.steam{
-  position:absolute;
-
-  width:25px;
-  height:25px;
-
-  border-radius:50%;
-
-  background:
-    rgba(236,246,252,.25);
-
-  filter:blur(1px);
-
-  opacity:0;
-}
-
-.st1{
-  left:119px;
-  top:305px;
-
-  animation:
-    steam
-    2.3s
-    ease-out
-    infinite;
-}
-
-.st2{
-  right:109px;
-  top:342px;
-
-  animation:
-    steam
-    2.8s
-    ease-out
-    infinite
-    .8s;
-}
-
-/* CONVEYOR */
-
-.conveyor{
-  position:absolute;
-
-  left:-28px;
-  right:-28px;
-  bottom:125px;
-
-  height:67px;
-
-  border-radius:18px;
-
-  background:#263640;
-
-  border:
-    7px solid #111a22;
-
-  overflow:hidden;
-}
-
-.belt{
-  position:absolute;
-
-  left:0;
-  right:0;
-  top:20px;
-
-  height:19px;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #0d151c 0 24px,
-      #40525e 24px 48px
-    );
-
-  background-size:
-    96px 19px;
-
-  animation:
-    beltMove
-    .82s
-    linear
-    infinite;
-}
-
-.roller{
-  position:absolute;
-
-  bottom:140px;
-
-  width:24px;
-  height:24px;
-
-  border-radius:50%;
-
-  background:#0a1218;
-
-  border:
-    5px solid #4e6575;
-
-  z-index:2;
-
-  animation:
-    spin
-    .72s
-    linear
-    infinite;
-}
-
-.r1{left:26px}
-.r2{left:104px}
-.r3{left:182px}
-.r4{left:260px}
-.r5{left:338px}
-
-/* BOXES */
-
-.box{
-  position:absolute;
-
-  bottom:166px;
-  left:-78px;
-
-  width:56px;
-  height:48px;
-
-  border-radius:6px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #d79e56,
-      #a7662e
-    );
-
-  border:
-    4px solid #70461f;
-
-  display:grid;
-  place-items:center;
-
-  font-size:18px;
-
-  z-index:4;
-
-  box-shadow:
-    0 8px 12px rgba(0,0,0,.25);
-
-  animation:
-    boxTravel
-    8.4s
-    linear
-    infinite;
-}
-
-.b2{
-  animation-delay:-2.8s;
-}
-
-.b3{
-  animation-delay:-5.6s;
-}
-
-/* MAIN MACHINE */
-
-.tapZone{
-  position:absolute;
-
-  left:50%;
-  top:48.5%;
-
-  transform:
-    translate(-50%,-50%);
-
-  width:248px;
-  height:333px;
-
-  z-index:12;
-
-  touch-action:none;
-}
-
-.machine{
-  position:absolute;
-
-  left:29px;
-  top:35px;
-
-  width:190px;
-  height:228px;
-
-  border-radius:
-    28px 28px 36px 36px;
-
-  border:
-    5px solid #111a22;
-
-  background:
-    linear-gradient(
-      90deg,
-      #263a4b 0 14%,
-      #576e81 14% 86%,
-      #293b49 86% 100%
-    );
-
-  box-shadow:
-    inset 0 0 0 3px rgba(255,255,255,.05),
-    0 18px 30px rgba(0,0,0,.45);
-
-  animation:
-    machineIdle
-    1.9s
-    ease-in-out
-    infinite;
-}
-
-.machineTop{
-  position:absolute;
-
-  left:29px;
-  top:-31px;
-
-  width:124px;
-  height:50px;
-
-  border-radius:
-    18px 18px 8px 8px;
-
-  background:
-    linear-gradient(
-      #6f8495,
-      #34495b
-    );
-
-  border:
-    5px solid #111a22;
-}
-
-.glow{
-  position:absolute;
-
-  left:22px;
-  right:22px;
-  top:29px;
-
-  height:106px;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #fff6b1 0,
-      #ffc42f 37%,
-      rgba(255,147,0,.28) 68%,
-      transparent 72%
-    );
-
-  filter:
-    drop-shadow(
-      0 0 23px #ffb62c
-    );
-
-  animation:
-    pulse
-    1.3s
-    ease-in-out
-    infinite;
-}
-
-.robot{
-  position:absolute;
-
-  left:35px;
-  right:35px;
-  bottom:27px;
-
-  height:76px;
-
-  border-radius:17px;
-
-  border:
-    3px solid #314a5f;
-
-  background:#101c25;
-
-  display:grid;
-  place-items:center;
-
-  font-size:38px;
-}
-
-.robot span{
-  display:inline-block;
-
-  animation:
-    robotBob
-    1.2s
-    ease-in-out
-    infinite;
-}
-
-.clickWord{
-  position:absolute;
-
-  z-index:4;
-
-  top:99px;
-  left:50%;
-
-  transform:
-    translateX(-50%)
-    rotate(-7deg);
-
-  font-size:35px;
-  font-weight:900;
-
-  text-shadow:
-    -2px -2px #111,
-    2px -2px #111,
-    -2px 2px #111,
-    2px 2px #111;
-}
-
-.hand{
-  position:absolute;
-
-  right:-5px;
-  bottom:16px;
-
-  font-size:55px;
-
-  z-index:5;
-
-  animation:
-    hand
-    1s
-    ease-in-out
-    infinite;
-}
-
-.levelBox{
-  position:absolute;
-
-  left:50%;
-  bottom:-51px;
-
-  transform:
-    translateX(-50%);
-
-  width:132px;
-
-  padding:7px;
-
-  border-radius:12px;
-
-  background:#15283a;
-
-  border:
-    2px solid #3c5a73;
+  background:rgba(7,26,42,.96);
+  border:2px solid #376482;
 
   text-align:center;
-
-  font-size:12px;
+  font-size:13px;
   font-weight:900;
+
+  box-shadow:0 8px 16px rgba(0,0,0,.28);
 }
 
 .xp{
-  height:8px;
-
-  background:#08121a;
-
-  border-radius:999px;
-
+  height:9px;
+  background:#07121b;
+  border-radius:99px;
   overflow:hidden;
-
-  margin-top:5px;
+  margin-top:6px;
 }
 
-#xpFill{
+.xp > div{
   height:100%;
-
   width:0;
 
   background:
     linear-gradient(
       90deg,
-      #7ee83f,
-      #1fd468
+      #77ed44,
+      #1ed46b
     );
 
-  transition:
-    width .25s;
+  transition:width .2s;
 }
 
-/* BONUS */
-
-.bonusRow{
-  position:absolute;
-
-  top:14px;
-  left:12px;
-  right:12px;
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:8px;
-
-  z-index:20;
-}
-
-.bonus{
-  min-height:68px;
-
-  border-radius:15px;
-
-  border:
-    2px solid #dda42d;
-
-  background:
-    linear-gradient(
-      #4a3819,
-      #2d2111
-    );
-
-  padding:8px;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:9px;
-
-  text-align:left;
-
-  box-shadow:
-    0 8px 16px rgba(0,0,0,.28);
-}
-
-.bonus:first-child{
-  animation:
-    bonusGlow
-    2.1s
-    ease-in-out
-    infinite;
-}
-
-.bonusIcon{
-  font-size:30px;
-}
-
-.bonusTitle{
-  font-size:13px;
-  font-weight:900;
-}
-
-.bonusSub{
-  font-size:11px;
-
-  color:#f7da92;
-
-  font-weight:800;
-
-  margin-top:3px;
-}
-
-/* SIDE */
-
-.side{
-  position:absolute;
-
-  right:9px;
-  top:188px;
-
-  z-index:21;
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:8px;
-}
-
-.side button{
-  width:62px;
-  height:66px;
-
-  border-radius:14px;
-
-  background:
-    rgba(8,25,40,.97);
-
-  border:
-    1px solid #31516d;
-
-  font-size:10px;
-
-  font-weight:900;
-
-  animation:
-    floatBtn
-    2.8s
-    ease-in-out
-    infinite;
-}
-
-.side button:nth-child(2){
-  animation-delay:-.6s;
-}
-
-.side button:nth-child(3){
-  animation-delay:-1.2s;
-}
-
-.side button span{
-  display:block;
-
-  font-size:27px;
-
-  margin-bottom:3px;
-}
-
-/* STATS */
+/* НИЖНИЕ КАРТОЧКИ */
 
 .stats{
   position:absolute;
+  z-index:39;
 
   left:7px;
   right:7px;
   bottom:9px;
 
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
+  grid-template-columns:repeat(3,1fr);
   gap:7px;
-
-  z-index:22;
 }
 
 .stat{
-  border:
-    1px solid #31516e;
+  min-width:0;
 
-  border-radius:15px;
+  border:1px solid #315b78;
 
-  background:
-    rgba(7,25,40,.97);
+  border-radius:16px;
 
-  padding:9px 6px;
+  background:rgba(6,24,39,.97);
+
+  padding:8px 6px;
 
   text-align:center;
+
+  box-shadow:
+    0 8px 16px rgba(0,0,0,.28);
 }
 
-.statTitle{
-  font-size:11px;
-
-  color:#dce6ef;
-
-  font-weight:800;
-
-  min-height:26px;
-}
-
-.statNumber{
-  font-size:18px;
-
+.stat-title{
+  font-size:10px;
   font-weight:900;
+  min-height:24px;
+}
 
-  color:#74ef7c;
-
-  margin:
-    5px 0 7px;
+.stat-value{
+  font-size:19px;
+  color:#5cf083;
+  font-weight:1000;
+  margin:5px 0 7px;
 }
 
 .buy{
   width:100%;
+  min-height:40px;
 
-  min-height:44px;
-
-  border-radius:10px;
+  border-radius:13px;
 
   background:
     linear-gradient(
-      #2ae16f,
-      #0fa147
+      #2bea72,
+      #0daf49
     );
-
-  font-size:12px;
 
   font-weight:900;
 
   box-shadow:
-    inset 0 -3px rgba(0,0,0,.18);
+    inset 0 -5px rgba(0,0,0,.12);
 }
 
-.buy:disabled,
-.upBtn:disabled,
-.claim:disabled{
-  opacity:.45;
-  filter:grayscale(1);
+.buy small{
+  display:block;
+  font-size:11px;
+  margin-top:2px;
 }
+
+/* ВЫЛЕТАЮЩИЙ ДОХОД */
 
 .floating{
   position:absolute;
+  z-index:80;
 
   left:50%;
-  top:113px;
+  top:270px;
 
-  z-index:40;
+  transform:translateX(-50%);
 
-  color:#ffd453;
+  font-size:25px;
+  font-weight:1000;
 
-  font-size:30px;
+  color:#70ff91;
 
-  font-weight:900;
+  text-shadow:0 2px 5px #000;
 
   pointer-events:none;
 
   animation:
-    fly
+    floatGain
     .7s
-    ease
+    ease-out
     forwards;
-
-  text-shadow:
-    0 2px 6px #000;
 }
 
-/* OTHER SCREENS */
+/* ===========================
+   ОСТАЛЬНЫЕ ЭКРАНЫ
+   =========================== */
 
 .title{
-  font-size:25px;
-  font-weight:900;
-
   display:flex;
   align-items:center;
+  gap:9px;
 
-  gap:10px;
+  font-size:23px;
+  font-weight:1000;
 
-  margin:
-    6px 0 14px;
+  margin:4px 0 12px;
 }
 
 .back{
-  width:42px;
-  height:42px;
+  width:40px;
+  height:40px;
 
   border-radius:13px;
 
-  background:#0c1d2d;
-
-  border:
-    1px solid #2d4d68;
-
-  font-size:22px;
+  background:#112b40;
+  border:1px solid #31516c;
 }
 
 .tabs{
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  background:#0b1a29;
-
-  padding:4px;
-
-  border-radius:14px;
-
-  margin-bottom:12px;
-}
-
-.tab{
-  padding:12px 4px;
-
-  border-radius:11px;
-
-  background:transparent;
-
-  color:#94a8bb;
-
-  font-weight:900;
-}
-
-.tab.active{
-  background:
-    linear-gradient(
-      #2499ff,
-      #1176d7
-    );
-
-  color:#fff;
-}
-
-/* UPGRADE CARDS */
-
-.upgrade{
-  display:grid;
-
-  grid-template-columns:
-    65px 1fr 108px;
-
-  gap:9px;
-
-  align-items:center;
-
-  background:
-    linear-gradient(
-      #14283e,
-      #0d1c2b
-    );
-
-  border:
-    1px solid #29455d;
-
-  border-radius:16px;
-
-  padding:10px;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
 
   margin-bottom:10px;
 }
 
-.upIcon{
-  width:65px;
-  height:65px;
+.tab{
+  padding:9px 5px;
 
-  border-radius:13px;
+  border-radius:12px;
 
-  display:grid;
+  background:#10283b;
 
-  place-items:center;
+  color:#9fb3c6;
 
-  background:#20384f;
-
-  font-size:35px;
-}
-
-.upName{
-  font-size:16px;
+  font-size:12px;
   font-weight:900;
 }
 
-.upMeta{
+.tab.active{
+  background:#106ba5;
+  color:#fff;
+}
+
+.upgrade,
+.panel,
+.shop-card{
+  display:grid;
+  grid-template-columns:52px 1fr auto;
+
+  gap:10px;
+
+  align-items:center;
+
+  background:#0b1f31;
+
+  border:1px solid #294b66;
+
+  border-radius:18px;
+
+  padding:11px;
+
+  margin-bottom:9px;
+}
+
+.up-icon{
+  width:48px;
+  height:48px;
+
+  border-radius:14px;
+
+  background:#17344b;
+
+  display:grid;
+  place-items:center;
+
+  font-size:26px;
+}
+
+.up-name,
+.panel-title{
+  font-weight:1000;
+}
+
+.up-meta,
+.panel-text{
   font-size:12px;
-
-  color:#a9bac9;
-
-  margin-top:4px;
+  color:#a8bac9;
+  margin-top:3px;
 }
 
 .gain{
-  font-size:13px;
-
-  color:#56ed81;
-
+  color:#5cec82;
+  font-size:12px;
   font-weight:900;
-
   margin-top:4px;
 }
 
-.upBtn{
-  min-height:54px;
+.up-btn,
+.claim{
+  min-width:94px;
+
+  padding:9px 8px;
 
   border-radius:12px;
 
   background:
     linear-gradient(
-      #2cdd71,
-      #0f9f48
+      #2bea72,
+      #0daf49
     );
-
-  font-size:13px;
-
-  font-weight:900;
-}
-
-.upBtn span{
-  display:block;
-
-  font-size:11px;
-
-  color:#fff3ae;
-
-  margin-top:3px;
-}
-
-/* MAP */
-
-.map{
-  position:relative;
-
-  height:680px;
-
-  overflow:hidden;
-
-  border-radius:22px;
-
-  border:
-    1px solid #294962;
-
-  background:
-    radial-gradient(
-      circle at 16% 15%,
-      rgba(97,183,79,.75),
-      transparent 26%
-    ),
-    linear-gradient(
-      180deg,
-      #297f98 0 23%,
-      #40986a 23% 41%,
-      #20789d 41% 54%,
-      #315171 54% 70%,
-      #111d32 70%
-    );
-}
-
-.island{
-  position:absolute;
-
-  width:255px;
-  height:148px;
-
-  border-radius:50%;
-
-  background:#67a650;
-
-  border:
-    11px solid #c8ac6f;
-
-  box-shadow:
-    0 14px #2f6c83;
-
-  animation:
-    islandFloat
-    4s
-    ease-in-out
-    infinite;
-}
-
-.i1{
-  top:47px;
-  left:-48px;
-
-  transform:
-    rotate(-7deg);
-}
-
-.i2{
-  top:273px;
-  right:-72px;
-
-  transform:
-    rotate(8deg);
-
-  animation-delay:-1.2s;
-}
-
-.i3{
-  top:505px;
-  left:-72px;
-
-  background:#354a5a;
-
-  border-color:#293641;
-
-  box-shadow:none;
-
-  animation-delay:-2.1s;
-}
-
-.garage{
-  position:absolute;
-
-  left:43px;
-  top:77px;
-
-  width:102px;
-  height:74px;
-
-  border-radius:8px;
-
-  background:
-    linear-gradient(
-      #596f80,
-      #2d4251
-    );
-
-  border:
-    6px solid #263640;
-}
-
-.garage:before{
-  content:"ГАРАЖ";
-
-  position:absolute;
-
-  left:17px;
-  top:14px;
 
   font-size:12px;
-
-  font-weight:900;
+  font-weight:1000;
 }
 
-.city{
-  position:absolute;
-
-  right:16px;
-  top:320px;
-
-  width:122px;
-  height:89px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #263b4b 0 20%,
-      #52697d 20% 37%,
-      #273d4f 37% 55%,
-      #64798d 55% 73%,
-      #273d4f 73%
-    );
-
-  border-bottom:
-    8px solid #1f2d38;
-}
-
-.port{
-  position:absolute;
-
-  left:28px;
-  top:476px;
-
-  font-size:76px;
-}
-
-.rocket{
-  position:absolute;
-
-  right:13px;
-  bottom:45px;
-
-  font-size:96px;
-
-  animation:
-    rocketFloat
-    2.7s
-    ease-in-out
-    infinite;
-}
-
-.route{
-  position:absolute;
-
-  left:50%;
-  top:112px;
-
-  width:6px;
-  height:458px;
-
-  background:
-    repeating-linear-gradient(
-      #fff 0 9px,
-      transparent 9px 19px
-    );
-
-  animation:
-    routeFlow
-    1s
-    linear
-    infinite;
-}
-
-.node{
-  position:absolute;
-
-  width:182px;
-
-  padding:11px;
-
-  border-radius:15px;
-
-  background:
-    rgba(5,17,29,.92);
-
-  border:
-    1px solid #446681;
-}
-
-.node b{
-  font-size:17px;
-
+.up-btn span{
   display:block;
-
-  margin-bottom:6px;
+  font-size:11px;
+  margin-top:2px;
 }
-
-.node div{
-  font-size:13px;
-
-  color:#becbd6;
-}
-
-.n1{
-  top:66px;
-  right:12px;
-}
-
-.n2{
-  top:286px;
-  left:12px;
-}
-
-.n3{
-  top:493px;
-  right:12px;
-}
-
-/* EVENTS */
 
 .panel{
-  background:
-    linear-gradient(
-      #14293f,
-      #0f1e2d
-    );
-
-  border:
-    1px solid #2a465e;
-
-  border-radius:16px;
-
-  padding:14px;
-
-  margin-bottom:10px;
+  display:block;
 }
 
-.panelTitle{
-  font-size:17px;
-  font-weight:900;
-}
-
-.panelText{
-  font-size:13px;
-
-  line-height:1.4;
-
-  color:#a9bac9;
-
-  margin-top:5px;
+.claim{
+  width:100%;
+  margin-top:10px;
 }
 
 .progress{
-  height:9px;
+  height:10px;
 
-  margin-top:10px;
+  background:#07131d;
 
-  background:#08121b;
-
-  border-radius:999px;
+  border-radius:99px;
 
   overflow:hidden;
+
+  margin:9px 0;
 }
 
-.progress div{
+.progress > div{
   height:100%;
-
   width:0;
 
   background:
     linear-gradient(
       90deg,
-      #1c9dfd,
-      #29d86e
+      #74e83f,
+      #1fd469
     );
 }
 
-.claim{
-  width:100%;
+/* КАРТА */
 
-  margin-top:10px;
+.map{
+  position:relative;
 
-  padding:11px;
+  min-height:620px;
 
-  border-radius:11px;
+  border-radius:24px;
+
+  overflow:hidden;
+
+  border:1px solid #31516d;
 
   background:
+    radial-gradient(
+      circle at 50% 85%,
+      #24496a 0 8%,
+      transparent 9%
+    ),
+    radial-gradient(
+      circle at 32% 64%,
+      #376e54 0 13%,
+      transparent 14%
+    ),
+    radial-gradient(
+      circle at 68% 38%,
+      #556f46 0 15%,
+      transparent 16%
+    ),
     linear-gradient(
-      #ffb843,
-      #d77b16
+      #102a42,
+      #07131f
     );
-
-  font-weight:900;
 }
 
-/* NAV */
+.route{
+  position:absolute;
+
+  left:49%;
+  top:86px;
+
+  width:7px;
+  height:430px;
+
+  background:
+    repeating-linear-gradient(
+      #ffd55b 0 8px,
+      transparent 8px 18px
+    );
+
+  transform:rotate(5deg);
+
+  opacity:.85;
+}
+
+.map-node{
+  position:absolute;
+
+  width:145px;
+
+  background:rgba(6,24,39,.94);
+
+  border:1px solid #315b78;
+
+  border-radius:16px;
+
+  padding:10px;
+
+  font-size:12px;
+}
+
+.map-node b{
+  font-size:14px;
+}
+
+.n1{
+  left:18px;
+  bottom:35px;
+}
+
+.n2{
+  right:18px;
+  top:240px;
+}
+
+.n3{
+  left:26px;
+  top:72px;
+}
+
+.map-icon{
+  position:absolute;
+  font-size:64px;
+
+  filter:
+    drop-shadow(
+      0 10px 10px rgba(0,0,0,.35)
+    );
+}
+
+.garage{
+  left:50px;
+  bottom:142px;
+}
+
+.city{
+  right:60px;
+  top:130px;
+}
+
+.rocket{
+  left:75px;
+  top:20px;
+
+  animation:
+    rocket
+    2s
+    ease-in-out
+    infinite;
+}
+
+/* МАГАЗИН */
+
+.shop-card{
+  grid-template-columns:58px 1fr auto;
+}
+
+.shop-card .up-btn{
+  min-width:82px;
+}
+
+/* НИЖНЕЕ МЕНЮ */
 
 .bottom{
   position:fixed;
+  z-index:100;
 
   left:50%;
   bottom:0;
 
-  transform:
-    translateX(-50%);
+  transform:translateX(-50%);
 
-  z-index:60;
-
-  width:100%;
-  max-width:460px;
+  width:min(100%,460px);
 
   height:
     calc(
-      72px
-      +
-      env(safe-area-inset-bottom)
+      74px + env(safe-area-inset-bottom)
     );
 
   padding-bottom:
     env(safe-area-inset-bottom);
 
   display:grid;
+  grid-template-columns:repeat(5,1fr);
 
-  grid-template-columns:
-    repeat(5,1fr);
+  background:
+    rgba(4,20,33,.98);
 
   border-top:
-    1px solid #2b455b;
+    1px solid #28506c;
 
-  background:#081421;
+  backdrop-filter:
+    blur(10px);
 }
 
 .nav{
   background:transparent;
 
-  color:#8ca0b4;
+  color:#8ea6ba;
 
-  font-size:9px;
-
+  font-size:10px;
   font-weight:900;
 }
 
 .nav span{
   display:block;
 
-  font-size:22px;
+  font-size:26px;
 
-  margin-bottom:3px;
+  margin-bottom:4px;
 }
 
 .nav.active{
@@ -1718,252 +984,212 @@ button{
 
   background:
     linear-gradient(
-      #0f609f,
-      #0a3152
+      #0f76b6,
+      #0a4e7b
     );
 
   box-shadow:
-    inset 0 3px 0 rgba(37,158,255,.55);
+    inset 0 3px #18bfff;
 }
 
-/* ANIMATION */
+/* TOAST */
 
-@keyframes pulse{
-  0%,100%{
-    transform:scale(.95)
-  }
+.toast{
+  position:fixed;
+  z-index:200;
 
+  left:50%;
+  bottom:92px;
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  max-width:380px;
+
+  width:
+    calc(100% - 32px);
+
+  padding:10px 14px;
+
+  border-radius:14px;
+
+  background:#10283b;
+
+  border:1px solid #31516c;
+
+  text-align:center;
+
+  font-size:13px;
+  font-weight:800;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+/* ===========================
+   АНИМАЦИИ
+   =========================== */
+
+@keyframes clickIdle{
   50%{
-    transform:scale(1.05)
-  }
-}
-
-@keyframes hand{
-  0%,100%{
-    transform:
-      rotate(-20deg)
-      translateY(0)
-  }
-
-  50%{
-    transform:
-      rotate(-20deg)
-      translateY(-8px)
-  }
-}
-
-@keyframes fly{
-  from{
-    opacity:1;
-
-    transform:
-      translate(-50%,10px)
-  }
-
-  to{
-    opacity:0;
-
-    transform:
-      translate(-50%,-72px)
-  }
-}
-
-@keyframes pipeShake{
-  0%,100%{
-    margin-top:0
-  }
-
-  50%{
-    margin-top:3px
-  }
-}
-
-@keyframes lampSwing{
-  0%,100%{
     transform:
       translateX(-50%)
       rotate(-3deg)
+      scale(1.05);
+  }
+}
+
+@keyframes robotIdle{
+  0%,
+  100%{
+    transform:
+      translateX(-50%)
+      translateY(0)
+      rotate(-1deg);
   }
 
   50%{
     transform:
       translateX(-50%)
-      rotate(3deg)
+      translateY(-6px)
+      rotate(1deg);
   }
 }
 
-@keyframes lampGlow{
-  0%,100%{
-    opacity:.75;
-    transform:scale(.94)
-  }
-
-  50%{
-    opacity:1;
-    transform:scale(1.06)
-  }
-}
-
-@keyframes armMove{
-  0%,100%{
-    transform:rotate(-5deg)
-  }
-
-  50%{
-    transform:rotate(12deg)
-  }
-}
-
-@keyframes spark{
-  0%,76%,100%{
-    opacity:0;
-    transform:translate(0,0)
-  }
-
-  82%{
-    opacity:1
-  }
-
-  92%{
-    opacity:.75;
-
-    transform:
-      translate(14px,-18px)
-  }
-}
-
-@keyframes steam{
+@keyframes robotHit{
   0%{
-    opacity:0;
-
     transform:
-      translateY(0)
-      scale(.6)
+      translateX(-50%)
+      scale(1);
   }
 
-  25%{
-    opacity:.55
+  32%{
+    transform:
+      translateX(-50%)
+      translateY(7px)
+      scale(.9);
+  }
+
+  68%{
+    transform:
+      translateX(-50%)
+      translateY(-17px)
+      scale(1.12);
+  }
+
+  100%{
+    transform:
+      translateX(-50%)
+      scale(1);
+  }
+}
+
+@keyframes upperArm{
+  0%,
+  100%{
+    transform:rotate(-3deg);
+  }
+
+  48%{
+    transform:rotate(6deg);
+  }
+
+  67%{
+    transform:rotate(10deg);
+  }
+}
+
+@keyframes weldFlash{
+  0%,
+  52%{
+    opacity:.1;
+    transform:scale(.6);
+  }
+
+  68%{
+    opacity:1;
+    transform:scale(1.35);
+  }
+
+  100%{
+    opacity:.2;
+    transform:scale(.8);
+  }
+}
+
+@keyframes boxMove{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(540px);
+  }
+}
+
+@keyframes floatGain{
+  0%{
+    opacity:1;
+
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(.9);
   }
 
   100%{
     opacity:0;
 
     transform:
-      translate(16px,-80px)
-      scale(1.8)
+      translateX(-50%)
+      translateY(-75px)
+      scale(1.16);
   }
 }
 
-@keyframes beltMove{
-  from{
-    background-position:
-      0 0
-  }
-
-  to{
-    background-position:
-      96px 0
-  }
-}
-
-@keyframes spin{
-  to{
-    transform:
-      rotate(360deg)
-  }
-}
-
-@keyframes boxTravel{
-  from{
-    left:-78px
-  }
-
-  to{
-    left:505px
-  }
-}
-
-@keyframes machineIdle{
-  0%,100%{
-    transform:
-      translateY(0)
-  }
-
+@keyframes rocket{
   50%{
-    transform:
-      translateY(-3px)
+    transform:translateY(-8px);
   }
 }
 
-@keyframes robotBob{
-  0%,100%{
-    transform:
-      translateY(0)
-      rotate(0)
+@media(max-width:380px){
+
+  .hero{
+    height:680px;
   }
 
-  50%{
-    transform:
-      translateY(-4px)
-      rotate(2deg)
-  }
-}
-
-@keyframes bonusGlow{
-  0%,100%{
-    box-shadow:
-      0 8px 16px rgba(0,0,0,.28),
-      0 0 0 rgba(255,196,43,0)
+  .side button{
+    width:62px;
   }
 
-  50%{
-    box-shadow:
-      0 8px 16px rgba(0,0,0,.28),
-      0 0 18px rgba(255,196,43,.25)
-  }
-}
-
-@keyframes floatBtn{
-  0%,100%{
-    transform:
-      translateY(0)
+  .arm-rig{
+    width:170px;
+    height:170px;
   }
 
-  50%{
-    transform:
-      translateY(-4px)
-  }
-}
-
-@keyframes islandFloat{
-  0%,100%{
-    margin-top:0
+  .stats{
+    gap:5px;
   }
 
-  50%{
-    margin-top:-4px
-  }
-}
-
-@keyframes routeFlow{
-  from{
-    background-position-y:0
+  .stat{
+    padding:7px 4px;
   }
 
-  to{
-    background-position-y:19px
-  }
-}
-
-@keyframes rocketFloat{
-  0%,100%{
-    transform:
-      translateY(0)
-  }
-
-  50%{
-    transform:
-      translateY(-7px)
+  .stat-value{
+    font-size:17px;
   }
 }
 </style>
@@ -1973,1608 +1199,1791 @@ button{
 
 <div class="app">
 
-<!-- FACTORY -->
+  <!-- =========================
+       ФАБРИКА
+       ========================= -->
 
-<section id="factoryScreen" class="screen active">
+  <section
+    id="factoryScreen"
+    class="screen active"
+  >
 
-<div class="topbar">
+    <div class="topbar">
 
-<button class="square">
-⚙️
-</button>
+      <button
+        class="square"
+        data-toast="Настройки появятся позже"
+      >
+        ⚙️
+      </button>
 
-<div class="wallet">
+      <div class="wallet">
 
-<div class="balance">
-⚙️
-<span id="coins">0</span>
+        <div class="balance">
+          ⚙️
+          <span id="coins">0</span>
+        </div>
+
+        <div class="rate">
+          +
+          <span id="topIncome">0</span>
+          /с
+        </div>
+
+      </div>
+
+      <button
+        class="gems"
+        data-go="shopScreen"
+      >
+        💎
+        <span id="gems">120</span>
+        <span class="plus">+</span>
+      </button>
+
+    </div>
+
+
+    <div
+      class="hero"
+      id="hero"
+    >
+
+      <!-- ЧИСТЫЙ ФОН -->
+
+      <img
+        class="factory-bg"
+        src="./assets/factory-clean.png.PNG?v=20"
+        alt=""
+      >
+
+
+      <!-- БОНУСЫ -->
+
+      <div class="bonus-row">
+
+        <button
+          class="bonus"
+          id="boostShortcut"
+        >
+
+          <span class="bonus-icon">
+            ⚡
+          </span>
+
+          <span>
+
+            <span class="bonus-title">
+              x2 ДОХОД
+            </span>
+
+            <span
+              class="bonus-sub"
+              id="boostShortcutText"
+            >
+              Активировать
+            </span>
+
+          </span>
+
+        </button>
+
+
+        <button
+          class="bonus"
+          data-go="eventsScreen"
+        >
+
+          <span class="bonus-icon">
+            🎁
+          </span>
+
+          <span>
+
+            <span class="bonus-title">
+              Ежедневный бонус
+            </span>
+
+            <span
+              class="bonus-sub"
+              id="dailyShortcutText"
+            >
+              Забрать
+            </span>
+
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- ПРАВОЕ МЕНЮ -->
+
+      <div class="side">
+
+        <button data-go="eventsScreen">
+          <span>📋</span>
+          Задания
+        </button>
+
+        <button data-go="eventsScreen">
+          <span>🏆</span>
+          Достижения
+        </button>
+
+        <button data-go="shopScreen">
+          <span>🛒</span>
+          Магазин
+        </button>
+
+      </div>
+
+
+      <!-- КЛИК -->
+
+      <div class="click-word">
+        КЛИК!
+      </div>
+
+
+      <!-- ПРОЗРАЧНАЯ ОБЛАСТЬ КЛИКА -->
+
+      <button
+        id="tapZone"
+        class="tap-zone"
+        aria-label="Произвести деталь"
+      ></button>
+
+
+      <!-- НАШ РОБОТ -->
+
+      <img
+        id="robotSprite"
+        class="robot-sprite"
+        src="./assets/robot.png.PNG?v=20"
+        alt="Робот RoboFactory"
+      >
+
+
+      <!-- ЛЕВАЯ РУКА -->
+
+      <div class="arm-rig left">
+
+        <img
+          class="arm-base"
+          src="./assets/arm.png.PNG?v=20"
+          alt=""
+        >
+
+        <div class="arm-upper">
+
+          <img
+            class="arm-upper-img"
+            src="./assets/arm.png.PNG?v=20"
+            alt=""
+          >
+
+          <span class="weld-spark"></span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ПРАВАЯ РУКА -->
+
+      <div class="arm-rig right">
+
+        <img
+          class="arm-base"
+          src="./assets/arm.png.PNG?v=20"
+          alt=""
+        >
+
+        <div class="arm-upper">
+
+          <img
+            class="arm-upper-img"
+            src="./assets/arm.png.PNG?v=20"
+            alt=""
+          >
+
+          <span class="weld-spark"></span>
+
+        </div>
+
+      </div>
+
+
+      <!-- КОРОБКИ -->
+
+      <div
+        class="box-lane"
+        aria-hidden="true"
+      >
+
+        <div class="moving-box b1">
+          ⚙️
+        </div>
+
+        <div class="moving-box b2">
+          ⚙️
+        </div>
+
+        <div class="moving-box b3">
+          ⚙️
+        </div>
+
+      </div>
+
+
+      <!-- УРОВЕНЬ -->
+
+      <div class="level-card">
+
+        УРОВЕНЬ
+        <span id="level">1</span>
+
+        <div class="xp">
+          <div id="xpFill"></div>
+        </div>
+
+      </div>
+
+
+      <!-- СТАТИСТИКА -->
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <div class="stat-title">
+            Доход с клика
+          </div>
+
+          <div class="stat-value">
+            +
+            <span id="perClick">1</span>
+          </div>
+
+          <button
+            class="buy"
+            data-buy="click"
+          >
+            Улучшить
+
+            <small>
+              ⚙️
+              <span data-cost="click">
+                10
+              </span>
+            </small>
+
+          </button>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-title">
+            Доход в секунду
+          </div>
+
+          <div class="stat-value">
+            +
+            <span id="passiveIncome">
+              0
+            </span>
+            /с
+          </div>
+
+          <button
+            class="buy"
+            data-buy="auto"
+          >
+            Улучшить
+
+            <small>
+              ⚙️
+              <span data-cost="auto">
+                25
+              </span>
+            </small>
+
+          </button>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-title">
+            Рабочие
+          </div>
+
+          <div class="stat-value">
+            <span id="workersCount">
+              0
+            </span>/10
+          </div>
+
+          <button
+            class="buy"
+            data-buy="worker"
+          >
+            Нанять
+
+            <small>
+              ⚙️
+              <span data-cost="worker">
+                50
+              </span>
+            </small>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       УЛУЧШЕНИЯ
+       ========================= -->
+
+  <section
+    id="upgradesScreen"
+    class="screen"
+  >
+
+    <div class="title">
+
+      <button
+        class="back"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      Улучшения
+
+    </div>
+
+
+    <div class="tabs">
+
+      <button class="tab active">
+        Производство
+      </button>
+
+      <button class="tab">
+        Рабочие
+      </button>
+
+      <button class="tab">
+        Особые
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        👆
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Клик
+        </div>
+
+        <div class="up-meta">
+          Уровень
+          <span data-level="click">
+            0
+          </span>
+        </div>
+
+        <div class="gain">
+          +1 за клик
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        data-buy="click"
+      >
+        Улучшить
+
+        <span>
+          ⚙️
+          <span data-cost="click">
+            10
+          </span>
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        🤖
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Авто-робот
+        </div>
+
+        <div class="up-meta">
+          Уровень
+          <span data-level="auto">
+            0
+          </span>
+        </div>
+
+        <div class="gain">
+          +1/с
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        data-buy="auto"
+      >
+        Улучшить
+
+        <span>
+          ⚙️
+          <span data-cost="auto">
+            25
+          </span>
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        👷
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Рабочие
+        </div>
+
+        <div class="up-meta">
+          <span data-level="worker">
+            0
+          </span>/10
+        </div>
+
+        <div class="gain">
+          +2/с каждый
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        data-buy="worker"
+      >
+        Нанять
+
+        <span>
+          ⚙️
+          <span data-cost="worker">
+            50
+          </span>
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        📦
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Конвейер
+        </div>
+
+        <div class="up-meta">
+          Уровень
+          <span data-level="conveyor">
+            0
+          </span>
+          · нужен ур. 3
+        </div>
+
+        <div class="gain">
+          +5/с
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        data-buy="conveyor"
+      >
+        Улучшить
+
+        <span>
+          ⚙️
+          <span data-cost="conveyor">
+            800
+          </span>
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        🦾
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Роборука
+        </div>
+
+        <div class="up-meta">
+          Уровень
+          <span data-level="arm">
+            0
+          </span>
+          · нужен ур. 5
+        </div>
+
+        <div class="gain">
+          +25/с
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        data-buy="arm"
+      >
+        Улучшить
+
+        <span>
+          ⚙️
+          <span data-cost="arm">
+            3K
+          </span>
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        🏭
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Фабрика
+        </div>
+
+        <div class="up-meta">
+          Уровень
+          <span data-level="factory">
+            0
+          </span>
+          · нужен ур. 8
+        </div>
+
+        <div class="gain">
+          +100/с
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        data-buy="factory"
+      >
+        Улучшить
+
+        <span>
+          ⚙️
+          <span data-cost="factory">
+            12K
+          </span>
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        🏗️
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Новый цех
+        </div>
+
+        <div class="up-meta">
+          Открывает новый вид продукции
+        </div>
+
+        <div class="gain">
+          Скоро
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        disabled
+      >
+        Открыть
+        <span>⚙️ 1M</span>
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        🏚️
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Склад
+        </div>
+
+        <div class="up-meta">
+          Увеличивает вместимость
+        </div>
+
+        <div class="gain">
+          Скоро
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        disabled
+      >
+        Улучшить
+        <span>⚙️ 75K</span>
+      </button>
+
+    </div>
+
+
+    <div class="upgrade">
+
+      <div class="up-icon">
+        🚚
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Грузовик
+        </div>
+
+        <div class="up-meta">
+          Ускоряет доставку
+        </div>
+
+        <div class="gain">
+          Скоро
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        disabled
+      >
+        Открыть
+        <span>⚙️ 500K</span>
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       КАРТА
+       ========================= -->
+
+  <section
+    id="mapScreen"
+    class="screen"
+  >
+
+    <div class="title">
+
+      <button
+        class="back"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      Карта
+
+    </div>
+
+
+    <div class="map">
+
+      <div class="route"></div>
+
+      <div class="map-icon rocket">
+        🚀
+      </div>
+
+      <div class="map-icon city">
+        🏙️
+      </div>
+
+      <div class="map-icon garage">
+        🏭
+      </div>
+
+
+      <div class="map-node n3">
+
+        <b>
+          3. Космопорт
+        </b>
+
+        <div>
+          🔒 Требуется 50M
+        </div>
+
+      </div>
+
+
+      <div class="map-node n2">
+
+        <b>
+          2. Город
+        </b>
+
+        <div>
+          🔒 Требуется 5.0M
+        </div>
+
+      </div>
+
+
+      <div class="map-node n1">
+
+        <b>
+          1. Гараж
+        </b>
+
+        <div>
+          ✅ Текущая локация
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       СОБЫТИЯ
+       ========================= -->
+
+  <section
+    id="eventsScreen"
+    class="screen"
+  >
+
+    <div class="title">
+
+      <button
+        class="back"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      События и задания
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-title">
+        👆 Рабочая смена
+      </div>
+
+      <div class="panel-text">
+        Сделай 100 кликов.
+      </div>
+
+      <div class="progress">
+        <div id="taskClicksFill"></div>
+      </div>
+
+      <div class="panel-text">
+        <span id="taskClicksText">
+          0
+        </span>/100 · 500 ⚙️
+      </div>
+
+      <button
+        id="taskClicksButton"
+        class="claim"
+      >
+        Забрать награду
+      </button>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-title">
+        🤖 Автоматизация
+      </div>
+
+      <div class="panel-text">
+        Купи 3 авто-робота.
+      </div>
+
+      <div class="progress">
+        <div id="taskAutoFill"></div>
+      </div>
+
+      <div class="panel-text">
+        <span id="taskAutoText">
+          0
+        </span>/3 · 1000 ⚙️
+      </div>
+
+      <button
+        id="taskAutoButton"
+        class="claim"
+      >
+        Забрать награду
+      </button>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-title">
+        🏆 Опытный инженер
+      </div>
+
+      <div class="panel-text">
+        Достигни 5 уровня.
+      </div>
+
+      <div class="progress">
+        <div id="taskLevelFill"></div>
+      </div>
+
+      <div class="panel-text">
+        Уровень
+        <span id="taskLevelText">
+          1
+        </span>/5 · 2500 ⚙️
+      </div>
+
+      <button
+        id="taskLevelButton"
+        class="claim"
+      >
+        Забрать награду
+      </button>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-title">
+        🎁 Ежедневный бонус
+      </div>
+
+      <div class="panel-text">
+        Серия:
+        <b>
+          <span id="streak">
+            0
+          </span>
+          дней
+        </b>
+
+        <br>
+        <br>
+
+        Следующая награда:
+        <span id="dailyRewardAmount">
+          500
+        </span>
+        ⚙️
+      </div>
+
+      <button
+        id="dailyButton"
+        class="claim"
+      >
+        Забрать бонус
+      </button>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-title">
+        ⚡ Энергобуст x2
+      </div>
+
+      <div class="panel-text">
+        Удваивает весь доход на 5 минут.
+      </div>
+
+      <button
+        id="boostButton"
+        class="claim"
+      >
+        Активировать x2
+      </button>
+
+      <div
+        id="boostStatus"
+        class="panel-text"
+      >
+        Доступен сегодня
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       МАГАЗИН
+       ========================= -->
+
+  <section
+    id="shopScreen"
+    class="screen"
+  >
+
+    <div class="title">
+
+      <button
+        class="back"
+        data-go="factoryScreen"
+      >
+        ←
+      </button>
+
+      Магазин
+
+    </div>
+
+
+    <div class="shop-card">
+
+      <div class="up-icon">
+        💎
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Алмазы
+        </div>
+
+        <div class="up-meta">
+          Премиальная валюта RoboFactory
+        </div>
+
+        <div class="gain">
+          Баланс:
+          <span id="shopGems">
+            120
+          </span>
+          💎
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        disabled
+      >
+        Скоро
+      </button>
+
+    </div>
+
+
+    <div class="shop-card">
+
+      <div class="up-icon">
+        🎨
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Скины робота
+        </div>
+
+        <div class="up-meta">
+          Новые корпуса и подсветка
+        </div>
+
+        <div class="gain">
+          Скоро
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        disabled
+      >
+        Открыть
+      </button>
+
+    </div>
+
+
+    <div class="shop-card">
+
+      <div class="up-icon">
+        🚀
+      </div>
+
+      <div>
+
+        <div class="up-name">
+          Ускорители
+        </div>
+
+        <div class="up-meta">
+          Временные производственные бонусы
+        </div>
+
+        <div class="gain">
+          Скоро
+        </div>
+
+      </div>
+
+      <button
+        class="up-btn"
+        disabled
+      >
+        Открыть
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- НИЖНЕЕ МЕНЮ -->
+
+  <nav class="bottom">
+
+    <button
+      class="nav active"
+      data-screen="factoryScreen"
+    >
+      <span>🏭</span>
+      Фабрика
+    </button>
+
+    <button
+      class="nav"
+      data-screen="upgradesScreen"
+    >
+      <span>🛠️</span>
+      Улучшения
+    </button>
+
+    <button
+      class="nav"
+      data-screen="mapScreen"
+    >
+      <span>🗺️</span>
+      Карта
+    </button>
+
+    <button
+      class="nav"
+      data-screen="eventsScreen"
+    >
+      <span>⭐</span>
+      События
+    </button>
+
+    <button
+      class="nav"
+      data-screen="shopScreen"
+    >
+      <span>🛒</span>
+      Магазин
+    </button>
+
+  </nav>
+
 </div>
 
-<div class="rate">
-+
-<span id="topIncome">0</span>
-/с
-</div>
-
-</div>
-
-<div class="gems">
-
-💎
-
-<span id="gems">
-120
-</span>
-
-<div class="plus">
-+
-</div>
-
-</div>
-
-</div>
-
-<div class="hero">
-
-<div class="scene">
-
-<div class="grid"></div>
-
-<div class="window"></div>
-
-<div class="sign">
-
-<b>
-ROBO<br>
-FACTORY
-</b>
-
-БОЛЬШИЕ<br>
-ИДЕИ<br>
-НАЧИНАЮТСЯ<br>
-ЗДЕСЬ
-
-</div>
-
-<div class="lamp"></div>
-
-<div class="pipe p1"></div>
-<div class="pipe p2"></div>
-<div class="pipe p3"></div>
-
-<div class="arm left">
-
-<div class="armBase"></div>
-
-<div class="armSeg"></div>
-
-<div class="armHead">
-🦾
-</div>
-
-</div>
-
-<div class="arm right">
-
-<div class="armBase"></div>
-
-<div class="armSeg"></div>
-
-<div class="armHead">
-🦾
-</div>
-
-</div>
-
-<div class="spark sp1"></div>
-<div class="spark sp2"></div>
-<div class="spark sp3"></div>
-
-<div class="steam st1"></div>
-<div class="steam st2"></div>
-
-<div class="conveyor">
-
-<div class="belt"></div>
-
-</div>
-
-<div class="roller r1"></div>
-<div class="roller r2"></div>
-<div class="roller r3"></div>
-<div class="roller r4"></div>
-<div class="roller r5"></div>
-
-<div class="box b1">
-🤖
-</div>
-
-<div class="box b2">
-🤖
-</div>
-
-<div class="box b3">
-🤖
-</div>
-
-</div>
-
-<div class="bonusRow">
-
-<button
-id="boostShortcut"
-class="bonus"
->
-
-<div class="bonusIcon">
-⚡
-</div>
-
-<div>
-
-<div class="bonusTitle">
-x2 ДОХОД
-</div>
 
 <div
-id="boostShortcutText"
-class="bonusSub"
->
-Активировать
-</div>
+  id="toast"
+  class="toast"
+></div>
 
-</div>
-
-</button>
-
-<button
-class="bonus"
-data-go="eventsScreen"
->
-
-<div class="bonusIcon">
-🎁
-</div>
-
-<div>
-
-<div class="bonusTitle">
-Ежедневный бонус
-</div>
-
-<div
-id="dailyShortcutText"
-class="bonusSub"
->
-Забрать
-</div>
-
-</div>
-
-</button>
-
-</div>
-
-<div class="side">
-
-<button data-go="eventsScreen">
-<span>📋</span>
-Задания
-</button>
-
-<button data-go="eventsScreen">
-<span>🏆</span>
-Достижения
-</button>
-
-<button data-go="shopScreen">
-<span>🛒</span>
-Магазин
-</button>
-
-</div>
-
-<div
-id="tapZone"
-class="tapZone"
->
-
-<div class="machine">
-
-<div class="machineTop"></div>
-
-<div class="glow"></div>
-
-<div class="clickWord">
-КЛИК!
-</div>
-
-<div class="robot">
-<span>
-🤖
-</span>
-</div>
-
-<div class="hand">
-👆
-</div>
-
-<div class="levelBox">
-
-УРОВЕНЬ
-
-<span id="level">
-1
-</span>
-
-<div class="xp">
-
-<div id="xpFill"></div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-
-<div class="statTitle">
-Доход с клика
-</div>
-
-<div class="statNumber">
-
-+
-<span id="perClick">
-1
-</span>
-
-</div>
-
-<button
-id="clickUpgradeButton"
-class="buy"
->
-
-Улучшить
-
-<br>
-
-⚙️
-
-<span id="clickCost">
-10
-</span>
-
-</button>
-
-</div>
-
-<div class="stat">
-
-<div class="statTitle">
-Доход в секунду
-</div>
-
-<div class="statNumber">
-
-+
-<span id="passiveIncome">
-0
-</span>
-
-/с
-
-</div>
-
-<button
-id="autoButton"
-class="buy"
->
-
-Улучшить
-
-<br>
-
-⚙️
-
-<span id="autoCost">
-25
-</span>
-
-</button>
-
-</div>
-
-<div class="stat">
-
-<div class="statTitle">
-Рабочие
-</div>
-
-<div class="statNumber">
-
-<span id="workersCount">
-0
-</span>
-
-/10
-
-</div>
-
-<button
-id="workerHireButton"
-class="buy"
->
-
-Нанять
-
-<br>
-
-⚙️
-
-<span id="workerCost">
-50
-</span>
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- UPGRADES -->
-
-<section
-id="upgradesScreen"
-class="screen"
->
-
-<div class="title">
-
-<button
-class="back"
-data-go="factoryScreen"
->
-←
-</button>
-
-Улучшения
-
-</div>
-
-<div class="tabs">
-
-<button class="tab active">
-Производство
-</button>
-
-<button class="tab">
-Рабочие
-</button>
-
-<button class="tab">
-Особые
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-📦
-</div>
-
-<div>
-
-<div class="upName">
-Конвейер
-</div>
-
-<div class="upMeta">
-
-Ур.
-
-<span id="conveyorLevel">
-0
-</span>
-
-</div>
-
-<div class="gain">
-+5/с
-</div>
-
-</div>
-
-<button
-id="conveyorButton"
-class="upBtn"
->
-
-Улучшить
-
-<span>
-
-⚙️
-
-<span id="conveyorCost">
-800
-</span>
-
-</span>
-
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-🏭
-</div>
-
-<div>
-
-<div class="upName">
-Сборочный цех
-</div>
-
-<div class="upMeta">
-
-Ур.
-
-<span id="factoryLevel">
-0
-</span>
-
-</div>
-
-<div class="gain">
-+100/с
-</div>
-
-</div>
-
-<button
-id="factoryButton"
-class="upBtn"
->
-
-Улучшить
-
-<span>
-
-⚙️
-
-<span id="factoryCost">
-12000
-</span>
-
-</span>
-
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-🦾
-</div>
-
-<div>
-
-<div class="upName">
-Роборука
-</div>
-
-<div class="upMeta">
-
-Ур.
-
-<span id="armLevel">
-0
-</span>
-
-</div>
-
-<div class="gain">
-+25/с
-</div>
-
-</div>
-
-<button
-id="armButton"
-class="upBtn"
->
-
-Улучшить
-
-<span>
-
-⚙️
-
-<span id="armCost">
-3000
-</span>
-
-</span>
-
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-🏗️
-</div>
-
-<div>
-
-<div class="upName">
-Новый цех
-</div>
-
-<div class="upMeta">
-Открывает новый вид продукции
-</div>
-
-<div class="gain">
-Скоро
-</div>
-
-</div>
-
-<button
-class="upBtn"
-disabled
->
-
-Открыть
-
-<span>
-⚙️ 1M
-</span>
-
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-🏚️
-</div>
-
-<div>
-
-<div class="upName">
-Склад
-</div>
-
-<div class="upMeta">
-Увеличивает вместимость
-</div>
-
-<div class="gain">
-Скоро
-</div>
-
-</div>
-
-<button
-class="upBtn"
-disabled
->
-
-Улучшить
-
-<span>
-⚙️ 75K
-</span>
-
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-🚚
-</div>
-
-<div>
-
-<div class="upName">
-Грузовик
-</div>
-
-<div class="upMeta">
-Ускоряет доставку
-</div>
-
-<div class="gain">
-Скоро
-</div>
-
-</div>
-
-<button
-class="upBtn"
-disabled
->
-
-Открыть
-
-<span>
-⚙️ 500K
-</span>
-
-</button>
-
-</div>
-
-</section>
-
-<!-- MAP -->
-
-<section
-id="mapScreen"
-class="screen"
->
-
-<div class="title">
-
-<button
-class="back"
-data-go="factoryScreen"
->
-←
-</button>
-
-Карта
-
-</div>
-
-<div class="map">
-
-<div class="island i1"></div>
-
-<div class="island i2"></div>
-
-<div class="island i3"></div>
-
-<div class="garage"></div>
-
-<div class="city"></div>
-
-<div class="port">
-🏗️
-</div>
-
-<div class="rocket">
-🚀
-</div>
-
-<div class="route"></div>
-
-<div class="node n1">
-
-<b>
-1. Гараж
-</b>
-
-<div>
-✅ Текущая локация
-</div>
-
-</div>
-
-<div class="node n2">
-
-<b>
-2. Город
-</b>
-
-<div>
-🔒 Требуется 5.0M
-</div>
-
-</div>
-
-<div class="node n3">
-
-<b>
-3. Порт
-</b>
-
-<div>
-🔒 Требуется 50M
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- EVENTS -->
-
-<section
-id="eventsScreen"
-class="screen"
->
-
-<div class="title">
-
-<button
-class="back"
-data-go="factoryScreen"
->
-←
-</button>
-
-События
-
-</div>
-
-<div class="panel">
-
-<div class="panelTitle">
-👆 Рабочая смена
-</div>
-
-<div class="panelText">
-Сделай 100 кликов.
-</div>
-
-<div class="progress">
-
-<div id="taskClicksFill"></div>
-
-</div>
-
-<div class="panelText">
-
-<span id="taskClicksText">
-0
-</span>
-
-/100 · 500 ⚙️
-
-</div>
-
-<button
-id="taskClicksButton"
-class="claim"
->
-
-Забрать награду
-
-</button>
-
-</div>
-
-<div class="panel">
-
-<div class="panelTitle">
-🤖 Автоматизация
-</div>
-
-<div class="panelText">
-Купи 3 авто-робота.
-</div>
-
-<div class="progress">
-
-<div id="taskAutoFill"></div>
-
-</div>
-
-<div class="panelText">
-
-<span id="taskAutoText">
-0
-</span>
-
-/3 · 1000 ⚙️
-
-</div>
-
-<button
-id="taskAutoButton"
-class="claim"
->
-
-Забрать награду
-
-</button>
-
-</div>
-
-<div class="panel">
-
-<div class="panelTitle">
-🏆 Опытный инженер
-</div>
-
-<div class="panelText">
-Достигни 5 уровня.
-</div>
-
-<div class="progress">
-
-<div id="taskLevelFill"></div>
-
-</div>
-
-<div class="panelText">
-
-Уровень
-
-<span id="taskLevelText">
-1
-</span>
-
-/5 · 2500 ⚙️
-
-</div>
-
-<button
-id="taskLevelButton"
-class="claim"
->
-
-Забрать награду
-
-</button>
-
-</div>
-
-<div class="panel">
-
-<div class="panelTitle">
-🎁 Ежедневный бонус
-</div>
-
-<div class="panelText">
-
-Серия:
-
-<b>
-
-<span id="streak">
-0
-</span>
-
-дней
-
-</b>
-
-<br><br>
-
-Следующая награда:
-
-<span id="dailyRewardAmount">
-500
-</span>
-
-⚙️
-
-</div>
-
-<button
-id="dailyButton"
-class="claim"
->
-
-Забрать бонус
-
-</button>
-
-</div>
-
-<div class="panel">
-
-<div class="panelTitle">
-⚡ Энергобуст x2
-</div>
-
-<div class="panelText">
-Удваивает доход на 5 минут.
-</div>
-
-<button
-id="boostButton"
-class="claim"
->
-
-Активировать x2
-
-</button>
-
-<div
-id="boostStatus"
-class="panelText"
->
-Доступен сегодня
-</div>
-
-</div>
-
-</section>
-
-<!-- SHOP -->
-
-<section
-id="shopScreen"
-class="screen"
->
-
-<div class="title">
-
-<button
-class="back"
-data-go="factoryScreen"
->
-←
-</button>
-
-Магазин
-
-</div>
-
-<div class="panel">
-
-<div class="panelTitle">
-💎 Алмазы
-</div>
-
-<div class="panelText">
-Позже здесь будут Telegram Stars.
-</div>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-💎
-</div>
-
-<div>
-
-<div class="upName">
-Набор алмазов
-</div>
-
-<div class="upMeta">
-500 💎
-</div>
-
-</div>
-
-<button
-class="upBtn"
-disabled
->
-Скоро
-</button>
-
-</div>
-
-<div class="upgrade">
-
-<div class="upIcon">
-⚙️
-</div>
-
-<div>
-
-<div class="upName">
-Ящик деталей
-</div>
-
-<div class="upMeta">
-50 000 ⚙️
-</div>
-
-</div>
-
-<button
-class="upBtn"
-disabled
->
-Скоро
-</button>
-
-</div>
-
-</section>
-
-<!-- NAV -->
-
-<nav class="bottom">
-
-<button
-class="nav active"
-data-screen="factoryScreen"
->
-
-<span>
-🏭
-</span>
-
-Фабрика
-
-</button>
-
-<button
-class="nav"
-data-screen="upgradesScreen"
->
-
-<span>
-🛠️
-</span>
-
-Улучшения
-
-</button>
-
-<button
-class="nav"
-data-screen="mapScreen"
->
-
-<span>
-🗺️
-</span>
-
-Карта
-
-</button>
-
-<button
-class="nav"
-data-screen="eventsScreen"
->
-
-<span>
-⭐
-</span>
-
-События
-
-</button>
-
-<button
-class="nav"
-data-screen="shopScreen"
->
-
-<span>
-🛒
-</span>
-
-Магазин
-
-</button>
-
-</nav>
-
-</div>
 
 <script>
-document.addEventListener(
-  "dblclick",
-  event => event.preventDefault(),
-  {passive:false}
-);
+(() => {
 
-document.addEventListener(
-  "gesturestart",
-  event => event.preventDefault(),
-  {passive:false}
-);
+  "use strict";
 
-document.addEventListener(
-  "gesturechange",
-  event => event.preventDefault(),
-  {passive:false}
-);
 
-document.addEventListener(
-  "gestureend",
-  event => event.preventDefault(),
-  {passive:false}
-);
+  /* Убираем двойной зум на iPhone */
 
-const $ = id =>
-  document.getElementById(id);
+  [
+    "dblclick",
+    "gesturestart",
+    "gesturechange",
+    "gestureend"
+  ].forEach(type => {
 
-function numberValue(
-  key,
-  fallback
-){
-  const raw =
-    localStorage.getItem(key);
-
-  if(
-    raw === null
-  ){
-    return fallback;
-  }
-
-  const value =
-    Number(raw);
-
-  return Number.isFinite(value)
-    ?
-    value
-    :
-    fallback;
-}
-
-let coins =
-  numberValue(
-    "coins",
-    0
-  );
-
-let perClick =
-  numberValue(
-    "perClick",
-    1
-  );
-
-let level =
-  numberValue(
-    "level",
-    1
-  );
-
-let xp =
-  numberValue(
-    "xp",
-    0
-  );
-
-let xpNeed =
-  numberValue(
-    "xpNeed",
-    100
-  );
-
-let totalClicks =
-  numberValue(
-    "totalClicks",
-    0
-  );
-
-let clickLevel =
-  numberValue(
-    "clickLevel",
-    0
-  );
-
-let clickCost =
-  numberValue(
-    "upgradeCost",
-    10
-  );
-
-let autoLevel =
-  numberValue(
-    "autoLevel",
-    numberValue(
-      "passiveIncome",
-      0
-    )
-  );
-
-let autoCost =
-  numberValue(
-    "passiveCost",
-    25
-  );
-
-let conveyorLevel =
-  numberValue(
-    "conveyorLevel",
-    0
-  );
-
-let conveyorCost =
-  numberValue(
-    "conveyorCost",
-    800
-  );
-
-let armLevel =
-  numberValue(
-    "armLevel",
-    0
-  );
-
-let armCost =
-  numberValue(
-    "armCost",
-    3000
-  );
-
-let factoryLevel =
-  numberValue(
-    "factoryLevel",
-    0
-  );
-
-let factoryCost =
-  numberValue(
-    "factoryCost",
-    12000
-  );
-
-let workers =
-  numberValue(
-    "workers",
-    0
-  );
-
-let workerCost =
-  numberValue(
-    "workerCost",
-    50
-  );
-
-let gems =
-  numberValue(
-    "gems",
-    120
-  );
-
-let taskClicksClaimed =
-  localStorage.getItem(
-    "taskClicksClaimed"
-  ) === "true";
-
-let taskAutoClaimed =
-  localStorage.getItem(
-    "taskAutoClaimed"
-  ) === "true";
-
-let taskLevelClaimed =
-  localStorage.getItem(
-    "taskLevelClaimed"
-  ) === "true";
-
-let streak =
-  numberValue(
-    "dailyStreak",
-    0
-  );
-
-let lastDailyDate =
-  localStorage.getItem(
-    "lastDailyDate"
-  )
-  ||
-  "";
-
-let lastBoostDate =
-  localStorage.getItem(
-    "lastBoostDate"
-  )
-  ||
-  "";
-
-let boostEnd =
-  numberValue(
-    "boostEnd",
-    0
-  );
-
-function dateKey(
-  offset = 0
-){
-  const d =
-    new Date();
-
-  d.setDate(
-    d.getDate()
-    +
-    offset
-  );
-
-  return (
-    d.getFullYear()
-    +
-    "-"
-    +
-    String(
-      d.getMonth()
-      +
-      1
-    ).padStart(
-      2,
-      "0"
-    )
-    +
-    "-"
-    +
-    String(
-      d.getDate()
-    ).padStart(
-      2,
-      "0"
-    )
-  );
-}
-
-function compact(
-  value
-){
-  value =
-    Math.floor(value);
-
-  if(
-    value >=
-    1000000000
-  ){
-    return (
-      value
-      /
-      1000000000
-    )
-    .toFixed(1)
-    .replace(
-      ".0",
-      ""
-    )
-    +
-    "B";
-  }
-
-  if(
-    value >=
-    1000000
-  ){
-    return (
-      value
-      /
-      1000000
-    )
-    .toFixed(1)
-    .replace(
-      ".0",
-      ""
-    )
-    +
-    "M";
-  }
-
-  if(
-    value >=
-    1000
-  ){
-    return (
-      value
-      /
-      1000
-    )
-    .toFixed(1)
-    .replace(
-      ".0",
-      ""
-    )
-    +
-    "K";
-  }
-
-  return String(value);
-}
-
-function boostActive(){
-  return (
-    Date.now()
-    <
-    boostEnd
-  );
-}
-
-function multiplier(){
-  return boostActive()
-    ?
-    2
-    :
-    1;
-}
-
-function passiveIncome(){
-  return (
-    autoLevel
-    +
-    workers * 2
-    +
-    conveyorLevel * 5
-    +
-    armLevel * 25
-    +
-    factoryLevel * 100
-  );
-}
-
-function checkLevel(){
-  while(
-    xp >= xpNeed
-  ){
-    xp -= xpNeed;
-
-    level += 1;
-
-    xpNeed =
-      Math.floor(
-        xpNeed
-        *
-        1.35
-      );
-
-    perClick += 1;
-  }
-}
-
-function save(){
-  const data = {
-    coins,
-    perClick,
-    level,
-    xp,
-    xpNeed,
-    totalClicks,
-    clickLevel,
-    upgradeCost:clickCost,
-    autoLevel,
-    passiveCost:autoCost,
-    conveyorLevel,
-    conveyorCost,
-    armLevel,
-    armCost,
-    factoryLevel,
-    factoryCost,
-    workers,
-    workerCost,
-    gems,
-    taskClicksClaimed,
-    taskAutoClaimed,
-    taskLevelClaimed,
-    dailyStreak:streak,
-    lastDailyDate,
-    lastBoostDate,
-    boostEnd
-  };
-
-  Object.entries(data)
-    .forEach(
-      ([key,value]) => {
-        localStorage.setItem(
-          key,
-          value
-        );
+    document.addEventListener(
+      type,
+      e => e.preventDefault(),
+      {
+        passive:false
       }
     );
-}
 
-function floating(
-  text
-){
-  const div =
-    document.createElement(
-      "div"
+  });
+
+
+  const $ =
+    id =>
+      document.getElementById(id);
+
+
+  const qsa =
+    sel =>
+      [
+        ...document.querySelectorAll(sel)
+      ];
+
+
+  const num =
+    (key,fallback) => {
+
+      const raw =
+        localStorage.getItem(key);
+
+      if(raw === null){
+        return fallback;
+      }
+
+      const value =
+        Number(raw);
+
+      return Number.isFinite(value)
+        ? value
+        : fallback;
+
+    };
+
+
+  const bool =
+    key =>
+      localStorage.getItem(key)
+      ===
+      "true";
+
+
+  /* =========================
+     СОХРАНЕНИЕ ИГРЫ
+     ========================= */
+
+
+  let coins =
+    num("coins",0);
+
+
+  let perClick =
+    num("perClick",1);
+
+
+  let level =
+    num("level",1);
+
+
+  let xp =
+    num("xp",0);
+
+
+  let xpNeed =
+    num("xpNeed",100);
+
+
+  let totalClicks =
+    num("totalClicks",0);
+
+
+  let clickLevel =
+    num("clickLevel",0);
+
+
+  let clickCost =
+    num("upgradeCost",10);
+
+
+  let autoLevel =
+    num(
+      "autoLevel",
+      num(
+        "passiveIncome",
+        0
+      )
     );
 
-  div.className =
-    "floating";
 
-  div.textContent =
-    text;
+  let autoCost =
+    num("passiveCost",25);
+
+
+  let conveyorLevel =
+    num("conveyorLevel",0);
+
+
+  let conveyorCost =
+    num("conveyorCost",800);
+
+
+  let armLevel =
+    num("armLevel",0);
+
+
+  let armCost =
+    num("armCost",3000);
+
+
+  let factoryLevel =
+    num("factoryLevel",0);
+
+
+  let factoryCost =
+    num("factoryCost",12000);
+
+
+  let workers =
+    num("workers",0);
+
+
+  let workerCost =
+    num("workerCost",50);
+
+
+  let gems =
+    num("gems",120);
+
+
+  let taskClicksClaimed =
+    bool("taskClicksClaimed");
+
+
+  let taskAutoClaimed =
+    bool("taskAutoClaimed");
+
+
+  let taskLevelClaimed =
+    bool("taskLevelClaimed");
+
+
+  let streak =
+    num("dailyStreak",0);
+
+
+  let lastDailyDate =
+    localStorage.getItem(
+      "lastDailyDate"
+    )
+    ||
+    "";
+
+
+  let lastBoostDate =
+    localStorage.getItem(
+      "lastBoostDate"
+    )
+    ||
+    "";
+
+
+  let boostEnd =
+    num("boostEnd",0);
+
+
+  /* СОКРАЩЁННЫЕ ЧИСЛА */
+
+
+  const compact =
+    value => {
+
+      value =
+        Math.floor(
+          Number(value)
+          ||
+          0
+        );
+
+
+      if(value >= 1e9){
+
+        return (
+          value/1e9
+        )
+          .toFixed(1)
+          .replace(".0","")
+          +
+          "B";
+
+      }
+
+
+      if(value >= 1e6){
+
+        return (
+          value/1e6
+        )
+          .toFixed(1)
+          .replace(".0","")
+          +
+          "M";
+
+      }
+
+
+      if(value >= 1e3){
+
+        return (
+          value/1e3
+        )
+          .toFixed(1)
+          .replace(".0","")
+          +
+          "K";
+
+      }
+
+
+      return String(value);
+
+    };
+
+
+  const dateKey =
+    offset => {
+
+      const d =
+        new Date();
+
+
+      d.setDate(
+        d.getDate()
+        +
+        (
+          offset
+          ||
+          0
+        )
+      );
+
+
+      return (
+        d.getFullYear()
+        +
+        "-"
+        +
+        String(
+          d.getMonth()+1
+        ).padStart(2,"0")
+        +
+        "-"
+        +
+        String(
+          d.getDate()
+        ).padStart(2,"0")
+      );
+
+    };
+
+
+  const boostActive =
+    () =>
+      Date.now()
+      <
+      boostEnd;
+
+
+  const multiplier =
+    () =>
+      boostActive()
+        ?
+        2
+        :
+        1;
+
+
+  const passiveIncome =
+    () =>
+      autoLevel
+      +
+      workers*2
+      +
+      conveyorLevel*5
+      +
+      armLevel*25
+      +
+      factoryLevel*100;
+
+
+  function save(){
+
+    const data = {
+
+      coins,
+      perClick,
+      level,
+      xp,
+      xpNeed,
+      totalClicks,
+      clickLevel,
+
+      upgradeCost:
+        clickCost,
+
+      autoLevel,
+
+      passiveCost:
+        autoCost,
+
+      conveyorLevel,
+      conveyorCost,
+
+      armLevel,
+      armCost,
+
+      factoryLevel,
+      factoryCost,
+
+      workers,
+      workerCost,
+
+      gems,
+
+      taskClicksClaimed,
+      taskAutoClaimed,
+      taskLevelClaimed,
+
+      dailyStreak:
+        streak,
+
+      lastDailyDate,
+      lastBoostDate,
+      boostEnd
+
+    };
+
+
+    Object.entries(data)
+      .forEach(
+        ([key,value]) => {
+
+          localStorage.setItem(
+            key,
+            value
+          );
+
+        }
+      );
+
+  }
+
+
+  /* =========================
+     УРОВНИ
+     ========================= */
+
+
+  function checkLevel(){
+
+    while(
+      xp >= xpNeed
+    ){
+
+      xp -= xpNeed;
+
+      level += 1;
+
+      xpNeed =
+        Math.floor(
+          xpNeed * 1.35
+        );
+
+      perClick += 1;
+
+      toast(
+        "🎉 Новый уровень: "
+        +
+        level
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     СООБЩЕНИЯ
+     ========================= */
+
+
+  function toast(text){
+
+    const el =
+      $("toast");
+
+
+    el.textContent =
+      text;
+
+
+    el.classList.add(
+      "show"
+    );
+
+
+    clearTimeout(
+      toast.timer
+    );
+
+
+    toast.timer =
+      setTimeout(
+        () =>
+          el.classList.remove(
+            "show"
+          ),
+        1500
+      );
+
+  }
+
+
+  /* ВЫЛЕТАЮЩИЙ ДОХОД */
+
+
+  function floating(text){
+
+    const el =
+      document.createElement(
+        "div"
+      );
+
+
+    el.className =
+      "floating";
+
+
+    el.textContent =
+      text;
+
+
+    $("hero").appendChild(
+      el
+    );
+
+
+    setTimeout(
+      () =>
+        el.remove(),
+      720
+    );
+
+  }
+
+
+  /* АНИМАЦИЯ РОБОТА */
+
+
+  function animateRobot(){
+
+    const robot =
+      $("robotSprite");
+
+
+    robot.classList.remove(
+      "hit"
+    );
+
+
+    void robot.offsetWidth;
+
+
+    robot.classList.add(
+      "hit"
+    );
+
+
+    setTimeout(
+      () =>
+        robot.classList.remove(
+          "hit"
+        ),
+      320
+    );
+
+  }
+
+
+  /* =========================
+     КЛИК ПО РОБОТУ
+     ========================= */
+
+
+  function tap(){
+
+    const earned =
+      perClick
+      *
+      multiplier();
+
+
+    coins += earned;
+
+    xp += 5;
+
+    totalClicks += 1;
+
+
+    checkLevel();
+
+
+    floating(
+      "+"
+      +
+      compact(earned)
+      +
+      " ⚙️"
+    );
+
+
+    animateRobot();
+
+
+    save();
+
+    update();
+
+  }
+
 
   $("tapZone")
-    .appendChild(div);
+    .addEventListener(
+      "pointerdown",
+      event => {
 
-  setTimeout(
-    () => div.remove(),
-    700
-  );
-}
+        event.preventDefault();
 
-function tap(){
-  const earned =
-    perClick
-    *
-    multiplier();
+        tap();
 
-  coins += earned;
+      },
+      {
+        passive:false
+      }
+    );
 
-  xp += 5;
 
-  totalClicks += 1;
+  /* =========================
+     ПОКУПКИ
+     ========================= */
 
-  floating(
-    "+"
-    +
-    compact(earned)
-    +
-    " ⚙️"
-  );
 
-  checkLevel();
+  function buy(type){
 
-  save();
 
-  update();
-}
+    if(type === "click"){
 
-const tapZone =
-  $("tapZone");
-
-if(
-  "ontouchstart"
-  in window
-){
-  tapZone.addEventListener(
-    "touchstart",
-    event => {
-      event.preventDefault();
-      event.stopPropagation();
-      tap();
-    },
-    {
-      passive:false
-    }
-  );
-}
-else{
-  tapZone.addEventListener(
-    "click",
-    event => {
-      event.preventDefault();
-      tap();
-    }
-  );
-}
-
-tapZone.addEventListener(
-  "dblclick",
-  event => {
-    event.preventDefault();
-    event.stopPropagation();
-  },
-  {
-    passive:false
-  }
-);
-
-$("clickUpgradeButton")
-  .addEventListener(
-    "click",
-    () => {
       if(
         coins < clickCost
       ){
-        return;
+
+        return toast(
+          "Не хватает деталей"
+        );
+
       }
+
 
       coins -= clickCost;
 
@@ -3584,26 +2993,24 @@ $("clickUpgradeButton")
 
       clickCost =
         Math.floor(
-          clickCost
-          *
-          1.5
+          clickCost * 1.5
         );
 
-      save();
-
-      update();
     }
-  );
 
-$("autoButton")
-  .addEventListener(
-    "click",
-    () => {
+
+    if(type === "auto"){
+
       if(
         coins < autoCost
       ){
-        return;
+
+        return toast(
+          "Не хватает деталей"
+        );
+
       }
+
 
       coins -= autoCost;
 
@@ -3611,28 +3018,35 @@ $("autoButton")
 
       autoCost =
         Math.floor(
-          autoCost
-          *
-          1.7
+          autoCost * 1.7
         );
 
-      save();
-
-      update();
     }
-  );
 
-$("workerHireButton")
-  .addEventListener(
-    "click",
-    () => {
+
+    if(type === "worker"){
+
       if(
         workers >= 10
-        ||
+      ){
+
+        return toast(
+          "Максимум рабочих"
+        );
+
+      }
+
+
+      if(
         coins < workerCost
       ){
-        return;
+
+        return toast(
+          "Не хватает деталей"
+        );
+
       }
+
 
       coins -= workerCost;
 
@@ -3640,28 +3054,35 @@ $("workerHireButton")
 
       workerCost =
         Math.floor(
-          workerCost
-          *
-          1.8
+          workerCost * 1.8
         );
 
-      save();
-
-      update();
     }
-  );
 
-$("conveyorButton")
-  .addEventListener(
-    "click",
-    () => {
+
+    if(type === "conveyor"){
+
       if(
         level < 3
-        ||
+      ){
+
+        return toast(
+          "Нужен 3 уровень"
+        );
+
+      }
+
+
+      if(
         coins < conveyorCost
       ){
-        return;
+
+        return toast(
+          "Не хватает деталей"
+        );
+
       }
+
 
       coins -= conveyorCost;
 
@@ -3669,28 +3090,35 @@ $("conveyorButton")
 
       conveyorCost =
         Math.floor(
-          conveyorCost
-          *
-          1.8
+          conveyorCost * 1.8
         );
 
-      save();
-
-      update();
     }
-  );
 
-$("armButton")
-  .addEventListener(
-    "click",
-    () => {
+
+    if(type === "arm"){
+
       if(
         level < 5
-        ||
+      ){
+
+        return toast(
+          "Нужен 5 уровень"
+        );
+
+      }
+
+
+      if(
         coins < armCost
       ){
-        return;
+
+        return toast(
+          "Не хватает деталей"
+        );
+
       }
+
 
       coins -= armCost;
 
@@ -3698,28 +3126,35 @@ $("armButton")
 
       armCost =
         Math.floor(
-          armCost
-          *
-          1.85
+          armCost * 1.85
         );
 
-      save();
-
-      update();
     }
-  );
 
-$("factoryButton")
-  .addEventListener(
-    "click",
-    () => {
+
+    if(type === "factory"){
+
       if(
         level < 8
-        ||
+      ){
+
+        return toast(
+          "Нужен 8 уровень"
+        );
+
+      }
+
+
+      if(
         coins < factoryCost
       ){
-        return;
+
+        return toast(
+          "Не хватает деталей"
+        );
+
       }
+
 
       coins -= factoryCost;
 
@@ -3727,2913 +3162,919 @@ $("factoryButton")
 
       factoryCost =
         Math.floor(
-          factoryCost
-          *
-          1.9
+          factoryCost * 1.9
         );
 
-      save();
-
-      update();
     }
-  );
 
-$("taskClicksButton")
-  .addEventListener(
-    "click",
-    () => {
-      if(
-        totalClicks >= 100
-        &&
-        !taskClicksClaimed
-      ){
-        coins += 500;
 
-        taskClicksClaimed =
-          true;
+    save();
 
-        save();
+    update();
 
-        update();
-      }
-    }
-  );
-
-$("taskAutoButton")
-  .addEventListener(
-    "click",
-    () => {
-      if(
-        autoLevel >= 3
-        &&
-        !taskAutoClaimed
-      ){
-        coins += 1000;
-
-        taskAutoClaimed =
-          true;
-
-        save();
-
-        update();
-      }
-    }
-  );
-
-$("taskLevelButton")
-  .addEventListener(
-    "click",
-    () => {
-      if(
-        level >= 5
-        &&
-        !taskLevelClaimed
-      ){
-        coins += 2500;
-
-        taskLevelClaimed =
-          true;
-
-        save();
-
-        update();
-      }
-    }
-  );
-
-$("dailyButton")
-  .addEventListener(
-    "click",
-    () => {
-      const today =
-        dateKey();
-
-      if(
-        lastDailyDate === today
-      ){
-        return;
-      }
-
-      streak =
-        lastDailyDate
-        ===
-        dateKey(-1)
-        ?
-        streak + 1
-        :
-        1;
-
-      if(
-        streak > 7
-      ){
-        streak = 7;
-      }
-
-      coins +=
-        streak * 500;
-
-      lastDailyDate =
-        today;
-
-      save();
-
-      update();
-    }
-  );
-
-function activateBoost(){
-  const today =
-    dateKey();
-
-  if(
-    lastBoostDate === today
-  ){
-    return;
   }
 
-  boostEnd =
-    Date.now()
-    +
-    5 * 60 * 1000;
 
-  lastBoostDate =
-    today;
-
-  save();
-
-  update();
-}
-
-$("boostButton")
-  .addEventListener(
-    "click",
-    activateBoost
-  );
-
-$("boostShortcut")
-  .addEventListener(
-    "click",
-    activateBoost
-  );
-
-function openScreen(
-  id
-){
-  document
-    .querySelectorAll(
-      ".screen"
-    )
+  qsa(
+    "[data-buy]"
+  )
     .forEach(
-      screen => {
-        screen
-          .classList
-          .remove(
-            "active"
-          );
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            buy(
+              button.dataset.buy
+            )
+        );
+
       }
     );
 
-  $(id)
-    .classList
-    .add(
-      "active"
-    );
 
-  document
-    .querySelectorAll(
-      ".nav"
-    )
-    .forEach(
-      button => {
-        button
-          .classList
-          .toggle(
+  /* =========================
+     НАВИГАЦИЯ
+     ========================= */
+
+
+  function openScreen(id){
+
+    qsa(".screen")
+      .forEach(
+        screen =>
+          screen.classList.remove(
+            "active"
+          )
+      );
+
+
+    $(id)
+      .classList.add(
+        "active"
+      );
+
+
+    qsa(".nav")
+      .forEach(
+        button => {
+
+          button.classList.toggle(
             "active",
             button.dataset.screen
             ===
             id
           );
+
+        }
+      );
+
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }
+
+
+  qsa("[data-screen]")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            openScreen(
+              button.dataset.screen
+            )
+        );
+
       }
     );
 
-  window.scrollTo(
-    0,
-    0
-  );
-}
 
-document
-  .querySelectorAll(
-    "[data-screen]"
-  )
-  .forEach(
-    button => {
-      button
-        .addEventListener(
-          "click",
-          () => {
-            openScreen(
-              button.dataset.screen
-            );
-          }
-        );
-    }
-  );
+  qsa("[data-go]")
+    .forEach(
+      button => {
 
-document
-  .querySelectorAll(
-    "[data-go]"
-  )
-  .forEach(
-    button => {
-      button
-        .addEventListener(
+        button.addEventListener(
           "click",
-          () => {
+          () =>
             openScreen(
               button.dataset.go
-            );
-          }
+            )
         );
-    }
-  );
 
-function updateTasks(){
-  const clicks =
-    Math.min(
-      totalClicks,
-      100
+      }
     );
 
-  $("taskClicksText")
-    .textContent =
-      clicks;
 
-  $("taskClicksFill")
-    .style.width =
-      clicks
-      +
-      "%";
+  qsa("[data-toast]")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            toast(
+              button.dataset.toast
+            )
+        );
+
+      }
+    );
+
+
+  /* =========================
+     ЗАДАНИЯ
+     ========================= */
+
 
   $("taskClicksButton")
-    .disabled =
-      totalClicks < 100
-      ||
-      taskClicksClaimed;
+    .addEventListener(
+      "click",
+      () => {
 
-  $("taskClicksButton")
-    .textContent =
-      taskClicksClaimed
-      ?
-      "✅ Получено"
-      :
-      "Забрать награду";
+        if(
+          totalClicks >= 100
+          &&
+          !taskClicksClaimed
+        ){
 
-  const autos =
-    Math.min(
-      autoLevel,
-      3
+          coins += 500;
+
+          taskClicksClaimed =
+            true;
+
+          save();
+
+          update();
+
+        }
+
+      }
     );
 
-  $("taskAutoText")
-    .textContent =
-      autos;
-
-  $("taskAutoFill")
-    .style.width =
-      (
-        autos
-        /
-        3
-        *
-        100
-      )
-      +
-      "%";
 
   $("taskAutoButton")
-    .disabled =
-      autoLevel < 3
-      ||
-      taskAutoClaimed;
+    .addEventListener(
+      "click",
+      () => {
 
-  $("taskAutoButton")
-    .textContent =
-      taskAutoClaimed
-      ?
-      "✅ Получено"
-      :
-      "Забрать награду";
+        if(
+          autoLevel >= 3
+          &&
+          !taskAutoClaimed
+        ){
 
-  const currentLevel =
-    Math.min(
-      level,
-      5
+          coins += 1000;
+
+          taskAutoClaimed =
+            true;
+
+          save();
+
+          update();
+
+        }
+
+      }
     );
 
-  $("taskLevelText")
-    .textContent =
-      currentLevel;
-
-  $("taskLevelFill")
-    .style.width =
-      (
-        currentLevel
-        /
-        5
-        *
-        100
-      )
-      +
-      "%";
 
   $("taskLevelButton")
-    .disabled =
-      level < 5
-      ||
-      taskLevelClaimed;
+    .addEventListener(
+      "click",
+      () => {
 
-  $("taskLevelButton")
-    .textContent =
-      taskLevelClaimed
-      ?
-      "✅ Получено"
-      :
-      "Забрать награду";
-}
+        if(
+          level >= 5
+          &&
+          !taskLevelClaimed
+        ){
 
-function updateBonuses(){
-  const today =
-    dateKey();
+          coins += 2500;
 
-  let next =
-    streak;
+          taskLevelClaimed =
+            true;
 
-  if(
-    lastDailyDate !== today
-  ){
-    next =
-      lastDailyDate
+          save();
+
+          update();
+
+        }
+
+      }
+    );
+
+
+  /* =========================
+     ЕЖЕДНЕВНЫЙ БОНУС
+     ========================= */
+
+
+  $("dailyButton")
+    .addEventListener(
+      "click",
+      () => {
+
+        const today =
+          dateKey(0);
+
+
+        if(
+          lastDailyDate
+          ===
+          today
+        ){
+          return;
+        }
+
+
+        streak =
+          lastDailyDate
+          ===
+          dateKey(-1)
+            ?
+            streak + 1
+            :
+            1;
+
+
+        if(
+          streak > 7
+        ){
+          streak = 7;
+        }
+
+
+        coins +=
+          streak * 500;
+
+
+        lastDailyDate =
+          today;
+
+
+        save();
+
+        update();
+
+      }
+    );
+
+
+  /* =========================
+     x2 БУСТ
+     ========================= */
+
+
+  function activateBoost(){
+
+    const today =
+      dateKey(0);
+
+
+    if(
+      lastBoostDate
       ===
-      dateKey(-1)
-      ?
-      streak + 1
-      :
-      1;
+      today
+    ){
+
+      return toast(
+        "Буст уже использован сегодня"
+      );
+
+    }
+
+
+    boostEnd =
+      Date.now()
+      +
+      5 * 60 * 1000;
+
+
+    lastBoostDate =
+      today;
+
+
+    save();
+
+    update();
+
   }
 
-  if(
-    next > 7
-  ){
-    next = 7;
+
+  $("boostButton")
+    .addEventListener(
+      "click",
+      activateBoost
+    );
+
+
+  $("boostShortcut")
+    .addEventListener(
+      "click",
+      activateBoost
+    );
+
+
+  /* =========================
+     ОБНОВЛЕНИЕ ЗАДАНИЙ
+     ========================= */
+
+
+  function updateTasks(){
+
+    const clicks =
+      Math.min(
+        totalClicks,
+        100
+      );
+
+
+    $("taskClicksText")
+      .textContent =
+        clicks;
+
+
+    $("taskClicksFill")
+      .style.width =
+        clicks
+        +
+        "%";
+
+
+    $("taskClicksButton")
+      .disabled =
+        totalClicks < 100
+        ||
+        taskClicksClaimed;
+
+
+    $("taskClicksButton")
+      .textContent =
+        taskClicksClaimed
+          ?
+          "✅ Получено"
+          :
+          "Забрать награду";
+
+
+    const autos =
+      Math.min(
+        autoLevel,
+        3
+      );
+
+
+    $("taskAutoText")
+      .textContent =
+        autos;
+
+
+    $("taskAutoFill")
+      .style.width =
+        (
+          autos
+          /
+          3
+          *
+          100
+        )
+        +
+        "%";
+
+
+    $("taskAutoButton")
+      .disabled =
+        autoLevel < 3
+        ||
+        taskAutoClaimed;
+
+
+    $("taskAutoButton")
+      .textContent =
+        taskAutoClaimed
+          ?
+          "✅ Получено"
+          :
+          "Забрать награду";
+
+
+    const lvl =
+      Math.min(
+        level,
+        5
+      );
+
+
+    $("taskLevelText")
+      .textContent =
+        lvl;
+
+
+    $("taskLevelFill")
+      .style.width =
+        (
+          lvl
+          /
+          5
+          *
+          100
+        )
+        +
+        "%";
+
+
+    $("taskLevelButton")
+      .disabled =
+        level < 5
+        ||
+        taskLevelClaimed;
+
+
+    $("taskLevelButton")
+      .textContent =
+        taskLevelClaimed
+          ?
+          "✅ Получено"
+          :
+          "Забрать награду";
+
   }
 
-  $("streak")
-    .textContent =
+
+  /* =========================
+     БОНУСЫ
+     ========================= */
+
+
+  function updateBonuses(){
+
+    const today =
+      dateKey(0);
+
+
+    let next =
       streak;
 
-  $("dailyRewardAmount")
-    .textContent =
-      next * 500;
 
-  const dailyUsed =
-    lastDailyDate
-    ===
-    today;
+    if(
+      lastDailyDate
+      !==
+      today
+    ){
 
-  $("dailyButton")
-    .disabled =
-      dailyUsed;
+      next =
+        lastDailyDate
+        ===
+        dateKey(-1)
+          ?
+          streak + 1
+          :
+          1;
 
-  $("dailyButton")
-    .textContent =
-      dailyUsed
-      ?
-      "✅ Уже получено сегодня"
-      :
-      "Забрать бонус";
+    }
 
-  $("dailyShortcutText")
-    .textContent =
-      dailyUsed
-      ?
-      "Получено"
-      :
-      "+"
-      +
-      compact(
-        next * 500
-      )
-      +
-      " ⚙️";
 
-  if(
-    boostActive()
-  ){
-    const remaining =
-      Math.max(
-        0,
-        boostEnd
-        -
-        Date.now()
-      );
+    if(
+      next > 7
+    ){
+      next = 7;
+    }
 
-    const totalSeconds =
-      Math.floor(
-        remaining
-        /
-        1000
-      );
 
-    const minutes =
-      String(
+    $("streak")
+      .textContent =
+        streak;
+
+
+    $("dailyRewardAmount")
+      .textContent =
+        next * 500;
+
+
+    const dailyUsed =
+      lastDailyDate
+      ===
+      today;
+
+
+    $("dailyButton")
+      .disabled =
+        dailyUsed;
+
+
+    $("dailyButton")
+      .textContent =
+        dailyUsed
+          ?
+          "✅ Уже получено сегодня"
+          :
+          "Забрать бонус";
+
+
+    $("dailyShortcutText")
+      .textContent =
+        dailyUsed
+          ?
+          "Получено"
+          :
+          "+"
+          +
+          compact(
+            next * 500
+          )
+          +
+          " ⚙️";
+
+
+    if(
+      boostActive()
+    ){
+
+      const left =
+        Math.max(
+          0,
+          boostEnd
+          -
+          Date.now()
+        );
+
+
+      const sec =
         Math.floor(
-          totalSeconds
-          /
-          60
+          left / 1000
+        );
+
+
+      const mm =
+        String(
+          Math.floor(
+            sec / 60
+          )
         )
-      )
-      .padStart(
-        2,
-        "0"
-      );
+          .padStart(
+            2,
+            "0"
+          );
 
-    const seconds =
-      String(
-        totalSeconds
-        %
-        60
-      )
-      .padStart(
-        2,
-        "0"
-      );
 
-    $("boostStatus")
-      .textContent =
-        "⚡ x2 активно "
-        +
-        minutes
-        +
-        ":"
-        +
-        seconds;
+      const ss =
+        String(
+          sec % 60
+        )
+          .padStart(
+            2,
+            "0"
+          );
 
-    $("boostShortcutText")
-      .textContent =
-        "Активно "
-        +
-        minutes
-        +
-        ":"
-        +
-        seconds;
 
-    $("boostButton")
-      .disabled =
-        true;
+      $("boostStatus")
+        .textContent =
+          "Активен: "
+          +
+          mm
+          +
+          ":"
+          +
+          ss;
 
-    $("boostButton")
-      .textContent =
-        "⚡ x2 активно";
+
+      $("boostButton")
+        .disabled =
+          true;
+
+
+      $("boostButton")
+        .textContent =
+          "⚡ x2 работает";
+
+
+      $("boostShortcutText")
+        .textContent =
+          mm
+          +
+          ":"
+          +
+          ss;
+
+    }
+    else{
+
+      const used =
+        lastBoostDate
+        ===
+        today;
+
+
+      $("boostStatus")
+        .textContent =
+          used
+            ?
+            "Использован сегодня"
+            :
+            "Доступен сегодня";
+
+
+      $("boostButton")
+        .disabled =
+          used;
+
+
+      $("boostButton")
+        .textContent =
+          used
+            ?
+            "✅ Использовано"
+            :
+            "Активировать x2";
+
+
+      $("boostShortcutText")
+        .textContent =
+          used
+            ?
+            "Использовано"
+            :
+            "Активировать";
+
+    }
+
   }
-  else if(
-    lastBoostDate === today
+
+
+  function setTextAll(
+    selector,
+    value
   ){
-    $("boostStatus")
-      .textContent =
-        "✅ Сегодня уже использован";
 
-    $("boostShortcutText")
-      .textContent =
-        "Использовано";
-
-    $("boostButton")
-      .disabled =
-        true;
-
-    $("boostButton")
-      .textContent =
-        "✅ Использовано";
-  }
-  else{
-    $("boostStatus")
-      .textContent =
-        "Доступен сегодня";
-
-    $("boostShortcutText")
-      .textContent =
-        "Активировать";
-
-    $("boostButton")
-      .disabled =
-        false;
-
-    $("boostButton")
-      .textContent =
-        "Активировать x2";
-  }
-}
-
-function update(){
-  $("coins")
-    .textContent =
-      compact(coins);
-
-  $("gems")
-    .textContent =
-      compact(gems);
-
-  $("level")
-    .textContent =
-      level;
-
-  $("xpFill")
-    .style.width =
-      Math.min(
-        xp
-        /
-        xpNeed
-        *
-        100,
-        100
-      )
-      +
-      "%";
-
-  $("perClick")
-    .textContent =
-      compact(
-        perClick
-        *
-        multiplier()
+    qsa(selector)
+      .forEach(
+        el =>
+          el.textContent =
+            value
       );
 
-  const income =
-    passiveIncome()
-    *
-    multiplier();
+  }
 
-  $("passiveIncome")
-    .textContent =
-      compact(income);
 
-  $("topIncome")
-    .textContent =
-      compact(income);
+  /* =========================
+     ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+     ========================= */
 
-  $("clickCost")
-    .textContent =
-      compact(clickCost);
 
-  $("autoCost")
-    .textContent =
-      compact(autoCost);
+  function update(){
 
-  $("workersCount")
-    .textContent =
-      workers;
+    $("coins")
+      .textContent =
+        compact(coins);
 
-  $("workerCost")
-    .textContent =
-      compact(workerCost);
 
-  $("conveyorLevel")
-    .textContent =
-      conveyorLevel;
+    $("gems")
+      .textContent =
+        compact(gems);
 
-  $("conveyorCost")
-    .textContent =
-      compact(conveyorCost);
 
-  $("armLevel")
-    .textContent =
-      armLevel;
+    $("shopGems")
+      .textContent =
+        compact(gems);
 
-  $("armCost")
-    .textContent =
-      compact(armCost);
 
-  $("factoryLevel")
-    .textContent =
-      factoryLevel;
+    $("level")
+      .textContent =
+        level;
 
-  $("factoryCost")
-    .textContent =
-      compact(factoryCost);
 
-  $("clickUpgradeButton")
-    .disabled =
-      coins < clickCost;
+    $("xpFill")
+      .style.width =
+        Math.min(
+          xp
+          /
+          xpNeed
+          *
+          100,
+          100
+        )
+        +
+        "%";
 
-  $("autoButton")
-    .disabled =
-      coins < autoCost;
 
-  $("workerHireButton")
-    .disabled =
-      workers >= 10
-      ||
-      coins < workerCost;
+    $("perClick")
+      .textContent =
+        compact(
+          perClick
+          *
+          multiplier()
+        );
 
-  $("conveyorButton")
-    .disabled =
-      level < 3
-      ||
-      coins < conveyorCost;
 
-  $("armButton")
-    .disabled =
-      level < 5
-      ||
-      coins < armCost;
-
-  $("factoryButton")
-    .disabled =
-      level < 8
-      ||
-      coins < factoryCost;
-
-  updateTasks();
-
-  updateBonuses();
-}
-
-setInterval(
-  () => {
     const income =
       passiveIncome()
       *
       multiplier();
 
-    if(
-      income > 0
-    ){
-      coins += income;
-      save();
-    }
 
-    update();
-  },
-  1000
-);
+    $("passiveIncome")
+      .textContent =
+        compact(income);
 
-update();
-</script>
-<style>
-.scene{
-  background-image:url("assets/factory-bg.png.PNG") !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-}
 
-.scene > .grid,
-.scene > .window,
-.scene > .sign,
-.scene > .lamp,
-.scene > .pipe,
-.scene > .arm,
-.scene > .spark,
-.scene > .steam,
-.scene > .conveyor,
-.scene > .roller,
-.scene > .box{
-  display:none !important;
-}
+    $("topIncome")
+      .textContent =
+        compact(income);
 
-.machine{
-  background:transparent !important;
-  border:none !important;
-  box-shadow:none !important;
-  animation:none !important;
-}
 
-.machineTop,
-.glow,
-.robot,
-.hand{
-  display:none !important;
-}
+    $("workersCount")
+      .textContent =
+        workers;
 
-.clickWord{
-  top:92px !important;
-  font-size:40px !important;
-  z-index:20 !important;
-}
 
-.levelBox{
-  bottom:-18px !important;
-  z-index:20 !important;
-  background:rgba(7,25,40,.96) !important;
-}
-
-.scene:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(2,9,15,.15) 0%,
-      transparent 25%,
-      transparent 70%,
-      rgba(2,9,15,.32) 100%
-    );
-}
-</style>
-<style>
-.factory-bg,
-.scene{
-  background-image:url("./assets/factory-bg.png.PNG?v=3") !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-}
-
-.factory-bg > .wallGrid,
-.factory-bg > .window,
-.factory-bg > .sign,
-.factory-bg > .factoryLamp,
-.factory-bg > .pipe1,
-.factory-bg > .pipe2,
-.factory-bg > .pipe3,
-.factory-bg > .arm,
-.factory-bg > .spark,
-.factory-bg > .steam,
-.factory-bg > .conveyor,
-.factory-bg > .roller,
-.factory-bg > .movingBox,
-.scene > .grid,
-.scene > .window,
-.scene > .sign,
-.scene > .lamp,
-.scene > .pipe,
-.scene > .arm,
-.scene > .spark,
-.scene > .steam,
-.scene > .conveyor,
-.scene > .roller,
-.scene > .box{
-  display:none !important;
-}
-
-.machine{
-  background:transparent !important;
-  border:none !important;
-  box-shadow:none !important;
-  animation:none !important;
-}
-
-.machineTop,
-.glow,
-.robot,
-.hand{
-  display:none !important;
-}
-
-.clickWord{
-  top:92px !important;
-  font-size:40px !important;
-  z-index:30 !important;
-}
-
-.levelBox{
-  bottom:-18px !important;
-  z-index:30 !important;
-  background:rgba(7,25,40,.96) !important;
-}
-</style>  
-<style>
-#liveRobot{
-  position:absolute;
-  left:50%;
-  top:56%;
-  width:120px;
-  height:auto;
-  transform:translate(-50%,-50%);
-  transform-origin:50% 85%;
-  z-index:16;
-  pointer-events:none;
-
-  filter:
-    drop-shadow(0 8px 10px rgba(0,0,0,.45))
-    drop-shadow(0 0 10px rgba(0,190,255,.35));
-
-  animation:robotIdle 1.8s ease-in-out infinite;
-}
-
-#liveRobot.robotHit{
-  animation:robotHit .22s ease-out;
-}
-
-@keyframes robotIdle{
-  0%,100%{
-    transform:
-      translate(-50%,-50%)
-      translateY(0)
-      rotate(-1deg);
-  }
-
-  50%{
-    transform:
-      translate(-50%,-50%)
-      translateY(-7px)
-      rotate(1deg);
-  }
-}
-
-@keyframes robotHit{
-  0%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-
-  45%{
-    transform:
-      translate(-50%,-50%)
-      translateY(-13px)
-      scale(1.09);
-  }
-
-  100%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-}
-</style>
-
-<script>
-(function(){
-
-  const hero =
-    document.querySelector(".hero");
-
-  const tapZone =
-    document.getElementById("tapZone");
-
-  if(!hero || !tapZone){
-    return;
-  }
-
-  let robot =
-    document.getElementById("liveRobot");
-
-  if(!robot){
-
-    robot =
-      document.createElement("img");
-
-    robot.id =
-      "liveRobot";
-
-    robot.src =
-      "./assets/robot.png.PNG?v=1";
-
-    robot.alt =
-      "RoboFactory robot";
-
-    hero.appendChild(robot);
-  }
-
-  function animateRobot(){
-
-    robot.classList.remove("robotHit");
-
-    void robot.offsetWidth;
-
-    robot.classList.add("robotHit");
-
-    setTimeout(
-      () => {
-        robot.classList.remove("robotHit");
-      },
-      230
-    );
-  }
-
-  tapZone.addEventListener(
-    "pointerdown",
-    animateRobot
-  );
-
-})();
-</script>  
-<style>
-#liveRobot{
-  width:92px !important;
-  top:53% !important;
-  animation:robotIdleV2 1.7s ease-in-out infinite !important;
-}
-
-#liveRobot.robotHit{
-  animation:robotHitV2 .24s ease-out !important;
-}
-
-#reactorAura{
-  position:absolute;
-  left:50%;
-  top:49%;
-  width:190px;
-  height:190px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:13;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,245,150,.55) 0%,
-      rgba(255,174,0,.25) 35%,
-      rgba(255,122,0,.08) 58%,
-      transparent 72%
+    setTextAll(
+      '[data-cost="click"]',
+      compact(clickCost)
     );
 
-  filter:blur(2px);
-  animation:reactorIdle 1.6s ease-in-out infinite;
-}
 
-#reactorAura.burst{
-  animation:reactorBurst .25s ease-out;
-}
-
-@keyframes robotIdleV2{
-  0%,100%{
-    transform:
-      translate(-50%,-50%)
-      translateY(0)
-      rotate(-1deg);
-  }
-
-  50%{
-    transform:
-      translate(-50%,-50%)
-      translateY(-5px)
-      rotate(1deg);
-  }
-}
-
-@keyframes robotHitV2{
-  0%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-
-  45%{
-    transform:
-      translate(-50%,-50%)
-      translateY(-10px)
-      scale(1.12);
-  }
-
-  100%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-}
-
-@keyframes reactorIdle{
-  0%,100%{
-    opacity:.45;
-    transform:
-      translate(-50%,-50%)
-      scale(.94);
-  }
-
-  50%{
-    opacity:.85;
-    transform:
-      translate(-50%,-50%)
-      scale(1.05);
-  }
-}
-
-@keyframes reactorBurst{
-  0%{
-    opacity:.6;
-    transform:
-      translate(-50%,-50%)
-      scale(.9);
-  }
-
-  40%{
-    opacity:1;
-    transform:
-      translate(-50%,-50%)
-      scale(1.28);
-  }
-
-  100%{
-    opacity:.5;
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-}
-</style>
-
-<script>
-(function(){
-
-  const hero =
-    document.querySelector(".hero");
-
-  const tapZone =
-    document.getElementById("tapZone");
-
-  if(!hero || !tapZone){
-    return;
-  }
-
-  let aura =
-    document.getElementById("reactorAura");
-
-  if(!aura){
-    aura =
-      document.createElement("div");
-
-    aura.id =
-      "reactorAura";
-
-    hero.appendChild(aura);
-  }
-
-  function reactorClick(){
-
-    aura.classList.remove("burst");
-
-    void aura.offsetWidth;
-
-    aura.classList.add("burst");
-
-    setTimeout(
-      () => {
-        aura.classList.remove("burst");
-      },
-      260
-    );
-  }
-
-  tapZone.addEventListener(
-    "pointerdown",
-    reactorClick
-  );
-
-})();
-</script>
-<style>
-  /* ===== ROBOFACTORY FINAL OVERLAY ===== */
-  .scene{
-    position: relative !important;
-    overflow: hidden !important;
-    background: url("assets/factory-clean.png.PNG") center center / cover no-repeat !important;
-  }
-
-  .rf-overlay{
-    position:absolute;
-    inset:0;
-    z-index:18;
-    pointer-events:none;
-  }
-
-  .rf-center-robot{
-    position:absolute;
-    left:50%;
-    top:53%;
-    width:120px;
-    transform:translate(-50%, -50%);
-    z-index:22;
-    pointer-events:none;
-    user-select:none;
-    filter: drop-shadow(0 0 10px rgba(0,200,255,.35));
-    animation: rfRobotFloat 2.2s ease-in-out infinite;
-  }
-
-  .rf-center-robot.rf-hit{
-    animation: rfRobotHit .24s ease;
-  }
-
-  .rf-arm{
-    position:absolute;
-    width:190px;
-    z-index:20;
-    pointer-events:none;
-    user-select:none;
-    filter: drop-shadow(0 8px 14px rgba(0,0,0,.45));
-  }
-
-  .rf-arm.left{
-    left:-20px;
-    top:355px;
-    transform-origin: 30% 20%;
-    animation: rfArmLeft 2.1s ease-in-out infinite;
-  }
-
-  .rf-arm.right{
-    right:-20px;
-    top:355px;
-    transform-origin: 70% 20%;
-    transform: scaleX(-1);
-    animation: rfArmRight 2.1s ease-in-out infinite;
-  }
-
-  .rf-spark{
-    position:absolute;
-    width:52px;
-    height:52px;
-    border-radius:50%;
-    opacity:0;
-    z-index:21;
-    pointer-events:none;
-    background:
-      radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,230,120,1) 20%, rgba(255,165,0,.95) 45%, rgba(255,140,0,.0) 72%);
-    filter: blur(.2px) drop-shadow(0 0 10px rgba(255,180,0,.95));
-  }
-
-  .rf-spark.left{
-    left:135px;
-    top:545px;
-  }
-
-  .rf-spark.right{
-    right:135px;
-    top:545px;
-  }
-
-  .rf-spark.rf-fire{
-    animation: rfSpark .28s ease-out;
-  }
-
-  .rf-box{
-    position:absolute;
-    width:72px;
-    height:72px;
-    border-radius:12px;
-    background: linear-gradient(180deg, #d89444 0%, #ba742c 100%);
-    border: 3px solid rgba(93,50,15,.55);
-    box-shadow: inset 0 2px 0 rgba(255,255,255,.18), 0 8px 16px rgba(0,0,0,.28);
-    z-index:19;
-  }
-
-  .rf-box::before{
-    content:"⚙️";
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    opacity:.9;
-  }
-
-  .rf-box.left{
-    left:42px;
-    bottom:164px;
-    animation: rfBoxMove 2.2s linear infinite;
-  }
-
-  .rf-box.right{
-    right:42px;
-    bottom:164px;
-    animation: rfBoxMove 2.2s linear infinite reverse;
-  }
-
-  @keyframes rfRobotFloat{
-    0%,100%{ transform:translate(-50%, -50%) translateY(0); }
-    50%{ transform:translate(-50%, -50%) translateY(-8px); }
-  }
-
-  @keyframes rfRobotHit{
-    0%{ transform:translate(-50%, -50%) scale(1); }
-    30%{ transform:translate(-50%, -50%) scale(.96) rotate(-3deg); }
-    65%{ transform:translate(-50%, -50%) scale(1.03) rotate(2deg); }
-    100%{ transform:translate(-50%, -50%) scale(1); }
-  }
-
-  @keyframes rfArmLeft{
-    0%,100%{ transform: rotate(10deg) translateY(0); }
-    50%{ transform: rotate(22deg) translateY(8px); }
-  }
-
-  @keyframes rfArmRight{
-    0%,100%{ transform: scaleX(-1) rotate(10deg) translateY(0); }
-    50%{ transform: scaleX(-1) rotate(22deg) translateY(8px); }
-  }
-
-  @keyframes rfSpark{
-    0%{ opacity:0; transform:scale(.2); }
-    25%{ opacity:1; transform:scale(1); }
-    100%{ opacity:0; transform:scale(1.6); }
-  }
-
-  @keyframes rfBoxMove{
-    0%{ transform:translateX(0); }
-    50%{ transform:translateX(8px); }
-    100%{ transform:translateX(0); }
-  }
-</style>
-
-<script>
-(() => {
-  function buildRoboFactoryOverlay() {
-    const scene = document.querySelector(".scene");
-    if (!scene) return;
-
-    scene.style.background = 'url("assets/factory-clean.png.PNG") center center / cover no-repeat';
-    scene.style.position = "relative";
-    scene.style.overflow = "hidden";
-
-    const oldOverlay = scene.querySelector(".rf-overlay");
-    if (oldOverlay) oldOverlay.remove();
-
-    const oldRobot = scene.querySelector(".robot");
-    if (oldRobot) oldRobot.style.display = "none";
-
-    scene.querySelectorAll(".hand").forEach(el => el.style.display = "none");
-
-    const overlay = document.createElement("div");
-    overlay.className = "rf-overlay";
-    overlay.innerHTML = `
-      <img class="rf-arm left" src="assets/arm.png.PNG" alt="">
-      <img class="rf-arm right" src="assets/arm.png.PNG" alt="">
-      <div class="rf-spark left"></div>
-      <div class="rf-spark right"></div>
-      <div class="rf-box left"></div>
-      <div class="rf-box right"></div>
-      <img class="rf-center-robot" src="assets/robot.png.PNG" alt="">
-    `;
-    scene.appendChild(overlay);
-
-    const robot = overlay.querySelector(".rf-center-robot");
-    const sparkLeft = overlay.querySelector(".rf-spark.left");
-    const sparkRight = overlay.querySelector(".rf-spark.right");
-
-    function fireSpark(el){
-      el.classList.remove("rf-fire");
-      void el.offsetWidth;
-      el.classList.add("rf-fire");
-    }
-
-    function reactorClick(){
-      robot.classList.remove("rf-hit");
-      void robot.offsetWidth;
-      robot.classList.add("rf-hit");
-      fireSpark(sparkLeft);
-      setTimeout(() => fireSpark(sparkRight), 70);
-    }
-
-    const tapZone =
-      scene.querySelector(".tapZone") ||
-      scene.querySelector(".machineBody") ||
-      scene.querySelector(".machine") ||
-      scene;
-
-    tapZone.addEventListener("pointerdown", reactorClick);
-
-    setInterval(() => {
-      fireSpark(sparkLeft);
-      setTimeout(() => fireSpark(sparkRight), 100);
-    }, 1800);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", buildRoboFactoryOverlay);
-  } else {
-    buildRoboFactoryOverlay();
-  }
-})();
-</script>  
-<style>
-/* ===== ПОДГОНЯЕМ ЖИВУЮ СЦЕНУ ===== */
-
-/* робот чуть выше */
-.rf-center-robot{
-  width:108px !important;
-  top:51% !important;
-}
-
-/* руки ближе к центру */
-.rf-arm{
-  width:165px !important;
-}
-
-.rf-arm.left{
-  left:4px !important;
-  top:390px !important;
-  animation:rfArmLeftV2 1.7s ease-in-out infinite !important;
-}
-
-.rf-arm.right{
-  right:4px !important;
-  top:390px !important;
-  animation:rfArmRightV2 1.7s ease-in-out infinite !important;
-}
-
-/* искры ближе к роботу */
-.rf-spark.left{
-  left:142px !important;
-  top:535px !important;
-}
-
-.rf-spark.right{
-  right:142px !important;
-  top:535px !important;
-}
-
-/* коробки теперь реально едут */
-.rf-box{
-  bottom:145px !important;
-  width:62px !important;
-  height:56px !important;
-}
-
-.rf-box.left{
-  left:-80px !important;
-  animation:rfConveyorBox1 6s linear infinite !important;
-}
-
-.rf-box.right{
-  right:auto !important;
-  left:-80px !important;
-  animation:rfConveyorBox1 6s linear infinite -3s !important;
-}
-
-/* карточки дохода поднимаем выше */
-.stats{
-  bottom:78px !important;
-}
-
-/* немного уменьшаем их */
-.stat{
-  padding:7px 5px !important;
-}
-
-.statTitle{
-  font-size:10px !important;
-}
-
-.statNumber{
-  font-size:16px !important;
-}
-
-.buy{
-  min-height:38px !important;
-}
-
-/* движение рук */
-@keyframes rfArmLeftV2{
-  0%,100%{
-    transform:
-      rotate(4deg)
-      translate(0,0);
-  }
-
-  50%{
-    transform:
-      rotate(17deg)
-      translate(9px,8px);
-  }
-}
-
-@keyframes rfArmRightV2{
-  0%,100%{
-    transform:
-      scaleX(-1)
-      rotate(4deg)
-      translate(0,0);
-  }
-
-  50%{
-    transform:
-      scaleX(-1)
-      rotate(17deg)
-      translate(9px,8px);
-  }
-}
-
-/* движение коробок через весь конвейер */
-@keyframes rfConveyorBox1{
-  0%{
-    transform:
-      translateX(0)
-      translateY(0);
-  }
-
-  48%{
-    transform:
-      translateX(520px)
-      translateY(0);
-  }
-
-  49%{
-    opacity:0;
-  }
-
-  50%{
-    transform:
-      translateX(0);
-    opacity:0;
-  }
-
-  51%{
-    opacity:1;
-  }
-
-  100%{
-    transform:
-      translateX(520px)
-      translateY(0);
-  }
-}
-
-/* свечение реактора заметнее */
-#reactorAura{
-  width:220px !important;
-  height:220px !important;
-  top:46% !important;
-  z-index:19 !important;
-}
-</style>  
-<style>
-/* FIX ЖИВОЙ ФАБРИКИ */
-
-.scene{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-
-  background:
-    url("./assets/factory-clean.png.PNG?v=8")
-    center center / cover
-    no-repeat !important;
-
-  overflow:hidden !important;
-}
-
-/* Старого отдельного робота убираем,
-   потому что новый робот уже есть в живом слое */
-#liveRobot{
-  display:none !important;
-}
-
-/* Живой слой должен занимать всю фабрику */
-.rf-overlay{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  pointer-events:none !important;
-}
-</style>  
-<style>
-/* ===== ТОЧНАЯ ПОДГОНКА УТВЕРЖДЁННОЙ СЦЕНЫ ===== */
-
-/* НАШ РОБОТ ВЫШЕ */
-.rf-center-robot{
-  width:105px !important;
-  top:46% !important;
-}
-
-
-/* СТАРУЮ НАДПИСЬ КЛИК УБИРАЕМ */
-.clickWord{
-  display:none !important;
-}
-
-
-/* НОВАЯ НАДПИСЬ КЛИК */
-.rf-click{
-  position:absolute;
-
-  left:50%;
-  top:34%;
-
-  transform:
-    translateX(-50%)
-    rotate(-5deg);
-
-  z-index:25;
-
-  font-size:28px;
-  font-weight:900;
-
-  color:white;
-
-  text-shadow:
-    -2px -2px 0 #111,
-    2px -2px 0 #111,
-    -2px 2px 0 #111,
-    2px 2px 0 #111;
-
-  pointer-events:none;
-
-  animation:
-    rfClickIdle
-    1.6s
-    ease-in-out
-    infinite;
-}
-
-
-/* РУКИ ПОДНИМАЕМ ВЫШЕ */
-.rf-arm{
-  width:175px !important;
-}
-
-.rf-arm.left{
-  left:-8px !important;
-  top:39% !important;
-
-  animation:
-    rfArmLeftFinal
-    1.8s
-    ease-in-out
-    infinite !important;
-}
-
-.rf-arm.right{
-  right:-8px !important;
-  top:39% !important;
-
-  animation:
-    rfArmRightFinal
-    1.8s
-    ease-in-out
-    infinite !important;
-}
-
-
-/* ИСКРЫ ТЕПЕРЬ ОКОЛО НАКОНЕЧНИКОВ РУК */
-.rf-spark.left{
-  left:27% !important;
-  top:58% !important;
-}
-
-.rf-spark.right{
-  right:27% !important;
-  top:58% !important;
-}
-
-
-/* КОРОБКИ СТАВИМ ПРЯМО НА КОНВЕЙЕР */
-.rf-box{
-  bottom:auto !important;
-  top:68% !important;
-
-  width:58px !important;
-  height:48px !important;
-
-  z-index:21 !important;
-}
-
-
-/* ПЕРВАЯ КОРОБКА */
-.rf-box.left{
-  left:-70px !important;
-
-  animation:
-    rfBoxOnBelt
-    6s
-    linear
-    infinite !important;
-}
-
-
-/* ВТОРАЯ КОРОБКА */
-.rf-box.right{
-  left:-70px !important;
-  right:auto !important;
-
-  animation:
-    rfBoxOnBelt
-    6s
-    linear
-    -3s
-    infinite !important;
-}
-
-
-/* КЛИК ЛЕГКО ДЫШИТ */
-@keyframes rfClickIdle{
-
-  0%,100%{
-    transform:
-      translateX(-50%)
-      rotate(-5deg)
-      scale(1);
-  }
-
-  50%{
-    transform:
-      translateX(-50%)
-      rotate(-3deg)
-      scale(1.04);
-  }
-
-}
-
-
-/* ЛЕВАЯ РУКА */
-@keyframes rfArmLeftFinal{
-
-  0%,100%{
-    transform:
-      rotate(2deg)
-      translate(0,0);
-  }
-
-  50%{
-    transform:
-      rotate(13deg)
-      translate(8px,7px);
-  }
-
-}
-
-
-/* ПРАВАЯ РУКА */
-@keyframes rfArmRightFinal{
-
-  0%,100%{
-    transform:
-      scaleX(-1)
-      rotate(2deg)
-      translate(0,0);
-  }
-
-  50%{
-    transform:
-      scaleX(-1)
-      rotate(13deg)
-      translate(8px,7px);
-  }
-
-}
-
-
-/* КОРОБКА ЕДЕТ СЛЕВА НАПРАВО ПО ЛЕНТЕ */
-@keyframes rfBoxOnBelt{
-
-  0%{
-    transform:translateX(0);
-  }
-
-  100%{
-    transform:translateX(550px);
-  }
-
-}
-</style>
-
-
-<script>
-(function(){
-
-  const overlay =
-    document.querySelector(".rf-overlay");
-
-  if(!overlay){
-    return;
-  }
-
-
-  /* ДОБАВЛЯЕМ НОВЫЙ КЛИК */
-
-  if(
-    !overlay.querySelector(".rf-click")
-  ){
-
-    const click =
-      document.createElement("div");
-
-    click.className =
-      "rf-click";
-
-    click.textContent =
-      "КЛИК!";
-
-    overlay.appendChild(click);
-
-  }
-
-})();
-</script> 
-<style>
-/* ===== ЖЁСТКАЯ КОРРЕКЦИЯ ПОЗИЦИЙ ===== */
-
-/* Робота поднимаем выше */
-.rf-center-robot{
-  margin-top:-75px !important;
-}
-
-/* КЛИК уменьшаем и поднимаем */
-.rf-click{
-  font-size:22px !important;
-  margin-top:-85px !important;
-}
-
-/* Обе руки поднимаем */
-.rf-arm.left,
-.rf-arm.right{
-  margin-top:-105px !important;
-}
-
-/* Искры тоже поднимаем вместе с руками */
-.rf-spark.left,
-.rf-spark.right{
-  margin-top:-105px !important;
-}
-
-/* Коробки поднимаем на саму конвейерную ленту */
-.rf-box{
-  margin-top:-115px !important;
-}
-</style> 
-<style>
-/* =================================================
-   ROBOFACTORY v11
-   РАЗДЕЛЬНЫЕ РУКИ + КЛИК РОБОТА + КОРОБКИ ВЫШЕ
-   ================================================= */
-
-
-/* Старые цельные руки больше не показываем */
-.rf-arm{
-  display:none !important;
-}
-
-/* Старые отдельные искры тоже убираем */
-.rf-spark{
-  display:none !important;
-}
-
-
-/* ===== НОВАЯ РУКА ===== */
-
-.rf-arm-rig{
-  position:absolute;
-
-  width:175px;
-  height:160px;
-
-  z-index:20;
-
-  pointer-events:none;
-}
-
-/* Левая */
-.rf-arm-rig.left{
-  left:-8px;
-
-  top:39%;
-  margin-top:-105px;
-}
-
-/* Правая */
-.rf-arm-rig.right{
-  right:-8px;
-
-  top:39%;
-  margin-top:-105px;
-
-  /* зеркалим всю конструкцию */
-  transform:scaleX(-1);
-}
-
-
-/* обе картинки занимают одинаковое место */
-
-.rf-arm-base-img,
-.rf-arm-upper-img{
-  position:absolute;
-
-  left:0;
-  top:0;
-
-  width:100%;
-  height:100%;
-
-  object-fit:contain;
-}
-
-
-/* НИЖНЯЯ ЧАСТЬ РУКИ
-   остается полностью неподвижной */
-
-.rf-arm-base-img{
-  z-index:1;
-
-  clip-path:
-    inset(
-      58% 0 0 0
-    );
-}
-
-
-/* контейнер верхней части */
-
-.rf-arm-upper{
-  position:absolute;
-
-  inset:0;
-
-  z-index:2;
-
-  transform-origin:
-    18% 53%;
-
-  animation:
-    rfUpperArmMove
-    1.65s
-    ease-in-out
-    infinite;
-}
-
-
-/* показываем только верх руки */
-
-.rf-arm-upper-img{
-  clip-path:
-    inset(
-      0 0 24% 0
-    );
-}
-
-
-/* сварочная точка */
-
-.rf-weld-spark{
-  position:absolute;
-
-  left:86%;
-  top:63%;
-
-  width:34px;
-  height:34px;
-
-  border-radius:50%;
-
-  opacity:.25;
-
-  background:
-    radial-gradient(
-      circle,
-      #ffffff 0%,
-      #fff6a0 15%,
-      #ffad21 37%,
-      rgba(255,100,0,.25) 62%,
-      transparent 75%
+    setTextAll(
+      '[data-cost="auto"]',
+      compact(autoCost)
     );
 
-  filter:
-    drop-shadow(
-      0 0 8px #ffb21f
+
+    setTextAll(
+      '[data-cost="worker"]',
+      compact(workerCost)
     );
 
-  animation:
-    rfWeldFlash
-    .7s
-    steps(2)
-    infinite;
-}
+
+    setTextAll(
+      '[data-cost="conveyor"]',
+      compact(conveyorCost)
+    );
 
 
-/* Двигается ТОЛЬКО верх */
-
-@keyframes rfUpperArmMove{
-
-  0%,
-  100%{
-    transform:
-      rotate(-2deg);
-  }
-
-  45%{
-    transform:
-      rotate(8deg);
-  }
-
-  65%{
-    transform:
-      rotate(11deg);
-  }
-
-}
+    setTextAll(
+      '[data-cost="arm"]',
+      compact(armCost)
+    );
 
 
-/* мерцание сварки */
-
-@keyframes rfWeldFlash{
-
-  0%,
-  55%{
-    opacity:.15;
-    transform:scale(.65);
-  }
-
-  70%{
-    opacity:1;
-    transform:scale(1.3);
-  }
-
-  100%{
-    opacity:.25;
-    transform:scale(.8);
-  }
-
-}
+    setTextAll(
+      '[data-cost="factory"]',
+      compact(factoryCost)
+    );
 
 
-/* ===== РОБОТ ===== */
-
-.rf-center-robot.rf-robot-hit{
-  animation:
-    rfRobotRealClick
-    .30s
-    cubic-bezier(.2,.9,.35,1.35)
-    !important;
-}
+    setTextAll(
+      '[data-level="click"]',
+      clickLevel
+    );
 
 
-@keyframes rfRobotRealClick{
-
-  0%{
-    transform:
-      translate(-50%,-50%)
-      translateY(0)
-      scale(1);
-  }
-
-  28%{
-    transform:
-      translate(-50%,-50%)
-      translateY(5px)
-      scale(.92);
-  }
-
-  62%{
-    transform:
-      translate(-50%,-50%)
-      translateY(-17px)
-      scale(1.10);
-  }
-
-  100%{
-    transform:
-      translate(-50%,-50%)
-      translateY(0)
-      scale(1);
-  }
-
-}
+    setTextAll(
+      '[data-level="auto"]',
+      autoLevel
+    );
 
 
-/* ===== КОРОБКИ ЧУТЬ ВЫШЕ ===== */
-
-.rf-box{
-  margin-top:-145px !important;
-}
-</style>
+    setTextAll(
+      '[data-level="worker"]',
+      workers
+    );
 
 
-<script>
-(function(){
+    setTextAll(
+      '[data-level="conveyor"]',
+      conveyorLevel
+    );
 
-  function startV11(){
 
-    const overlay =
-      document.querySelector(
-        ".rf-overlay"
+    setTextAll(
+      '[data-level="arm"]',
+      armLevel
+    );
+
+
+    setTextAll(
+      '[data-level="factory"]',
+      factoryLevel
+    );
+
+
+    qsa(
+      '[data-buy="click"]'
+    )
+      .forEach(
+        button =>
+          button.disabled =
+            coins < clickCost
       );
 
-    const hero =
-      document.querySelector(
-        ".hero"
+
+    qsa(
+      '[data-buy="auto"]'
+    )
+      .forEach(
+        button =>
+          button.disabled =
+            coins < autoCost
       );
 
-    if(
-      !overlay
-      ||
-      !hero
-    ){
 
-      setTimeout(
-        startV11,
-        100
+    qsa(
+      '[data-buy="worker"]'
+    )
+      .forEach(
+        button =>
+          button.disabled =
+            workers >= 10
+            ||
+            coins < workerCost
       );
 
-      return;
-    }
 
-
-    /* ===== СОЗДАЁМ НОВЫЕ РУКИ ===== */
-
-    if(
-      !overlay.querySelector(
-        ".rf-arm-rig"
-      )
-    ){
-
-      const left =
-        document.createElement(
-          "div"
-        );
-
-      left.className =
-        "rf-arm-rig left";
-
-      left.innerHTML = `
-        <img
-          class="rf-arm-base-img"
-          src="./assets/arm.png.PNG?v=11"
-          alt=""
-        >
-
-        <div class="rf-arm-upper">
-
-          <img
-            class="rf-arm-upper-img"
-            src="./assets/arm.png.PNG?v=11"
-            alt=""
-          >
-
-          <div
-            class="rf-weld-spark">
-          </div>
-
-        </div>
-      `;
-
-
-      const right =
-        document.createElement(
-          "div"
-        );
-
-      right.className =
-        "rf-arm-rig right";
-
-      right.innerHTML = `
-        <img
-          class="rf-arm-base-img"
-          src="./assets/arm.png.PNG?v=11"
-          alt=""
-        >
-
-        <div class="rf-arm-upper">
-
-          <img
-            class="rf-arm-upper-img"
-            src="./assets/arm.png.PNG?v=11"
-            alt=""
-          >
-
-          <div
-            class="rf-weld-spark">
-          </div>
-
-        </div>
-      `;
-
-
-      overlay.appendChild(
-        left
+    qsa(
+      '[data-buy="conveyor"]'
+    )
+      .forEach(
+        button =>
+          button.disabled =
+            level < 3
+            ||
+            coins < conveyorCost
       );
 
-      overlay.appendChild(
-        right
+
+    qsa(
+      '[data-buy="arm"]'
+    )
+      .forEach(
+        button =>
+          button.disabled =
+            level < 5
+            ||
+            coins < armCost
       );
 
-    }
+
+    qsa(
+      '[data-buy="factory"]'
+    )
+      .forEach(
+        button =>
+          button.disabled =
+            level < 8
+            ||
+            coins < factoryCost
+      );
 
 
-    /* ===== РЕАКЦИЯ РОБОТА НА КЛИК ===== */
+    updateTasks();
 
-    if(
-      hero.dataset.rfRobotClickV11
-      !==
-      "1"
-    ){
+    updateBonuses();
 
-      hero.dataset.rfRobotClickV11 =
-        "1";
+  }
 
 
-      let lastHit = 0;
+  /* =========================
+     ПАССИВНЫЙ ДОХОД
+     ========================= */
 
 
-      function robotHit(event){
+  setInterval(
+    () => {
 
-        /* При нажатии на игровые кнопки
-           робота не дёргаем */
-
-        if(
-          event.target
-          &&
-          event.target.closest
-          &&
-          event.target.closest(
-            "button"
-          )
-        ){
-          return;
-        }
+      const income =
+        passiveIncome()
+        *
+        multiplier();
 
 
-        const now =
-          Date.now();
+      if(
+        income > 0
+      ){
 
+        coins += income;
 
-        if(
-          now-lastHit
-          <
-          100
-        ){
-          return;
-        }
-
-
-        lastHit =
-          now;
-
-
-        const robot =
-          document.querySelector(
-            ".rf-center-robot"
-          );
-
-
-        if(!robot){
-          return;
-        }
-
-
-        robot.classList.remove(
-          "rf-robot-hit"
-        );
-
-
-        void robot.offsetWidth;
-
-
-        robot.classList.add(
-          "rf-robot-hit"
-        );
-
-
-        setTimeout(
-          function(){
-
-            robot.classList.remove(
-              "rf-robot-hit"
-            );
-
-          },
-          320
-        );
+        save();
 
       }
 
 
-      hero.addEventListener(
-        "pointerdown",
-        robotHit,
-        true
-      );
+      update();
+
+    },
+    1000
+  );
 
 
-      hero.addEventListener(
-        "touchstart",
-        robotHit,
-        {
-          capture:true,
-          passive:true
-        }
-      );
-
-    }
-
-  }
-
-
-  if(
-    document.readyState
-    ===
-    "loading"
-  ){
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      function(){
-
-        setTimeout(
-          startV11,
-          100
-        );
-
-      }
-    );
-
-  }
-  else{
-
-    setTimeout(
-      startV11,
-      100
-    );
-
-  }
+  update();
 
 })();
-</script>  
-<style>
-/* ===== FIX v12 ===== */
+</script>
 
-/* Робота немного ниже */
-.rf-center-robot{
-  top:48% !important;
-  margin-top:0 !important;
-}
-
-/* КЛИК возвращаем и ставим над роботом */
-.rf-click{
-  display:block !important;
-  top:34% !important;
-  margin-top:0 !important;
-  font-size:23px !important;
-  z-index:40 !important;
-}
-
-/* Руки симметрично */
-.rf-arm-rig.left{
-  left:5px !important;
-  top:42% !important;
-  margin-top:0 !important;
-}
-
-.rf-arm-rig.right{
-  right:5px !important;
-  top:42% !important;
-  margin-top:0 !important;
-}
-
-/* Коробки ставим прямо на синюю ленту */
-.rf-box{
-  top:73% !important;
-  margin-top:0 !important;
-  width:54px !important;
-  height:46px !important;
-}
-
-/* Коробка едет через весь конвейер */
-.rf-box.left,
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-}
-
-.rf-box.left{
-  animation:rfBoxBeltV12 6s linear infinite !important;
-}
-
-.rf-box.right{
-  animation:rfBoxBeltV12 6s linear -3s infinite !important;
-}
-
-@keyframes rfBoxBeltV12{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:translateX(540px);
-  }
-}
-</style>  
-<style>
-/* ==========================================
-   ROBOFACTORY v13
-   ПОЗИЦИИ ПО БЕЛОЙ РАЗМЕТКЕ
-   ========================================== */
-
-
-/* ===== РОБОТ ===== */
-
-.rf-center-robot{
-  width:105px !important;
-
-  /* выше панели уровня */
-  top:40% !important;
-
-  margin-top:0 !important;
-
-  z-index:30 !important;
-}
-
-
-/* ===== КЛИК ===== */
-
-.rf-click{
-  display:block !important;
-
-  left:50% !important;
-  top:31% !important;
-
-  margin:0 !important;
-
-  font-size:21px !important;
-  line-height:1 !important;
-
-  z-index:35 !important;
-
-  transform:
-    translateX(-50%)
-    rotate(-5deg) !important;
-}
-
-
-/* ===== РУКИ ===== */
-
-/* Основание всей конструкции */
-.rf-arm-rig{
-  width:175px !important;
-  height:175px !important;
-
-  margin-top:0 !important;
-
-  z-index:24 !important;
-}
-
-
-/* Левая база по твоей отметке */
-.rf-arm-rig.left{
-  left:0 !important;
-  top:47% !important;
-}
-
-
-/* Правая база по твоей отметке */
-.rf-arm-rig.right{
-  right:0 !important;
-  top:47% !important;
-
-  transform:
-    scaleX(-1) !important;
-}
-
-
-/* НИЗ РУКИ НЕ ДВИГАЕТСЯ */
-.rf-arm-base-img{
-  animation:none !important;
-  transform:none !important;
-}
-
-
-/* Двигается только металлическая верхняя часть */
-.rf-arm-upper{
-  transform-origin:
-    24% 58% !important;
-
-  animation:
-    rfUpperOnlyV13
-    1.65s
-    ease-in-out
-    infinite !important;
-}
-
-
-@keyframes rfUpperOnlyV13{
-
-  0%,
-  100%{
-    transform:
-      rotate(-3deg);
-  }
-
-  45%{
-    transform:
-      rotate(5deg);
-  }
-
-  65%{
-    transform:
-      rotate(9deg);
-  }
-
-}
-
-
-/* Искры остаются возле наконечника */
-.rf-weld-spark{
-  left:83% !important;
-  top:60% !important;
-}
-
-
-/* ===== КОРОБКИ ===== */
-
-.rf-box{
-  /* белая линия, которую ты нарисовал */
-  top:76.5% !important;
-
-  bottom:auto !important;
-  margin:0 !important;
-
-  width:54px !important;
-  height:46px !important;
-
-  z-index:26 !important;
-}
-
-
-/* обе коробки стартуют слева */
-.rf-box.left,
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-}
-
-
-.rf-box.left{
-  animation:
-    rfBoxesV13
-    6s
-    linear
-    infinite !important;
-}
-
-
-.rf-box.right{
-  animation:
-    rfBoxesV13
-    6s
-    linear
-    -3s
-    infinite !important;
-}
-
-
-@keyframes rfBoxesV13{
-
-  from{
-    transform:
-      translateX(0);
-  }
-
-  to{
-    transform:
-      translateX(560px);
-  }
-
-}
-
-
-/* ===== РЕАКЦИЯ РОБОТА НА КЛИК ===== */
-
-.rf-center-robot.rfHitV13{
-  animation:
-    rfRobotHitV13
-    .32s
-    cubic-bezier(.2,.9,.3,1.3)
-    !important;
-}
-
-
-@keyframes rfRobotHitV13{
-
-  0%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-
-  30%{
-    transform:
-      translate(-50%,-50%)
-      translateY(6px)
-      scale(.90);
-  }
-
-  65%{
-    transform:
-      translate(-50%,-50%)
-      translateY(-18px)
-      scale(1.12);
-  }
-
-  100%{
-    transform:
-      translate(-50%,-50%)
-      translateY(0)
-      scale(1);
-  }
-
-}
-</style>
-
-
-<script>
-(function(){
-
-  function setupV13(){
-
-    const hero =
-      document.querySelector(".hero");
-
-    const overlay =
-      document.querySelector(".rf-overlay");
-
-    if(!hero || !overlay){
-      setTimeout(setupV13,100);
-      return;
-    }
-
-
-    /* Если КЛИК вдруг отсутствует,
-       создаём его заново */
-
-    let clickText =
-      overlay.querySelector(".rf-click");
-
-    if(!clickText){
-
-      clickText =
-        document.createElement("div");
-
-      clickText.className =
-        "rf-click";
-
-      clickText.textContent =
-        "КЛИК!";
-
-      overlay.appendChild(clickText);
-
-    }
-
-
-    /* Реальный эффект нажатия */
-
-    if(
-      hero.dataset.v13click !== "1"
-    ){
-
-      hero.dataset.v13click = "1";
-
-
-      hero.addEventListener(
-        "pointerdown",
-        function(event){
-
-          if(
-            event.target.closest &&
-            event.target.closest("button")
-          ){
-            return;
-          }
-
-
-          const robot =
-            document.querySelector(
-              ".rf-center-robot"
-            );
-
-          if(!robot){
-            return;
-          }
-
-
-          robot.classList.remove(
-            "rfHitV13"
-          );
-
-          void robot.offsetWidth;
-
-          robot.classList.add(
-            "rfHitV13"
-          );
-
-
-          setTimeout(
-            function(){
-
-              robot.classList.remove(
-                "rfHitV13"
-              );
-
-            },
-            340
-          );
-
-        },
-        true
-      );
-
-    }
-
-  }
-
-
-  if(document.readyState==="loading"){
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      setupV13
-    );
-
-  }
-  else{
-
-    setupV13();
-
-  }
-
-})();
-</script> 
-<style>
-/* ===== FIX v14 ===== */
-
-/* Руки буквально чуть выше */
-.rf-arm-rig.left,
-.rf-arm-rig.right{
-  top:45.5% !important;
-}
-
-/* Коробки заметно выше, прямо на ленту */
-.rf-box{
-  top:72.5% !important;
-}
-</style>  
-<style>
-/* ===== FIX v15: ТОЧНО ПО БЕЛЫМ МЕТКАМ ===== */
-
-/*
-  Нижняя часть обеих рук должна стоять
-  примерно на 64% высоты сцены.
-  Высота конструкции руки = 175px,
-  поэтому вычитаем её из координаты.
-*/
-.rf-arm-rig.left,
-.rf-arm-rig.right{
-  top:calc(64% - 175px) !important;
-  margin-top:0 !important;
-}
-
-/*
-  Белая длинная линия проходит примерно
-  на 77.4% высоты сцены.
-
-  На этой линии должен находиться НИЗ коробки,
-  а не её верх.
-*/
-.rf-box{
-  top:calc(77.4% - 46px) !important;
-  bottom:auto !important;
-
-  width:54px !important;
-  height:46px !important;
-
-  margin:0 !important;
-}
-
-/* Вертикальное положение больше вообще не меняется.
-   Коробка движется только слева направо. */
-
-.rf-box.left{
-  left:-65px !important;
-  right:auto !important;
-  animation:rfBoxExactV15 6s linear infinite !important;
-}
-
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-  animation:rfBoxExactV15 6s linear -3s infinite !important;
-}
-
-@keyframes rfBoxExactV15{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:translateX(560px);
-  }
-}
-</style>  
-<style>
-/* ===== FINAL POSITION FIX v16 ===== */
-
-/* РУКИ: ставим по твоим боковым меткам */
-.rf-arm-rig.left{
-  left:5px !important;
-  top:270px !important;
-  margin:0 !important;
-}
-
-.rf-arm-rig.right{
-  right:5px !important;
-  top:270px !important;
-  margin:0 !important;
-  transform:scaleX(-1) !important;
-}
-
-/* КОРОБКИ: нижняя грань идёт прямо по ленте */
-.rf-box{
-  top:483px !important;
-  bottom:auto !important;
-  margin:0 !important;
-
-  width:54px !important;
-  height:46px !important;
-
-  z-index:26 !important;
-}
-
-/* обе коробки идут слева направо */
-.rf-box.left,
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-}
-
-.rf-box.left{
-  animation:rfBoxFinalV16 6s linear infinite !important;
-}
-
-.rf-box.right{
-  animation:rfBoxFinalV16 6s linear -3s infinite !important;
-}
-
-@keyframes rfBoxFinalV16{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:translateX(530px);
-  }
-}
-</style>
-<style>
-/* ===== FINAL POSITION FIX v16 ===== */
-
-/* РУКИ: ставим по твоим боковым меткам */
-.rf-arm-rig.left{
-  left:5px !important;
-  top:270px !important;
-  margin:0 !important;
-}
-
-.rf-arm-rig.right{
-  right:5px !important;
-  top:270px !important;
-  margin:0 !important;
-  transform:scaleX(-1) !important;
-}
-
-/* КОРОБКИ: нижняя грань идёт прямо по ленте */
-.rf-box{
-  top:483px !important;
-  bottom:auto !important;
-  margin:0 !important;
-
-  width:54px !important;
-  height:46px !important;
-
-  z-index:26 !important;
-}
-
-/* обе коробки идут слева направо */
-.rf-box.left,
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-}
-
-.rf-box.left{
-  animation:rfBoxFinalV16 6s linear infinite !important;
-}
-
-.rf-box.right{
-  animation:rfBoxFinalV16 6s linear -3s infinite !important;
-}
-
-@keyframes rfBoxFinalV16{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:translateX(530px);
-  }
-}
-</style>
-<style>
-/* ===== FINAL POSITION FIX v16 ===== */
-
-/* РУКИ: ставим по твоим боковым меткам */
-.rf-arm-rig.left{
-  left:5px !important;
-  top:270px !important;
-  margin:0 !important;
-}
-
-.rf-arm-rig.right{
-  right:5px !important;
-  top:270px !important;
-  margin:0 !important;
-  transform:scaleX(-1) !important;
-}
-
-/* КОРОБКИ: нижняя грань идёт прямо по ленте */
-.rf-box{
-  top:483px !important;
-  bottom:auto !important;
-  margin:0 !important;
-
-  width:54px !important;
-  height:46px !important;
-
-  z-index:26 !important;
-}
-
-/* обе коробки идут слева направо */
-.rf-box.left,
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-}
-
-.rf-box.left{
-  animation:rfBoxFinalV16 6s linear infinite !important;
-}
-
-.rf-box.right{
-  animation:rfBoxFinalV16 6s linear -3s infinite !important;
-}
-
-@keyframes rfBoxFinalV16{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:translateX(530px);
-  }
-}
-</style>
- <style>
-.rf-arm-rig.left{
-  left:5px !important;
-  top:270px !important;
-  margin:0 !important;
-}
-
-.rf-arm-rig.right{
-  right:5px !important;
-  top:270px !important;
-  margin:0 !important;
-  transform:scaleX(-1) !important;
-}
-
-.rf-box{
-  top:483px !important;
-  bottom:auto !important;
-  margin:0 !important;
-  width:54px !important;
-  height:46px !important;
-  z-index:26 !important;
-}
-
-.rf-box.left,
-.rf-box.right{
-  left:-65px !important;
-  right:auto !important;
-}
-
-.rf-box.left{
-  animation:boxMove16 6s linear infinite !important;
-}
-
-.rf-box.right{
-  animation:boxMove16 6s linear -3s infinite !important;
-}
-
-@keyframes boxMove16{
-  from{
-    transform:translateX(0);
-  }
-
-  to{
-    transform:translateX(530px);
-  }
-}
-</style>
 </body>
 </html>
