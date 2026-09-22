@@ -5095,5 +5095,655 @@ button:disabled{
 
 })();
 </script>  
+<style>
+/* =====================================
+   ROBOFACTORY WORKERS v34
+   ===================================== */
+
+#upgradesScreen .worker-dashboard{
+  display:none;
+  margin-bottom:12px;
+}
+
+#upgradesScreen.workers-tab .worker-dashboard{
+  display:block;
+}
+
+.worker-dashboard{
+  padding:14px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(11,39,60,.98),
+      rgba(6,24,39,.98)
+    );
+
+  border:1px solid #315b78;
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.25);
+}
+
+.worker-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.worker-title{
+  font-size:19px;
+  font-weight:1000;
+}
+
+.worker-count{
+  padding:6px 10px;
+
+  border-radius:10px;
+
+  background:#12334b;
+
+  color:#57f084;
+
+  font-size:14px;
+  font-weight:1000;
+}
+
+.worker-info{
+  margin-top:5px;
+
+  color:#9db1c2;
+
+  font-size:12px;
+}
+
+.worker-income{
+  margin-top:7px;
+
+  color:#58ef81;
+
+  font-size:15px;
+  font-weight:900;
+}
+
+
+/* 10 МЕСТ */
+
+.worker-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:8px;
+
+  margin-top:14px;
+}
+
+.worker-slot{
+  aspect-ratio:1/1;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:14px;
+
+  background:#0b2133;
+
+  border:1px solid #284c68;
+
+  font-size:27px;
+
+  opacity:.42;
+
+  filter:grayscale(1);
+
+  transition:.2s;
+}
+
+.worker-slot.active{
+  opacity:1;
+  filter:none;
+
+  background:
+    linear-gradient(
+      145deg,
+      #174866,
+      #10334c
+    );
+
+  border-color:#27bce8;
+
+  box-shadow:
+    0 0 12px rgba(28,190,235,.22);
+}
+
+
+/* ПРОГРЕСС */
+
+.worker-progress{
+  height:10px;
+
+  margin-top:14px;
+
+  border-radius:99px;
+
+  overflow:hidden;
+
+  background:#06131d;
+}
+
+.worker-progress-fill{
+  height:100%;
+
+  width:0%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #35db66,
+      #58f58b
+    );
+
+  transition:width .25s;
+}
+
+
+/* КНОПКА НАЙМА */
+
+.worker-hire-big{
+  width:100%;
+
+  min-height:56px;
+
+  margin-top:12px;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #2de978,
+      #0fb74d
+    );
+
+  font-weight:1000;
+
+  font-size:15px;
+
+  box-shadow:
+    inset 0 -5px rgba(0,0,0,.12);
+}
+
+.worker-hire-big small{
+  display:block;
+
+  margin-top:3px;
+
+  font-size:12px;
+}
+
+.worker-hire-big:disabled{
+  background:
+    linear-gradient(
+      #1a7048,
+      #105339
+    );
+}
+
+
+/* старую карточку Рабочие прячем,
+   чтобы не было дубля */
+
+#upgradesScreen.workers-tab
+.upgrade[data-category="workers"]{
+  display:none !important;
+}
+</style>
+
+
+<script>
+(function(){
+
+  const screen =
+    document.querySelector(
+      "#upgradesScreen"
+    );
+
+  if(!screen){
+    return;
+  }
+
+
+  const tabs =
+    [
+      ...screen.querySelectorAll(
+        ".tab"
+      )
+    ];
+
+
+  const oldWorkerCard =
+    [
+      ...screen.querySelectorAll(
+        ".upgrade"
+      )
+    ]
+    .find(card => {
+
+      const name =
+        card.querySelector(
+          ".up-name"
+        )
+        ?.textContent
+        ?.trim()
+        ?.toLowerCase()
+        ||
+        "";
+
+      return name.includes(
+        "рабоч"
+      );
+
+    });
+
+
+  if(
+    !oldWorkerCard
+    ||
+    tabs.length < 2
+  ){
+    return;
+  }
+
+
+  /* СОЗДАЁМ ПАНЕЛЬ */
+
+  const panel =
+    document.createElement(
+      "div"
+    );
+
+
+  panel.className =
+    "worker-dashboard";
+
+
+  panel.innerHTML = `
+    <div class="worker-head">
+
+      <div>
+        <div class="worker-title">
+          👷 Команда фабрики
+        </div>
+
+        <div class="worker-info">
+          Каждый рабочий производит +2 ⚙️/с
+        </div>
+      </div>
+
+      <div class="worker-count">
+        <span id="workerDashboardCount">0</span>/10
+      </div>
+
+    </div>
+
+
+    <div class="worker-income">
+      Общий доход:
+      +<span id="workerDashboardIncome">0</span>/с
+    </div>
+
+
+    <div
+      class="worker-grid"
+      id="workerGrid"
+    >
+    </div>
+
+
+    <div class="worker-progress">
+
+      <div
+        class="worker-progress-fill"
+        id="workerProgressFill"
+      >
+      </div>
+
+    </div>
+
+
+    <button
+      class="worker-hire-big"
+      id="workerHireBig"
+    >
+
+      Нанять рабочего
+
+      <small>
+        ⚙️
+        <span id="workerHireCost">
+          50
+        </span>
+      </small>
+
+    </button>
+  `;
+
+
+  const tabsElement =
+    screen.querySelector(
+      ".tabs"
+    );
+
+
+  tabsElement.insertAdjacentElement(
+    "afterend",
+    panel
+  );
+
+
+  /* СОЗДАЁМ 10 ЯЧЕЕК */
+
+  const grid =
+    panel.querySelector(
+      "#workerGrid"
+    );
+
+
+  for(
+    let i=0;
+    i<10;
+    i++
+  ){
+
+    const slot =
+      document.createElement(
+        "div"
+      );
+
+
+    slot.className =
+      "worker-slot";
+
+
+    slot.textContent =
+      "👷";
+
+
+    grid.appendChild(
+      slot
+    );
+
+  }
+
+
+  const hireButton =
+    panel.querySelector(
+      "#workerHireBig"
+    );
+
+
+  /*
+    Используем существующую кнопку найма.
+    Поэтому экономика игры не дублируется.
+  */
+
+  hireButton.addEventListener(
+    "click",
+    function(){
+
+      const original =
+        oldWorkerCard.querySelector(
+          '[data-buy="worker"]'
+        );
+
+
+      if(
+        original
+        &&
+        !original.disabled
+      ){
+
+        original.click();
+
+      }
+
+
+      setTimeout(
+        refreshWorkers,
+        30
+      );
+
+    }
+  );
+
+
+  function getWorkers(){
+
+    const value =
+      Number(
+        localStorage.getItem(
+          "workers"
+        )
+      );
+
+
+    return Number.isFinite(value)
+      ?
+      Math.min(
+        Math.max(
+          value,
+          0
+        ),
+        10
+      )
+      :
+      0;
+
+  }
+
+
+  function getWorkerCost(){
+
+    const value =
+      Number(
+        localStorage.getItem(
+          "workerCost"
+        )
+      );
+
+
+    return Number.isFinite(value)
+      ?
+      value
+      :
+      50;
+
+  }
+
+
+  function shortNumber(value){
+
+    if(value >= 1000000){
+
+      return (
+        value/1000000
+      )
+      .toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "M";
+
+    }
+
+
+    if(value >= 1000){
+
+      return (
+        value/1000
+      )
+      .toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "K";
+
+    }
+
+
+    return String(
+      Math.floor(value)
+    );
+
+  }
+
+
+  function refreshWorkers(){
+
+    const workers =
+      getWorkers();
+
+
+    const cost =
+      getWorkerCost();
+
+
+    panel.querySelector(
+      "#workerDashboardCount"
+    )
+    .textContent =
+      workers;
+
+
+    panel.querySelector(
+      "#workerDashboardIncome"
+    )
+    .textContent =
+      workers * 2;
+
+
+    panel.querySelector(
+      "#workerHireCost"
+    )
+    .textContent =
+      shortNumber(
+        cost
+      );
+
+
+    panel.querySelector(
+      "#workerProgressFill"
+    )
+    .style.width =
+      (
+        workers
+        /
+        10
+        *
+        100
+      )
+      +
+      "%";
+
+
+    [
+      ...grid.children
+    ]
+    .forEach(
+      (slot,index) => {
+
+        slot.classList.toggle(
+          "active",
+          index < workers
+        );
+
+      }
+    );
+
+
+    hireButton.disabled =
+      workers >= 10;
+
+
+    if(
+      workers >= 10
+    ){
+
+      hireButton.innerHTML =
+        `
+          Максимум работников
+          <small>10/10</small>
+        `;
+
+    }
+    else{
+
+      hireButton.innerHTML =
+        `
+          Нанять рабочего
+          <small>
+            ⚙️
+            <span id="workerHireCost">
+              ${shortNumber(cost)}
+            </span>
+          </small>
+        `;
+
+    }
+
+  }
+
+
+  /*
+    ВКЛАДКА РАБОЧИХ
+  */
+
+  tabs.forEach(
+    (tab,index) => {
+
+      tab.addEventListener(
+        "click",
+        function(){
+
+          screen.classList.toggle(
+            "workers-tab",
+            index === 1
+          );
+
+
+          if(index === 1){
+
+            refreshWorkers();
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  /* обновляем данные автоматически */
+
+  setInterval(
+    refreshWorkers,
+    500
+  );
+
+
+  refreshWorkers();
+
+})();
+</script>
 </body>
 </html>
