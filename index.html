@@ -4557,5 +4557,543 @@ button:disabled{
 
 })();
 </script> 
+<style>
+/* =========================================
+   ROBOFACTORY - UPGRADES v33
+   ========================================= */
+
+#upgradesScreen{
+  padding:14px 12px 100px !important;
+  background:
+    radial-gradient(circle at 50% -10%, #113553 0%, #071521 46%, #050e17 100%);
+}
+
+
+/* ЗАГОЛОВОК */
+
+#upgradesScreen .title{
+  position:sticky;
+  top:0;
+  z-index:60;
+
+  margin:-14px -12px 10px;
+  padding:15px 14px 10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,16,27,.98),
+      rgba(5,16,27,.94)
+    );
+
+  backdrop-filter:blur(12px);
+
+  font-size:22px;
+}
+
+
+/* ВКЛАДКИ */
+
+#upgradesScreen .tabs{
+  position:sticky;
+  top:58px;
+  z-index:59;
+
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+
+  gap:6px;
+
+  margin:0 0 14px;
+
+  padding:5px;
+
+  border-radius:15px;
+
+  background:#071725;
+
+  border:1px solid #27475f;
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.28);
+}
+
+
+#upgradesScreen .tab{
+  min-height:42px;
+
+  border-radius:11px;
+
+  background:transparent;
+
+  color:#8298aa;
+
+  font-size:11px;
+  font-weight:900;
+
+  transition:.18s;
+}
+
+
+#upgradesScreen .tab.active{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      180deg,
+      #149ee7,
+      #0871ae
+    );
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.22),
+    0 4px 10px rgba(0,132,220,.2);
+}
+
+
+/* КАРТОЧКИ */
+
+#upgradesScreen .upgrade{
+  position:relative;
+
+  display:grid;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    108px;
+
+  gap:11px;
+
+  align-items:center;
+
+  min-height:108px;
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10,35,55,.98),
+      rgba(7,25,41,.98)
+    );
+
+  border:1px solid #315a78;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.035),
+    0 7px 16px rgba(0,0,0,.2);
+
+  transition:
+    transform .18s,
+    opacity .18s;
+}
+
+
+#upgradesScreen .upgrade:active{
+  transform:scale(.985);
+}
+
+
+/* ИКОНКА */
+
+#upgradesScreen .up-icon{
+  width:58px;
+  height:58px;
+
+  border-radius:16px;
+
+  display:grid;
+  place-items:center;
+
+  font-size:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #173c59,
+      #102c43
+    );
+
+  border:
+    1px solid rgba(255,255,255,.04);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.07);
+}
+
+
+/* ТЕКСТ */
+
+#upgradesScreen .up-name{
+  margin-bottom:4px;
+
+  font-size:18px;
+  font-weight:1000;
+
+  color:#f5f9fc;
+}
+
+
+#upgradesScreen .up-meta{
+  font-size:12px;
+  line-height:1.3;
+
+  color:#9eb0bf;
+}
+
+
+#upgradesScreen .gain{
+  margin-top:5px;
+
+  color:#4eee7d;
+
+  font-size:13px;
+  font-weight:900;
+}
+
+
+/* КНОПКИ */
+
+#upgradesScreen .up-btn{
+  width:108px;
+  min-width:108px;
+  min-height:76px;
+
+  padding:8px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #2ce774,
+      #10b950
+    );
+
+  color:#fff;
+
+  font-size:13px;
+  font-weight:1000;
+
+  box-shadow:
+    inset 0 -5px rgba(0,0,0,.10),
+    inset 0 1px rgba(255,255,255,.22),
+    0 5px 12px rgba(0,0,0,.18);
+}
+
+
+#upgradesScreen .up-btn span{
+  display:block;
+
+  margin-top:7px;
+
+  font-size:12px;
+}
+
+
+/* ЗАБЛОКИРОВАННОЕ */
+
+#upgradesScreen .upgrade.rf-locked{
+  opacity:.62;
+}
+
+
+#upgradesScreen .upgrade.rf-locked .up-btn{
+  background:
+    linear-gradient(
+      #187a4d,
+      #105c3b
+    );
+
+  color:#9cb7aa;
+}
+
+
+#upgradesScreen .rf-lock-label{
+  display:inline-block;
+
+  margin-top:5px;
+
+  padding:3px 7px;
+
+  border-radius:7px;
+
+  background:
+    rgba(255,173,27,.12);
+
+  color:#ffc857;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+
+/* СКРЫТЫЕ ПО ВКЛАДКАМ */
+
+#upgradesScreen .upgrade.rf-hidden{
+  display:none !important;
+}
+
+
+/* МОБИЛЬНЫЙ РАЗМЕР */
+
+@media(max-width:380px){
+
+  #upgradesScreen .upgrade{
+    grid-template-columns:
+      52px
+      minmax(0,1fr)
+      94px;
+
+    padding:10px;
+  }
+
+  #upgradesScreen .up-icon{
+    width:52px;
+    height:52px;
+  }
+
+  #upgradesScreen .up-btn{
+    width:94px;
+    min-width:94px;
+
+    font-size:12px;
+  }
+
+  #upgradesScreen .up-name{
+    font-size:16px;
+  }
+}
+</style>
+
+
+<script>
+(function(){
+
+  const screen =
+    document.querySelector(
+      "#upgradesScreen"
+    );
+
+  if(!screen){
+    return;
+  }
+
+
+  const tabs =
+    [
+      ...screen.querySelectorAll(
+        ".tab"
+      )
+    ];
+
+
+  const cards =
+    [
+      ...screen.querySelectorAll(
+        ".upgrade"
+      )
+    ];
+
+
+  if(
+    tabs.length < 3
+    ||
+    cards.length === 0
+  ){
+    return;
+  }
+
+
+  /*
+    РАСКИДЫВАЕМ УЛУЧШЕНИЯ ПО ВКЛАДКАМ
+  */
+
+  cards.forEach(
+    card => {
+
+      const name =
+        (
+          card.querySelector(
+            ".up-name"
+          )
+          ?.textContent
+          ||
+          ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+      let category =
+        "production";
+
+
+      if(
+        name.includes(
+          "рабоч"
+        )
+      ){
+
+        category =
+          "workers";
+
+      }
+
+
+      if(
+        name.includes("новый цех")
+        ||
+        name.includes("склад")
+        ||
+        name.includes("грузовик")
+      ){
+
+        category =
+          "special";
+
+      }
+
+
+      card.dataset.category =
+        category;
+
+
+      const button =
+        card.querySelector(
+          ".up-btn"
+        );
+
+
+      if(
+        button
+        &&
+        button.disabled
+      ){
+
+        card.classList.add(
+          "rf-locked"
+        );
+
+
+        const meta =
+          card.querySelector(
+            ".up-meta"
+          );
+
+
+        if(
+          meta
+          &&
+          !card.querySelector(
+            ".rf-lock-label"
+          )
+        ){
+
+          const label =
+            document.createElement(
+              "div"
+            );
+
+
+          label.className =
+            "rf-lock-label";
+
+
+          label.textContent =
+            "🔒 Пока недоступно";
+
+
+          meta.appendChild(
+            label
+          );
+
+        }
+
+      }
+
+    }
+  );
+
+
+  function selectTab(
+    index
+  ){
+
+    const categories =
+      [
+        "production",
+        "workers",
+        "special"
+      ];
+
+
+    const selected =
+      categories[index];
+
+
+    tabs.forEach(
+      (tab,i) => {
+
+        tab.classList.toggle(
+          "active",
+          i === index
+        );
+
+      }
+    );
+
+
+    cards.forEach(
+      card => {
+
+        card.classList.toggle(
+          "rf-hidden",
+          card.dataset.category
+          !==
+          selected
+        );
+
+      }
+    );
+
+
+    window.scrollTo(
+      {
+        top:0,
+        behavior:"smooth"
+      }
+    );
+
+  }
+
+
+  tabs.forEach(
+    (tab,index) => {
+
+      tab.addEventListener(
+        "click",
+        function(){
+
+          selectTab(
+            index
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  selectTab(0);
+
+})();
+</script>  
 </body>
 </html>
