@@ -2,191 +2,1970 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+>
+
 <title>RoboFactory</title>
+
 <style>
-:root{--bg:#07111d;--panel:#0d2134;--line:#31516c;--text:#f8fbff;--green:#25dc70;--blue:#1f9cff;--yellow:#ffd55a}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:#04090f;color:var(--text);font-family:Arial,Helvetica,sans-serif;touch-action:manipulation;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-button{font:inherit;color:inherit;border:0;touch-action:manipulation;-webkit-user-select:none;user-select:none}
-.app{width:100%;max-width:460px;min-height:100vh;margin:auto;background:linear-gradient(#07111d,#091521);padding-bottom:calc(74px + env(safe-area-inset-bottom));overflow:hidden}
-.screen{display:none;min-height:calc(100vh - 74px);padding:10px 10px 20px}.screen.active{display:block}
+:root{
+  --bg:#07111d;
+  --panel:#0c1c2d;
+  --panel2:#14283d;
+  --line:#31516c;
+  --text:#f7fbff;
+  --muted:#9fb3c6;
+  --green:#28dc70;
+  --green2:#0d9f47;
+  --blue:#199cf8;
+  --yellow:#ffd45a;
+}
 
-.topbar{display:grid;grid-template-columns:48px 1fr auto;gap:8px;align-items:center;margin-bottom:8px;position:relative;z-index:30}
-.squareBtn,.wallet,.gems{background:rgba(7,21,35,.96);border:1px solid #31526e;box-shadow:0 8px 18px rgba(0,0,0,.34),inset 0 0 0 1px rgba(255,255,255,.03)}
-.squareBtn{width:48px;height:48px;border-radius:14px;font-size:23px}
-.wallet{border-radius:16px;padding:6px 10px;text-align:center}
-.balance{font-size:21px;font-weight:900}
-.rate{color:#55ec82;font-size:13px;font-weight:900;margin-top:2px}
-.gems{min-width:100px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:900}
-.plus{width:24px;height:24px;border-radius:7px;background:#36df77;color:#052713;display:grid;place-items:center}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
-.hero{position:relative;height:704px;overflow:hidden;border-radius:22px;border:1px solid #2c4a63;background:#152230;box-shadow:0 16px 30px rgba(0,0,0,.4)}
-.factory-bg{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 50% 44%,rgba(255,177,43,.17),transparent 24%),radial-gradient(circle at 78% 15%,rgba(73,161,220,.22),transparent 25%),linear-gradient(180deg,#263e54 0%,#152b3c 49%,#09141f 100%)}
-.wallGrid{position:absolute;inset:0;opacity:.24;background:repeating-linear-gradient(90deg,transparent 0 58px,rgba(255,255,255,.045) 58px 60px),repeating-linear-gradient(0deg,transparent 0 78px,rgba(255,255,255,.03) 78px 80px)}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#04090f;
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  touch-action:manipulation;
+  overscroll-behavior:none;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
 
-.window{position:absolute;right:22px;top:145px;width:112px;height:140px;background:linear-gradient(135deg,#9fe8f0,#4c91bb);border:9px solid #294052;box-shadow:inset 0 0 0 3px #4c6c82}
-.window:before,.window:after{content:"";position:absolute;background:#294052}
-.window:before{width:8px;height:100%;left:47px}
-.window:after{height:8px;width:100%;top:60px}
+button{
+  font:inherit;
+  color:inherit;
+  border:0;
+  touch-action:manipulation;
+}
 
-.sign{position:absolute;left:17px;top:176px;width:116px;height:178px;padding:13px 9px;border-radius:8px;background:linear-gradient(#343f49,#202a33);border:5px solid #141d24;transform:rotate(-2deg);box-shadow:0 10px 20px rgba(0,0,0,.3);color:#cbd6df;font-size:12px;font-weight:900;line-height:1.25;text-align:center}
-.sign b{display:block;color:#fff;font-size:23px;line-height:.98;margin-bottom:10px}
+.app{
+  width:100%;
+  max-width:460px;
+  min-height:100vh;
+  margin:auto;
+  background:linear-gradient(#07111d,#091521);
+  padding-bottom:calc(74px + env(safe-area-inset-bottom));
+  overflow:hidden;
+}
 
-.factoryLamp{position:absolute;left:50%;top:-15px;width:7px;height:145px;background:#11171d;transform:translateX(-50%);transform-origin:top center;animation:lampSwing 3.2s ease-in-out infinite}
-.factoryLamp:after{content:"";position:absolute;left:-46px;bottom:-19px;width:100px;height:49px;border-radius:52% 52% 28% 28%;background:linear-gradient(#3e4c58,#1b2730);border:5px solid #11171d;box-shadow:0 10px 25px rgba(0,0,0,.42)}
-.factoryLamp:before{content:"";position:absolute;left:-15px;bottom:-8px;width:37px;height:26px;border-radius:50%;background:#ffe68b;box-shadow:0 0 22px 9px rgba(255,191,67,.8),0 35px 55px 19px rgba(255,154,35,.16);animation:lampPulse 1.7s ease-in-out infinite}
+.screen{
+  display:none;
+  min-height:calc(100vh - 74px);
+  padding:10px;
+}
 
-.pipe1,.pipe2,.pipe3{position:absolute;border-radius:30px;box-shadow:inset 0 4px 0 rgba(255,255,255,.12);animation:pipeShake 2.8s ease-in-out infinite}
-.pipe1{left:-38px;top:314px;width:228px;height:30px;background:#c98226;border:6px solid #754817}
-.pipe2{right:-42px;top:370px;width:195px;height:31px;background:#718596;border:6px solid #354759;animation-delay:-.8s}
-.pipe3{left:102px;top:248px;width:108px;height:23px;background:#d78e2e;border:5px solid #754817;transform:rotate(90deg);animation-delay:-1.4s}
+.screen.active{
+  display:block;
+}
 
-.arm{position:absolute;top:382px;width:118px;height:112px;z-index:3;transform-origin:26px 90px;animation:armMove 2.4s ease-in-out infinite}
-.arm.left{left:8px}
-.arm.right{right:9px;transform:scaleX(-1);transform-origin:92px 90px;animation-direction:reverse;animation-duration:2.7s}
-.armBase{position:absolute;left:3px;bottom:0;width:48px;height:36px;border-radius:10px;background:linear-gradient(#ee9a2c,#ae611e);border:5px solid #6f4017}
-.armSeg{position:absolute;left:36px;bottom:29px;width:20px;height:79px;border-radius:10px;background:linear-gradient(#ffae3a,#d77b20);border:4px solid #814917;transform:rotate(-29deg);transform-origin:bottom center}
-.armHead{position:absolute;left:81px;top:0;font-size:35px;transform:rotate(20deg)}
-.arm.right .armHead{transform:scaleX(-1) rotate(20deg)}
+/* TOP */
 
-.spark{position:absolute;width:5px;height:5px;border-radius:50%;background:#ffd65f;box-shadow:0 0 9px #ffad1f;opacity:0}
-.sp1{left:159px;top:374px;animation:spark 2.3s infinite .3s}
-.sp2{right:126px;top:392px;animation:spark 2.7s infinite 1.1s}
-.sp3{left:220px;top:298px;animation:spark 3.1s infinite 1.7s}
+.topbar{
+  display:grid;
+  grid-template-columns:48px 1fr 100px;
+  gap:8px;
+  align-items:center;
+  margin-bottom:8px;
+}
 
-.steam{position:absolute;width:25px;height:25px;border-radius:50%;background:rgba(236,246,252,.25);filter:blur(1px);opacity:0}
-.st1{left:119px;top:305px;animation:steam 2.3s ease-out infinite}
-.st2{right:109px;top:342px;animation:steam 2.8s ease-out infinite .8s}
+.square,
+.wallet,
+.gems{
+  background:#0a1a2a;
+  border:1px solid #31516c;
+  box-shadow:0 8px 18px rgba(0,0,0,.35);
+}
 
-.conveyor{position:absolute;left:-28px;right:-28px;bottom:125px;height:67px;border-radius:18px;background:#263640;border:7px solid #111a22;overflow:hidden}
-.belt{position:absolute;left:0;right:0;top:20px;height:19px;background:repeating-linear-gradient(90deg,#0d151c 0 24px,#40525e 24px 48px);background-size:96px 19px;animation:beltMove .82s linear infinite}
+.square{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  font-size:23px;
+}
 
-.roller{position:absolute;bottom:140px;width:24px;height:24px;border-radius:50%;background:#0a1218;border:5px solid #4e6575;z-index:2;animation:spin .72s linear infinite}
-.r1{left:26px}.r2{left:104px}.r3{left:182px}.r4{left:260px}.r5{left:338px}
+.wallet{
+  border-radius:16px;
+  text-align:center;
+  padding:6px 10px;
+}
 
-.movingBox{position:absolute;bottom:166px;left:-78px;width:56px;height:48px;border-radius:6px;background:linear-gradient(135deg,#d79e56,#a7662e);border:4px solid #70461f;display:grid;place-items:center;font-size:18px;z-index:4;box-shadow:0 8px 12px rgba(0,0,0,.25),inset 0 0 0 2px rgba(255,230,170,.1);animation:boxTravel 8.4s linear infinite}
-.mb2{animation-delay:-2.8s}
-.mb3{animation-delay:-5.6s}
+.balance{
+  font-size:21px;
+  font-weight:900;
+}
 
-.tapZone{position:absolute;left:50%;top:48.5%;transform:translate(-50%,-50%);width:248px;height:333px;z-index:12;touch-action:none}
+.rate{
+  color:#57ef84;
+  font-size:13px;
+  font-weight:900;
+  margin-top:2px;
+}
 
-.machine{position:absolute;left:29px;top:35px;width:190px;height:228px;border-radius:28px 28px 36px 36px;border:5px solid #111a22;background:linear-gradient(90deg,#263a4b 0 14%,#576e81 14% 86%,#293b49 86% 100%);box-shadow:inset 0 0 0 3px rgba(255,255,255,.05),0 18px 30px rgba(0,0,0,.45);animation:machineIdle 1.9s ease-in-out infinite}
+.gems{
+  height:48px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  font-weight:900;
+}
 
-.machineTop{position:absolute;left:29px;top:-31px;width:124px;height:50px;border-radius:18px 18px 8px 8px;background:linear-gradient(#6f8495,#34495b);border:5px solid #111a22}
+.plus{
+  width:24px;
+  height:24px;
+  border-radius:7px;
+  background:#35df77;
+  color:#042512;
+  display:grid;
+  place-items:center;
+}
 
-.glow{position:absolute;left:22px;right:22px;top:29px;height:106px;border-radius:50%;background:radial-gradient(circle,#fff6b1 0,#ffc42f 37%,rgba(255,147,0,.28) 68%,transparent 72%);filter:drop-shadow(0 0 23px #ffb62c);animation:pulse 1.3s ease-in-out infinite}
+/* FACTORY */
 
-.robot{position:absolute;left:35px;right:35px;bottom:27px;height:76px;border-radius:17px;border:3px solid #314a5f;background:#101c25;display:grid;place-items:center;font-size:38px}
-.robotAnimated{display:inline-block;animation:robotBob 1.2s ease-in-out infinite}
+.hero{
+  height:704px;
+  position:relative;
+  overflow:hidden;
+  border-radius:22px;
+  border:1px solid #2c4a63;
+  background:#152230;
+  box-shadow:0 16px 30px rgba(0,0,0,.4);
+}
 
-.clickWord{position:absolute;z-index:4;top:99px;left:50%;transform:translateX(-50%) rotate(-7deg);font-size:35px;font-weight:900;text-shadow:-2px -2px #111,2px -2px #111,-2px 2px #111,2px 2px #111}
+.scene{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
 
-.hand{position:absolute;right:-5px;bottom:16px;font-size:55px;z-index:5;animation:hand 1s ease-in-out infinite}
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(255,177,43,.17),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 78% 15%,
+      rgba(73,161,220,.22),
+      transparent 25%
+    ),
+    linear-gradient(
+      180deg,
+      #263e54 0%,
+      #152b3c 49%,
+      #09141f 100%
+    );
+}
 
-.levelBox{position:absolute;left:50%;bottom:-51px;transform:translateX(-50%);width:132px;padding:7px;border-radius:12px;background:#15283a;border:2px solid #3c5a73;text-align:center;font-size:12px;font-weight:900}
-.xp{height:8px;background:#08121a;border-radius:999px;overflow:hidden;margin-top:5px}
-#xpFill{height:100%;width:0;background:linear-gradient(90deg,#7ee83f,#1fd468);transition:width .25s}
+.grid{
+  position:absolute;
+  inset:0;
+  opacity:.22;
 
-.bonusRow{position:absolute;top:14px;left:12px;right:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;z-index:20}
-.bonus{min-height:68px;border-radius:15px;border:2px solid #dda42d;background:linear-gradient(#4a3819,#2d2111);padding:8px;display:flex;align-items:center;gap:9px;text-align:left;box-shadow:0 8px 16px rgba(0,0,0,.28)}
-.bonus:first-child{animation:bonusGlow 2.1s ease-in-out infinite}
-.bonusIcon{font-size:30px}
-.bonusTitle{font-size:13px;font-weight:900}
-.bonusSub{font-size:11px;color:#f7da92;font-weight:800;margin-top:3px}
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 58px,
+      rgba(255,255,255,.045) 58px 60px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 78px,
+      rgba(255,255,255,.03) 78px 80px
+    );
+}
 
-.side{position:absolute;right:9px;top:188px;z-index:21;display:flex;flex-direction:column;gap:8px}
-.side button{width:62px;height:66px;border-radius:14px;background:rgba(8,25,40,.97);border:1px solid #31516d;font-size:10px;font-weight:900;animation:floatBtn 2.8s ease-in-out infinite}
-.side button:nth-child(2){animation-delay:-.6s}
-.side button:nth-child(3){animation-delay:-1.2s}
-.side button span{display:block;font-size:27px;margin-bottom:3px}
+/* WINDOW */
 
-.stats{position:absolute;left:7px;right:7px;bottom:9px;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;z-index:22}
-.stat{border:1px solid #31516e;border-radius:15px;background:rgba(7,25,40,.97);padding:9px 6px;text-align:center;box-shadow:0 7px 14px rgba(0,0,0,.24)}
-.statTitle{font-size:11px;color:#dce6ef;font-weight:800;min-height:26px}
-.statNumber{font-size:18px;font-weight:900;color:#74ef7c;margin:5px 0 7px}
+.window{
+  position:absolute;
+  right:22px;
+  top:145px;
+  width:112px;
+  height:140px;
 
-.buy{width:100%;min-height:44px;border-radius:10px;background:linear-gradient(#2ae16f,#0fa147);font-size:12px;font-weight:900;box-shadow:inset 0 -3px rgba(0,0,0,.18)}
-.buy:disabled,.upBtn:disabled,.claim:disabled{opacity:.45;filter:grayscale(1)}
+  background:
+    linear-gradient(
+      135deg,
+      #9fe8f0,
+      #4c91bb
+    );
 
-.floating{position:absolute;left:50%;top:113px;z-index:40;color:#ffd453;font-size:30px;font-weight:900;pointer-events:none;animation:fly .7s ease forwards;text-shadow:0 2px 6px #000}
+  border:9px solid #294052;
+  box-shadow:inset 0 0 0 3px #4c6c82;
+}
 
-.title{font-size:25px;font-weight:900;display:flex;align-items:center;gap:10px;margin:6px 0 14px}
+.window:before,
+.window:after{
+  content:"";
+  position:absolute;
+  background:#294052;
+}
 
-.back{width:42px;height:42px;border-radius:13px;background:#0c1d2d;border:1px solid #2d4d68;font-size:22px}
+.window:before{
+  width:8px;
+  height:100%;
+  left:47px;
+}
 
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:#0b1a29;padding:4px;border-radius:14px;margin-bottom:12px}
-.tab{padding:12px 4px;border-radius:11px;background:transparent;color:#94a8bb;font-weight:900}
-.tab.active{background:linear-gradient(#2499ff,#1176d7);color:#fff}
+.window:after{
+  height:8px;
+  width:100%;
+  top:60px;
+}
 
-.upgrade{display:grid;grid-template-columns:65px 1fr 108px;gap:9px;align-items:center;background:linear-gradient(#14283e,#0d1c2b);border:1px solid #29455d;border-radius:16px;padding:10px;margin-bottom:10px;box-shadow:0 8px 14px rgba(0,0,0,.18)}
-.upIcon{width:65px;height:65px;border-radius:13px;display:grid;place-items:center;background:#20384f;font-size:35px}
-.upName{font-size:16px;font-weight:900}
-.upMeta{font-size:12px;color:#a9bac9;margin-top:4px}
-.gain{font-size:13px;color:#56ed81;font-weight:900;margin-top:4px}
+/* SIGN */
 
-.upBtn{min-height:54px;border-radius:12px;background:linear-gradient(#2cdd71,#0f9f48);font-size:13px;font-weight:900}
-.upBtn span{display:block;font-size:11px;color:#fff3ae;margin-top:3px}
+.sign{
+  position:absolute;
+  left:17px;
+  top:176px;
 
-.map{position:relative;height:680px;overflow:hidden;border-radius:22px;border:1px solid #294962;background:radial-gradient(circle at 16% 15%,rgba(97,183,79,.75),transparent 26%),linear-gradient(180deg,#297f98 0 23%,#40986a 23% 41%,#20789d 41% 54%,#315171 54% 70%,#111d32 70%)}
+  width:116px;
+  height:178px;
 
-.island{position:absolute;width:255px;height:148px;border-radius:50%;background:#67a650;border:11px solid #c8ac6f;box-shadow:0 14px #2f6c83;animation:islandFloat 4s ease-in-out infinite}
-.island1{top:47px;left:-48px;transform:rotate(-7deg)}
-.island2{top:273px;right:-72px;transform:rotate(8deg);animation-delay:-1.2s}
-.island3{top:505px;left:-72px;background:#354a5a;border-color:#293641;box-shadow:none;animation-delay:-2.1s}
+  padding:13px 9px;
 
-.mapGarage{position:absolute;left:43px;top:77px;width:102px;height:74px;border-radius:8px;background:linear-gradient(#596f80,#2d4251);border:6px solid #263640;box-shadow:0 8px 12px rgba(0,0,0,.28)}
-.mapGarage:before{content:"ГАРАЖ";position:absolute;left:17px;top:14px;font-size:12px;font-weight:900;color:#fff}
+  border-radius:8px;
 
-.cityBlocks{position:absolute;right:16px;top:320px;width:122px;height:89px;background:linear-gradient(90deg,#263b4b 0 20%,#52697d 20% 37%,#273d4f 37% 55%,#64798d 55% 73%,#273d4f 73%);border-bottom:8px solid #1f2d38}
+  background:
+    linear-gradient(
+      #343f49,
+      #202a33
+    );
 
-.portCrane{position:absolute;left:28px;top:476px;font-size:76px}
+  border:5px solid #141d24;
 
-.rocket{position:absolute;right:13px;bottom:45px;font-size:96px;animation:rocketFloat 2.7s ease-in-out infinite}
+  transform:rotate(-2deg);
 
-.route{position:absolute;left:50%;top:112px;width:6px;height:458px;background:repeating-linear-gradient(#fff 0 9px,transparent 9px 19px);animation:routeFlow 1s linear infinite}
+  box-shadow:
+    0 10px 20px rgba(0,0,0,.3);
 
-.node{position:absolute;width:182px;padding:11px;border-radius:15px;background:rgba(5,17,29,.92);border:1px solid #446681;box-shadow:0 10px 20px rgba(0,0,0,.32)}
-.node b{font-size:17px;display:block;margin-bottom:6px}
-.node div{font-size:13px;color:#becbd6}
-.n1{top:66px;right:12px}
-.n2{top:286px;left:12px}
-.n3{top:493px;right:12px}
+  color:#cbd6df;
 
-.panel{background:linear-gradient(#14293f,#0f1e2d);border:1px solid #2a465e;border-radius:16px;padding:14px;margin-bottom:10px}
-.panelTitle{font-size:17px;font-weight:900}
-.panelText{font-size:13px;line-height:1.4;color:#a9bac9;margin-top:5px}
+  font-size:12px;
+  font-weight:900;
+  line-height:1.25;
+  text-align:center;
+}
 
-.progress{height:9px;margin-top:10px;background:#08121b;border-radius:999px;overflow:hidden}
-.progress div{height:100%;width:0;background:linear-gradient(90deg,#1c9dfd,#29d86e)}
+.sign b{
+  display:block;
+  color:#fff;
+  font-size:23px;
+  line-height:.98;
+  margin-bottom:10px;
+}
 
-.claim{width:100%;margin-top:10px;padding:11px;border-radius:11px;background:linear-gradient(#ffb843,#d77b16);font-weight:900}
+/* LAMP */
 
-.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:60;width:100%;max-width:460px;height:calc(72px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #2b455b;background:#081421}
+.lamp{
+  position:absolute;
 
-.nav{background:transparent;color:#8ca0b4;font-size:9px;font-weight:900}
-.nav span{display:block;font-size:22px;margin-bottom:3px}
-.nav.active{color:#fff;background:linear-gradient(#0f609f,#0a3152);box-shadow:inset 0 3px 0 rgba(37,158,255,.55)}
+  left:50%;
+  top:-15px;
 
-@keyframes pulse{0%,100%{transform:scale(.95)}50%{transform:scale(1.05)}}
-@keyframes hand{0%,100%{transform:rotate(-20deg) translateY(0)}50%{transform:rotate(-20deg) translateY(-8px)}}
-@keyframes fly{from{opacity:1;transform:translate(-50%,10px)}to{opacity:0;transform:translate(-50%,-72px)}}
-@keyframes pipeShake{0%,100%{margin-top:0}50%{margin-top:3px}}
-@keyframes lampSwing{0%,100%{transform:translateX(-50%) rotate(-3deg)}50%{transform:translateX(-50%) rotate(3deg)}}
-@keyframes lampPulse{0%,100%{opacity:.75;transform:scale(.94)}50%{opacity:1;transform:scale(1.06)}}
-@keyframes armMove{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(12deg)}}
-@keyframes spark{0%,76%,100%{opacity:0;transform:translate(0,0)}82%{opacity:1}92%{opacity:.75;transform:translate(14px,-18px)}}
-@keyframes steam{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:.55}100%{opacity:0;transform:translate(16px,-80px) scale(1.8)}}
-@keyframes beltMove{from{background-position:0 0}to{background-position:96px 0}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes boxTravel{from{left:-78px}to{left:505px}}
-@keyframes machineIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-@keyframes robotBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(2deg)}}
-@keyframes bonusGlow{0%,100%{box-shadow:0 8px 16px rgba(0,0,0,.28),0 0 0 rgba(255,196,43,0)}50%{box-shadow:0 8px 16px rgba(0,0,0,.28),0 0 18px rgba(255,196,43,.25)}}
-@keyframes floatBtn{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes islandFloat{0%,100%{margin-top:0}50%{margin-top:-4px}}
-@keyframes routeFlow{from{background-position-y:0}to{background-position-y:19px}}
-@keyframes rocketFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  width:7px;
+  height:145px;
+
+  background:#11171d;
+
+  transform:translateX(-50%);
+  transform-origin:top center;
+
+  animation:
+    lampSwing
+    3.2s
+    ease-in-out
+    infinite;
+}
+
+.lamp:after{
+  content:"";
+
+  position:absolute;
+
+  left:-46px;
+  bottom:-19px;
+
+  width:100px;
+  height:49px;
+
+  border-radius:
+    52% 52% 28% 28%;
+
+  background:
+    linear-gradient(
+      #3e4c58,
+      #1b2730
+    );
+
+  border:5px solid #11171d;
+}
+
+.lamp:before{
+  content:"";
+
+  position:absolute;
+
+  left:-15px;
+  bottom:-8px;
+
+  width:37px;
+  height:26px;
+
+  border-radius:50%;
+
+  background:#ffe68b;
+
+  box-shadow:
+    0 0 22px 9px rgba(255,191,67,.8),
+    0 35px 55px 19px rgba(255,154,35,.16);
+
+  animation:
+    lampGlow
+    1.7s
+    ease-in-out
+    infinite;
+}
+
+/* PIPES */
+
+.pipe{
+  position:absolute;
+  border-radius:30px;
+
+  box-shadow:
+    inset 0 4px 0 rgba(255,255,255,.12);
+
+  animation:
+    pipeShake
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+.p1{
+  left:-38px;
+  top:314px;
+
+  width:228px;
+  height:30px;
+
+  background:#c98226;
+
+  border:
+    6px solid #754817;
+}
+
+.p2{
+  right:-42px;
+  top:370px;
+
+  width:195px;
+  height:31px;
+
+  background:#718596;
+
+  border:
+    6px solid #354759;
+
+  animation-delay:-.8s;
+}
+
+.p3{
+  left:102px;
+  top:248px;
+
+  width:108px;
+  height:23px;
+
+  background:#d78e2e;
+
+  border:
+    5px solid #754817;
+
+  transform:rotate(90deg);
+
+  animation-delay:-1.4s;
+}
+
+/* ARMS */
+
+.arm{
+  position:absolute;
+  top:382px;
+
+  width:118px;
+  height:112px;
+
+  z-index:3;
+
+  transform-origin:
+    26px 90px;
+
+  animation:
+    armMove
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+.arm.left{
+  left:8px;
+}
+
+.arm.right{
+  right:9px;
+
+  transform:scaleX(-1);
+
+  transform-origin:
+    92px 90px;
+
+  animation-direction:reverse;
+  animation-duration:2.7s;
+}
+
+.armBase{
+  position:absolute;
+
+  left:3px;
+  bottom:0;
+
+  width:48px;
+  height:36px;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      #ee9a2c,
+      #ae611e
+    );
+
+  border:
+    5px solid #6f4017;
+}
+
+.armSeg{
+  position:absolute;
+
+  left:36px;
+  bottom:29px;
+
+  width:20px;
+  height:79px;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      #ffae3a,
+      #d77b20
+    );
+
+  border:
+    4px solid #814917;
+
+  transform:
+    rotate(-29deg);
+
+  transform-origin:
+    bottom center;
+}
+
+.armHead{
+  position:absolute;
+
+  left:81px;
+  top:0;
+
+  font-size:35px;
+
+  transform:
+    rotate(20deg);
+}
+
+.arm.right .armHead{
+  transform:
+    scaleX(-1)
+    rotate(20deg);
+}
+
+/* SPARKS */
+
+.spark{
+  position:absolute;
+
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:#ffd65f;
+
+  box-shadow:
+    0 0 9px #ffad1f;
+
+  opacity:0;
+}
+
+.sp1{
+  left:159px;
+  top:374px;
+
+  animation:
+    spark
+    2.3s
+    infinite
+    .3s;
+}
+
+.sp2{
+  right:126px;
+  top:392px;
+
+  animation:
+    spark
+    2.7s
+    infinite
+    1.1s;
+}
+
+.sp3{
+  left:220px;
+  top:298px;
+
+  animation:
+    spark
+    3.1s
+    infinite
+    1.7s;
+}
+
+/* STEAM */
+
+.steam{
+  position:absolute;
+
+  width:25px;
+  height:25px;
+
+  border-radius:50%;
+
+  background:
+    rgba(236,246,252,.25);
+
+  filter:blur(1px);
+
+  opacity:0;
+}
+
+.st1{
+  left:119px;
+  top:305px;
+
+  animation:
+    steam
+    2.3s
+    ease-out
+    infinite;
+}
+
+.st2{
+  right:109px;
+  top:342px;
+
+  animation:
+    steam
+    2.8s
+    ease-out
+    infinite
+    .8s;
+}
+
+/* CONVEYOR */
+
+.conveyor{
+  position:absolute;
+
+  left:-28px;
+  right:-28px;
+  bottom:125px;
+
+  height:67px;
+
+  border-radius:18px;
+
+  background:#263640;
+
+  border:
+    7px solid #111a22;
+
+  overflow:hidden;
+}
+
+.belt{
+  position:absolute;
+
+  left:0;
+  right:0;
+  top:20px;
+
+  height:19px;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #0d151c 0 24px,
+      #40525e 24px 48px
+    );
+
+  background-size:
+    96px 19px;
+
+  animation:
+    beltMove
+    .82s
+    linear
+    infinite;
+}
+
+.roller{
+  position:absolute;
+
+  bottom:140px;
+
+  width:24px;
+  height:24px;
+
+  border-radius:50%;
+
+  background:#0a1218;
+
+  border:
+    5px solid #4e6575;
+
+  z-index:2;
+
+  animation:
+    spin
+    .72s
+    linear
+    infinite;
+}
+
+.r1{left:26px}
+.r2{left:104px}
+.r3{left:182px}
+.r4{left:260px}
+.r5{left:338px}
+
+/* BOXES */
+
+.box{
+  position:absolute;
+
+  bottom:166px;
+  left:-78px;
+
+  width:56px;
+  height:48px;
+
+  border-radius:6px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d79e56,
+      #a7662e
+    );
+
+  border:
+    4px solid #70461f;
+
+  display:grid;
+  place-items:center;
+
+  font-size:18px;
+
+  z-index:4;
+
+  box-shadow:
+    0 8px 12px rgba(0,0,0,.25);
+
+  animation:
+    boxTravel
+    8.4s
+    linear
+    infinite;
+}
+
+.b2{
+  animation-delay:-2.8s;
+}
+
+.b3{
+  animation-delay:-5.6s;
+}
+
+/* MAIN MACHINE */
+
+.tapZone{
+  position:absolute;
+
+  left:50%;
+  top:48.5%;
+
+  transform:
+    translate(-50%,-50%);
+
+  width:248px;
+  height:333px;
+
+  z-index:12;
+
+  touch-action:none;
+}
+
+.machine{
+  position:absolute;
+
+  left:29px;
+  top:35px;
+
+  width:190px;
+  height:228px;
+
+  border-radius:
+    28px 28px 36px 36px;
+
+  border:
+    5px solid #111a22;
+
+  background:
+    linear-gradient(
+      90deg,
+      #263a4b 0 14%,
+      #576e81 14% 86%,
+      #293b49 86% 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 3px rgba(255,255,255,.05),
+    0 18px 30px rgba(0,0,0,.45);
+
+  animation:
+    machineIdle
+    1.9s
+    ease-in-out
+    infinite;
+}
+
+.machineTop{
+  position:absolute;
+
+  left:29px;
+  top:-31px;
+
+  width:124px;
+  height:50px;
+
+  border-radius:
+    18px 18px 8px 8px;
+
+  background:
+    linear-gradient(
+      #6f8495,
+      #34495b
+    );
+
+  border:
+    5px solid #111a22;
+}
+
+.glow{
+  position:absolute;
+
+  left:22px;
+  right:22px;
+  top:29px;
+
+  height:106px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff6b1 0,
+      #ffc42f 37%,
+      rgba(255,147,0,.28) 68%,
+      transparent 72%
+    );
+
+  filter:
+    drop-shadow(
+      0 0 23px #ffb62c
+    );
+
+  animation:
+    pulse
+    1.3s
+    ease-in-out
+    infinite;
+}
+
+.robot{
+  position:absolute;
+
+  left:35px;
+  right:35px;
+  bottom:27px;
+
+  height:76px;
+
+  border-radius:17px;
+
+  border:
+    3px solid #314a5f;
+
+  background:#101c25;
+
+  display:grid;
+  place-items:center;
+
+  font-size:38px;
+}
+
+.robot span{
+  display:inline-block;
+
+  animation:
+    robotBob
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+.clickWord{
+  position:absolute;
+
+  z-index:4;
+
+  top:99px;
+  left:50%;
+
+  transform:
+    translateX(-50%)
+    rotate(-7deg);
+
+  font-size:35px;
+  font-weight:900;
+
+  text-shadow:
+    -2px -2px #111,
+    2px -2px #111,
+    -2px 2px #111,
+    2px 2px #111;
+}
+
+.hand{
+  position:absolute;
+
+  right:-5px;
+  bottom:16px;
+
+  font-size:55px;
+
+  z-index:5;
+
+  animation:
+    hand
+    1s
+    ease-in-out
+    infinite;
+}
+
+.levelBox{
+  position:absolute;
+
+  left:50%;
+  bottom:-51px;
+
+  transform:
+    translateX(-50%);
+
+  width:132px;
+
+  padding:7px;
+
+  border-radius:12px;
+
+  background:#15283a;
+
+  border:
+    2px solid #3c5a73;
+
+  text-align:center;
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.xp{
+  height:8px;
+
+  background:#08121a;
+
+  border-radius:999px;
+
+  overflow:hidden;
+
+  margin-top:5px;
+}
+
+#xpFill{
+  height:100%;
+
+  width:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7ee83f,
+      #1fd468
+    );
+
+  transition:
+    width .25s;
+}
+
+/* BONUS */
+
+.bonusRow{
+  position:absolute;
+
+  top:14px;
+  left:12px;
+  right:12px;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:8px;
+
+  z-index:20;
+}
+
+.bonus{
+  min-height:68px;
+
+  border-radius:15px;
+
+  border:
+    2px solid #dda42d;
+
+  background:
+    linear-gradient(
+      #4a3819,
+      #2d2111
+    );
+
+  padding:8px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  text-align:left;
+
+  box-shadow:
+    0 8px 16px rgba(0,0,0,.28);
+}
+
+.bonus:first-child{
+  animation:
+    bonusGlow
+    2.1s
+    ease-in-out
+    infinite;
+}
+
+.bonusIcon{
+  font-size:30px;
+}
+
+.bonusTitle{
+  font-size:13px;
+  font-weight:900;
+}
+
+.bonusSub{
+  font-size:11px;
+
+  color:#f7da92;
+
+  font-weight:800;
+
+  margin-top:3px;
+}
+
+/* SIDE */
+
+.side{
+  position:absolute;
+
+  right:9px;
+  top:188px;
+
+  z-index:21;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+}
+
+.side button{
+  width:62px;
+  height:66px;
+
+  border-radius:14px;
+
+  background:
+    rgba(8,25,40,.97);
+
+  border:
+    1px solid #31516d;
+
+  font-size:10px;
+
+  font-weight:900;
+
+  animation:
+    floatBtn
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+.side button:nth-child(2){
+  animation-delay:-.6s;
+}
+
+.side button:nth-child(3){
+  animation-delay:-1.2s;
+}
+
+.side button span{
+  display:block;
+
+  font-size:27px;
+
+  margin-bottom:3px;
+}
+
+/* STATS */
+
+.stats{
+  position:absolute;
+
+  left:7px;
+  right:7px;
+  bottom:9px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:7px;
+
+  z-index:22;
+}
+
+.stat{
+  border:
+    1px solid #31516e;
+
+  border-radius:15px;
+
+  background:
+    rgba(7,25,40,.97);
+
+  padding:9px 6px;
+
+  text-align:center;
+}
+
+.statTitle{
+  font-size:11px;
+
+  color:#dce6ef;
+
+  font-weight:800;
+
+  min-height:26px;
+}
+
+.statNumber{
+  font-size:18px;
+
+  font-weight:900;
+
+  color:#74ef7c;
+
+  margin:
+    5px 0 7px;
+}
+
+.buy{
+  width:100%;
+
+  min-height:44px;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      #2ae16f,
+      #0fa147
+    );
+
+  font-size:12px;
+
+  font-weight:900;
+
+  box-shadow:
+    inset 0 -3px rgba(0,0,0,.18);
+}
+
+.buy:disabled,
+.upBtn:disabled,
+.claim:disabled{
+  opacity:.45;
+  filter:grayscale(1);
+}
+
+.floating{
+  position:absolute;
+
+  left:50%;
+  top:113px;
+
+  z-index:40;
+
+  color:#ffd453;
+
+  font-size:30px;
+
+  font-weight:900;
+
+  pointer-events:none;
+
+  animation:
+    fly
+    .7s
+    ease
+    forwards;
+
+  text-shadow:
+    0 2px 6px #000;
+}
+
+/* OTHER SCREENS */
+
+.title{
+  font-size:25px;
+  font-weight:900;
+
+  display:flex;
+  align-items:center;
+
+  gap:10px;
+
+  margin:
+    6px 0 14px;
+}
+
+.back{
+  width:42px;
+  height:42px;
+
+  border-radius:13px;
+
+  background:#0c1d2d;
+
+  border:
+    1px solid #2d4d68;
+
+  font-size:22px;
+}
+
+.tabs{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  background:#0b1a29;
+
+  padding:4px;
+
+  border-radius:14px;
+
+  margin-bottom:12px;
+}
+
+.tab{
+  padding:12px 4px;
+
+  border-radius:11px;
+
+  background:transparent;
+
+  color:#94a8bb;
+
+  font-weight:900;
+}
+
+.tab.active{
+  background:
+    linear-gradient(
+      #2499ff,
+      #1176d7
+    );
+
+  color:#fff;
+}
+
+/* UPGRADE CARDS */
+
+.upgrade{
+  display:grid;
+
+  grid-template-columns:
+    65px 1fr 108px;
+
+  gap:9px;
+
+  align-items:center;
+
+  background:
+    linear-gradient(
+      #14283e,
+      #0d1c2b
+    );
+
+  border:
+    1px solid #29455d;
+
+  border-radius:16px;
+
+  padding:10px;
+
+  margin-bottom:10px;
+}
+
+.upIcon{
+  width:65px;
+  height:65px;
+
+  border-radius:13px;
+
+  display:grid;
+
+  place-items:center;
+
+  background:#20384f;
+
+  font-size:35px;
+}
+
+.upName{
+  font-size:16px;
+  font-weight:900;
+}
+
+.upMeta{
+  font-size:12px;
+
+  color:#a9bac9;
+
+  margin-top:4px;
+}
+
+.gain{
+  font-size:13px;
+
+  color:#56ed81;
+
+  font-weight:900;
+
+  margin-top:4px;
+}
+
+.upBtn{
+  min-height:54px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      #2cdd71,
+      #0f9f48
+    );
+
+  font-size:13px;
+
+  font-weight:900;
+}
+
+.upBtn span{
+  display:block;
+
+  font-size:11px;
+
+  color:#fff3ae;
+
+  margin-top:3px;
+}
+
+/* MAP */
+
+.map{
+  position:relative;
+
+  height:680px;
+
+  overflow:hidden;
+
+  border-radius:22px;
+
+  border:
+    1px solid #294962;
+
+  background:
+    radial-gradient(
+      circle at 16% 15%,
+      rgba(97,183,79,.75),
+      transparent 26%
+    ),
+    linear-gradient(
+      180deg,
+      #297f98 0 23%,
+      #40986a 23% 41%,
+      #20789d 41% 54%,
+      #315171 54% 70%,
+      #111d32 70%
+    );
+}
+
+.island{
+  position:absolute;
+
+  width:255px;
+  height:148px;
+
+  border-radius:50%;
+
+  background:#67a650;
+
+  border:
+    11px solid #c8ac6f;
+
+  box-shadow:
+    0 14px #2f6c83;
+
+  animation:
+    islandFloat
+    4s
+    ease-in-out
+    infinite;
+}
+
+.i1{
+  top:47px;
+  left:-48px;
+
+  transform:
+    rotate(-7deg);
+}
+
+.i2{
+  top:273px;
+  right:-72px;
+
+  transform:
+    rotate(8deg);
+
+  animation-delay:-1.2s;
+}
+
+.i3{
+  top:505px;
+  left:-72px;
+
+  background:#354a5a;
+
+  border-color:#293641;
+
+  box-shadow:none;
+
+  animation-delay:-2.1s;
+}
+
+.garage{
+  position:absolute;
+
+  left:43px;
+  top:77px;
+
+  width:102px;
+  height:74px;
+
+  border-radius:8px;
+
+  background:
+    linear-gradient(
+      #596f80,
+      #2d4251
+    );
+
+  border:
+    6px solid #263640;
+}
+
+.garage:before{
+  content:"ГАРАЖ";
+
+  position:absolute;
+
+  left:17px;
+  top:14px;
+
+  font-size:12px;
+
+  font-weight:900;
+}
+
+.city{
+  position:absolute;
+
+  right:16px;
+  top:320px;
+
+  width:122px;
+  height:89px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #263b4b 0 20%,
+      #52697d 20% 37%,
+      #273d4f 37% 55%,
+      #64798d 55% 73%,
+      #273d4f 73%
+    );
+
+  border-bottom:
+    8px solid #1f2d38;
+}
+
+.port{
+  position:absolute;
+
+  left:28px;
+  top:476px;
+
+  font-size:76px;
+}
+
+.rocket{
+  position:absolute;
+
+  right:13px;
+  bottom:45px;
+
+  font-size:96px;
+
+  animation:
+    rocketFloat
+    2.7s
+    ease-in-out
+    infinite;
+}
+
+.route{
+  position:absolute;
+
+  left:50%;
+  top:112px;
+
+  width:6px;
+  height:458px;
+
+  background:
+    repeating-linear-gradient(
+      #fff 0 9px,
+      transparent 9px 19px
+    );
+
+  animation:
+    routeFlow
+    1s
+    linear
+    infinite;
+}
+
+.node{
+  position:absolute;
+
+  width:182px;
+
+  padding:11px;
+
+  border-radius:15px;
+
+  background:
+    rgba(5,17,29,.92);
+
+  border:
+    1px solid #446681;
+}
+
+.node b{
+  font-size:17px;
+
+  display:block;
+
+  margin-bottom:6px;
+}
+
+.node div{
+  font-size:13px;
+
+  color:#becbd6;
+}
+
+.n1{
+  top:66px;
+  right:12px;
+}
+
+.n2{
+  top:286px;
+  left:12px;
+}
+
+.n3{
+  top:493px;
+  right:12px;
+}
+
+/* EVENTS */
+
+.panel{
+  background:
+    linear-gradient(
+      #14293f,
+      #0f1e2d
+    );
+
+  border:
+    1px solid #2a465e;
+
+  border-radius:16px;
+
+  padding:14px;
+
+  margin-bottom:10px;
+}
+
+.panelTitle{
+  font-size:17px;
+  font-weight:900;
+}
+
+.panelText{
+  font-size:13px;
+
+  line-height:1.4;
+
+  color:#a9bac9;
+
+  margin-top:5px;
+}
+
+.progress{
+  height:9px;
+
+  margin-top:10px;
+
+  background:#08121b;
+
+  border-radius:999px;
+
+  overflow:hidden;
+}
+
+.progress div{
+  height:100%;
+
+  width:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #1c9dfd,
+      #29d86e
+    );
+}
+
+.claim{
+  width:100%;
+
+  margin-top:10px;
+
+  padding:11px;
+
+  border-radius:11px;
+
+  background:
+    linear-gradient(
+      #ffb843,
+      #d77b16
+    );
+
+  font-weight:900;
+}
+
+/* NAV */
+
+.bottom{
+  position:fixed;
+
+  left:50%;
+  bottom:0;
+
+  transform:
+    translateX(-50%);
+
+  z-index:60;
+
+  width:100%;
+  max-width:460px;
+
+  height:
+    calc(
+      72px
+      +
+      env(safe-area-inset-bottom)
+    );
+
+  padding-bottom:
+    env(safe-area-inset-bottom);
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  border-top:
+    1px solid #2b455b;
+
+  background:#081421;
+}
+
+.nav{
+  background:transparent;
+
+  color:#8ca0b4;
+
+  font-size:9px;
+
+  font-weight:900;
+}
+
+.nav span{
+  display:block;
+
+  font-size:22px;
+
+  margin-bottom:3px;
+}
+
+.nav.active{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      #0f609f,
+      #0a3152
+    );
+
+  box-shadow:
+    inset 0 3px 0 rgba(37,158,255,.55);
+}
+
+/* ANIMATION */
+
+@keyframes pulse{
+  0%,100%{
+    transform:scale(.95)
+  }
+
+  50%{
+    transform:scale(1.05)
+  }
+}
+
+@keyframes hand{
+  0%,100%{
+    transform:
+      rotate(-20deg)
+      translateY(0)
+  }
+
+  50%{
+    transform:
+      rotate(-20deg)
+      translateY(-8px)
+  }
+}
+
+@keyframes fly{
+  from{
+    opacity:1;
+
+    transform:
+      translate(-50%,10px)
+  }
+
+  to{
+    opacity:0;
+
+    transform:
+      translate(-50%,-72px)
+  }
+}
+
+@keyframes pipeShake{
+  0%,100%{
+    margin-top:0
+  }
+
+  50%{
+    margin-top:3px
+  }
+}
+
+@keyframes lampSwing{
+  0%,100%{
+    transform:
+      translateX(-50%)
+      rotate(-3deg)
+  }
+
+  50%{
+    transform:
+      translateX(-50%)
+      rotate(3deg)
+  }
+}
+
+@keyframes lampGlow{
+  0%,100%{
+    opacity:.75;
+    transform:scale(.94)
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.06)
+  }
+}
+
+@keyframes armMove{
+  0%,100%{
+    transform:rotate(-5deg)
+  }
+
+  50%{
+    transform:rotate(12deg)
+  }
+}
+
+@keyframes spark{
+  0%,76%,100%{
+    opacity:0;
+    transform:translate(0,0)
+  }
+
+  82%{
+    opacity:1
+  }
+
+  92%{
+    opacity:.75;
+
+    transform:
+      translate(14px,-18px)
+  }
+}
+
+@keyframes steam{
+  0%{
+    opacity:0;
+
+    transform:
+      translateY(0)
+      scale(.6)
+  }
+
+  25%{
+    opacity:.55
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+      translate(16px,-80px)
+      scale(1.8)
+  }
+}
+
+@keyframes beltMove{
+  from{
+    background-position:
+      0 0
+  }
+
+  to{
+    background-position:
+      96px 0
+  }
+}
+
+@keyframes spin{
+  to{
+    transform:
+      rotate(360deg)
+  }
+}
+
+@keyframes boxTravel{
+  from{
+    left:-78px
+  }
+
+  to{
+    left:505px
+  }
+}
+
+@keyframes machineIdle{
+  0%,100%{
+    transform:
+      translateY(0)
+  }
+
+  50%{
+    transform:
+      translateY(-3px)
+  }
+}
+
+@keyframes robotBob{
+  0%,100%{
+    transform:
+      translateY(0)
+      rotate(0)
+  }
+
+  50%{
+    transform:
+      translateY(-4px)
+      rotate(2deg)
+  }
+}
+
+@keyframes bonusGlow{
+  0%,100%{
+    box-shadow:
+      0 8px 16px rgba(0,0,0,.28),
+      0 0 0 rgba(255,196,43,0)
+  }
+
+  50%{
+    box-shadow:
+      0 8px 16px rgba(0,0,0,.28),
+      0 0 18px rgba(255,196,43,.25)
+  }
+}
+
+@keyframes floatBtn{
+  0%,100%{
+    transform:
+      translateY(0)
+  }
+
+  50%{
+    transform:
+      translateY(-4px)
+  }
+}
+
+@keyframes islandFloat{
+  0%,100%{
+    margin-top:0
+  }
+
+  50%{
+    margin-top:-4px
+  }
+}
+
+@keyframes routeFlow{
+  from{
+    background-position-y:0
+  }
+
+  to{
+    background-position-y:19px
+  }
+}
+
+@keyframes rocketFloat{
+  0%,100%{
+    transform:
+      translateY(0)
+  }
+
+  50%{
+    transform:
+      translateY(-7px)
+  }
+}
 </style>
 </head>
 
@@ -194,1227 +1973,1298 @@ button{font:inherit;color:inherit;border:0;touch-action:manipulation;-webkit-use
 
 <div class="app">
 
+<!-- FACTORY -->
+
 <section id="factoryScreen" class="screen active">
 
-  <div class="topbar">
+<div class="topbar">
 
-    <button class="squareBtn">
-      ⚙️
-    </button>
+<button class="square">
+⚙️
+</button>
 
-    <div class="wallet">
+<div class="wallet">
 
-      <div class="balance">
-        ⚙️ <span id="coins">0</span>
-      </div>
+<div class="balance">
+⚙️
+<span id="coins">0</span>
+</div>
 
-      <div class="rate">
-        +<span id="topIncome">0</span>/с
-      </div>
+<div class="rate">
++
+<span id="topIncome">0</span>
+/с
+</div>
 
-    </div>
+</div>
 
-    <div class="gems">
-      💎 <span id="gems">120</span>
-      <div class="plus">+</div>
-    </div>
+<div class="gems">
 
-  </div>
+💎
 
+<span id="gems">
+120
+</span>
 
-  <div class="hero">
+<div class="plus">
++
+</div>
 
-    <div class="factory-bg">
+</div>
 
-      <div class="wallGrid"></div>
+</div>
 
-      <div class="window"></div>
+<div class="hero">
 
-      <div class="sign">
-        <b>
-          ROBO<br>
-          FACTORY
-        </b>
+<div class="scene">
 
-        БОЛЬШИЕ<br>
-        ИДЕИ<br>
-        НАЧИНАЮТСЯ<br>
-        ЗДЕСЬ
-      </div>
+<div class="grid"></div>
 
-      <div class="factoryLamp"></div>
+<div class="window"></div>
 
-      <div class="pipe1"></div>
-      <div class="pipe2"></div>
-      <div class="pipe3"></div>
+<div class="sign">
 
-      <div class="arm left">
-        <div class="armBase"></div>
-        <div class="armSeg"></div>
-        <div class="armHead">🦾</div>
-      </div>
+<b>
+ROBO<br>
+FACTORY
+</b>
 
-      <div class="arm right">
-        <div class="armBase"></div>
-        <div class="armSeg"></div>
-        <div class="armHead">🦾</div>
-      </div>
+БОЛЬШИЕ<br>
+ИДЕИ<br>
+НАЧИНАЮТСЯ<br>
+ЗДЕСЬ
 
-      <div class="spark sp1"></div>
-      <div class="spark sp2"></div>
-      <div class="spark sp3"></div>
+</div>
 
-      <div class="steam st1"></div>
-      <div class="steam st2"></div>
+<div class="lamp"></div>
 
-      <div class="conveyor">
-        <div class="belt"></div>
-      </div>
+<div class="pipe p1"></div>
+<div class="pipe p2"></div>
+<div class="pipe p3"></div>
 
-      <div class="roller r1"></div>
-      <div class="roller r2"></div>
-      <div class="roller r3"></div>
-      <div class="roller r4"></div>
-      <div class="roller r5"></div>
+<div class="arm left">
 
-      <div class="movingBox mb1">🤖</div>
-      <div class="movingBox mb2">🤖</div>
-      <div class="movingBox mb3">🤖</div>
+<div class="armBase"></div>
 
-    </div>
+<div class="armSeg"></div>
 
+<div class="armHead">
+🦾
+</div>
 
-    <div class="bonusRow">
+</div>
 
-      <button
-        id="boostShortcut"
-        class="bonus"
-      >
+<div class="arm right">
 
-        <div class="bonusIcon">
-          ⚡
-        </div>
+<div class="armBase"></div>
 
-        <div>
+<div class="armSeg"></div>
 
-          <div class="bonusTitle">
-            x2 ДОХОД
-          </div>
+<div class="armHead">
+🦾
+</div>
 
-          <div
-            id="boostShortcutText"
-            class="bonusSub"
-          >
-            Активировать
-          </div>
+</div>
 
-        </div>
+<div class="spark sp1"></div>
+<div class="spark sp2"></div>
+<div class="spark sp3"></div>
 
-      </button>
+<div class="steam st1"></div>
+<div class="steam st2"></div>
 
+<div class="conveyor">
 
-      <button
-        class="bonus"
-        data-go="eventsScreen"
-      >
+<div class="belt"></div>
 
-        <div class="bonusIcon">
-          🎁
-        </div>
+</div>
 
-        <div>
+<div class="roller r1"></div>
+<div class="roller r2"></div>
+<div class="roller r3"></div>
+<div class="roller r4"></div>
+<div class="roller r5"></div>
 
-          <div class="bonusTitle">
-            Ежедневный бонус
-          </div>
+<div class="box b1">
+🤖
+</div>
 
-          <div
-            id="dailyShortcutText"
-            class="bonusSub"
-          >
-            Забрать
-          </div>
+<div class="box b2">
+🤖
+</div>
 
-        </div>
+<div class="box b3">
+🤖
+</div>
 
-      </button>
+</div>
 
-    </div>
+<div class="bonusRow">
 
-
-    <div class="side">
-
-      <button data-go="eventsScreen">
-        <span>📋</span>
-        Задания
-      </button>
-
-      <button data-go="eventsScreen">
-        <span>🏆</span>
-        Достижения
-      </button>
-
-      <button data-go="shopScreen">
-        <span>🛒</span>
-        Магазин
-      </button>
-
-    </div>
-
-
-    <div
-      id="tapZone"
-      class="tapZone"
-    >
-
-      <div class="machine">
-
-        <div class="machineTop"></div>
-
-        <div class="glow"></div>
-
-        <div class="clickWord">
-          КЛИК!
-        </div>
-
-        <div class="robot">
-          <span class="robotAnimated">
-            🤖
-          </span>
-        </div>
-
-        <div class="hand">
-          👆
-        </div>
-
-        <div class="levelBox">
-
-          УРОВЕНЬ
-
-          <span id="level">
-            1
-          </span>
-
-          <div class="xp">
-            <div id="xpFill"></div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="stats">
-
-      <div class="stat">
-
-        <div class="statTitle">
-          Доход с клика
-        </div>
-
-        <div class="statNumber">
-          +<span id="perClick">1</span>
-        </div>
-
-        <button
-          id="clickUpgradeButton"
-          class="buy"
-        >
-          Улучшить
-          <br>
-          ⚙️ <span id="clickCost">10</span>
-        </button>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="statTitle">
-          Доход в секунду
-        </div>
-
-        <div class="statNumber">
-          +<span id="passiveIncome">0</span>/с
-        </div>
-
-        <button
-          id="autoButton"
-          class="buy"
-        >
-          Улучшить
-          <br>
-          ⚙️ <span id="autoCost">25</span>
-        </button>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="statTitle">
-          Рабочие
-        </div>
-
-        <div class="statNumber">
-          <span id="workersCount">0</span>/10
-        </div>
-
-        <button
-          id="workerHireButton"
-          class="buy"
-        >
-          Нанять
-          <br>
-          ⚙️ <span id="workerCost">50</span>
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section
-  id="upgradesScreen"
-  class="screen"
+<button
+id="boostShortcut"
+class="bonus"
 >
 
-  <div class="title">
+<div class="bonusIcon">
+⚡
+</div>
 
-    <button
-      class="back"
-      data-go="factoryScreen"
-    >
-      ←
-    </button>
+<div>
 
-    Улучшения
+<div class="bonusTitle">
+x2 ДОХОД
+</div>
 
-  </div>
+<div
+id="boostShortcutText"
+class="bonusSub"
+>
+Активировать
+</div>
 
+</div>
 
-  <div class="tabs">
+</button>
 
-    <button class="tab active">
-      Производство
-    </button>
-
-    <button class="tab">
-      Рабочие
-    </button>
-
-    <button class="tab">
-      Особые
-    </button>
-
-  </div>
-
-
-  <div class="upgrade">
-
-    <div class="upIcon">
-      📦
-    </div>
-
-    <div>
-
-      <div class="upName">
-        Конвейер
-      </div>
-
-      <div class="upMeta">
-        Ур. <span id="conveyorLevel">0</span>
-      </div>
-
-      <div class="gain">
-        +5/с
-      </div>
-
-    </div>
-
-    <button
-      id="conveyorButton"
-      class="upBtn"
-    >
-
-      Улучшить
-
-      <span>
-        ⚙️ <span id="conveyorCost">800</span>
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <div class="upgrade">
-
-    <div class="upIcon">
-      🏭
-    </div>
-
-    <div>
-
-      <div class="upName">
-        Сборочный цех
-      </div>
-
-      <div class="upMeta">
-        Ур. <span id="factoryLevel">0</span>
-      </div>
-
-      <div class="gain">
-        +100/с
-      </div>
-
-    </div>
-
-    <button
-      id="factoryButton"
-      class="upBtn"
-    >
-
-      Улучшить
-
-      <span>
-        ⚙️ <span id="factoryCost">12000</span>
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <div class="upgrade">
-
-    <div class="upIcon">
-      🦾
-    </div>
-
-    <div>
-
-      <div class="upName">
-        Роборука
-      </div>
-
-      <div class="upMeta">
-        Ур. <span id="armLevel">0</span>
-      </div>
-
-      <div class="gain">
-        +25/с
-      </div>
-
-    </div>
-
-    <button
-      id="armButton"
-      class="upBtn"
-    >
-
-      Улучшить
-
-      <span>
-        ⚙️ <span id="armCost">3000</span>
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <div class="upgrade">
-
-    <div class="upIcon">
-      🏗️
-    </div>
-
-    <div>
-
-      <div class="upName">
-        Новый цех
-      </div>
-
-      <div class="upMeta">
-        Открывает новый вид продукции
-      </div>
-
-      <div class="gain">
-        Скоро
-      </div>
-
-    </div>
-
-    <button
-      class="upBtn"
-      disabled
-    >
-
-      Открыть
-
-      <span>
-        ⚙️ 1M
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <div class="upgrade">
-
-    <div class="upIcon">
-      🏚️
-    </div>
-
-    <div>
-
-      <div class="upName">
-        Склад
-      </div>
-
-      <div class="upMeta">
-        Увеличивает вместимость
-      </div>
-
-      <div class="gain">
-        Скоро
-      </div>
-
-    </div>
-
-    <button
-      class="upBtn"
-      disabled
-    >
-
-      Улучшить
-
-      <span>
-        ⚙️ 75K
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <div class="upgrade">
-
-    <div class="upIcon">
-      🚚
-    </div>
-
-    <div>
-
-      <div class="upName">
-        Грузовик
-      </div>
-
-      <div class="upMeta">
-        Ускоряет доставку
-      </div>
-
-      <div class="gain">
-        Скоро
-      </div>
-
-    </div>
-
-    <button
-      class="upBtn"
-      disabled
-    >
-
-      Открыть
-
-      <span>
-        ⚙️ 500K
-      </span>
-
-    </button>
-
-  </div>
-
-</section>
-
-
-<section
-  id="mapScreen"
-  class="screen"
+<button
+class="bonus"
+data-go="eventsScreen"
 >
 
-  <div class="title">
+<div class="bonusIcon">
+🎁
+</div>
 
-    <button
-      class="back"
-      data-go="factoryScreen"
-    >
-      ←
-    </button>
+<div>
 
-    Карта
+<div class="bonusTitle">
+Ежедневный бонус
+</div>
 
-  </div>
+<div
+id="dailyShortcutText"
+class="bonusSub"
+>
+Забрать
+</div>
 
+</div>
 
-  <div class="map">
+</button>
 
-    <div class="island island1"></div>
-    <div class="island island2"></div>
-    <div class="island island3"></div>
+</div>
 
-    <div class="mapGarage"></div>
+<div class="side">
 
-    <div class="cityBlocks"></div>
+<button data-go="eventsScreen">
+<span>📋</span>
+Задания
+</button>
 
-    <div class="portCrane">
-      🏗️
-    </div>
+<button data-go="eventsScreen">
+<span>🏆</span>
+Достижения
+</button>
 
-    <div class="rocket">
-      🚀
-    </div>
+<button data-go="shopScreen">
+<span>🛒</span>
+Магазин
+</button>
 
-    <div class="route"></div>
+</div>
 
-
-    <div class="node n1">
-
-      <b>
-        1. Гараж
-      </b>
-
-      <div>
-        ✅ Текущая локация
-      </div>
-
-    </div>
-
-
-    <div class="node n2">
-
-      <b>
-        2. Город
-      </b>
-
-      <div>
-        🔒 Требуется 5.0M
-      </div>
-
-    </div>
-
-
-    <div class="node n3">
-
-      <b>
-        3. Порт
-      </b>
-
-      <div>
-        🔒 Требуется 50M
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section
-  id="eventsScreen"
-  class="screen"
+<div
+id="tapZone"
+class="tapZone"
 >
 
-  <div class="title">
+<div class="machine">
 
-    <button
-      class="back"
-      data-go="factoryScreen"
-    >
-      ←
-    </button>
+<div class="machineTop"></div>
 
-    События
+<div class="glow"></div>
 
-  </div>
+<div class="clickWord">
+КЛИК!
+</div>
 
+<div class="robot">
+<span>
+🤖
+</span>
+</div>
 
-  <div class="panel">
+<div class="hand">
+👆
+</div>
 
-    <div class="panelTitle">
-      👆 Рабочая смена
-    </div>
+<div class="levelBox">
 
-    <div class="panelText">
-      Сделай 100 кликов по производственной машине.
-    </div>
+УРОВЕНЬ
 
-    <div class="progress">
-      <div id="taskClicksFill"></div>
-    </div>
+<span id="level">
+1
+</span>
 
-    <div class="panelText">
-      <span id="taskClicksText">0</span>/100
-      · Награда 500 ⚙️
-    </div>
+<div class="xp">
 
-    <button
-      id="taskClicksButton"
-      class="claim"
-    >
-      Забрать награду
-    </button>
+<div id="xpFill"></div>
 
-  </div>
+</div>
 
+</div>
 
-  <div class="panel">
+</div>
 
-    <div class="panelTitle">
-      🤖 Автоматизация
-    </div>
+</div>
 
-    <div class="panelText">
-      Купи 3 авто-робота.
-    </div>
+<div class="stats">
 
-    <div class="progress">
-      <div id="taskAutoFill"></div>
-    </div>
+<div class="stat">
 
-    <div class="panelText">
-      <span id="taskAutoText">0</span>/3
-      · Награда 1000 ⚙️
-    </div>
+<div class="statTitle">
+Доход с клика
+</div>
 
-    <button
-      id="taskAutoButton"
-      class="claim"
-    >
-      Забрать награду
-    </button>
+<div class="statNumber">
 
-  </div>
++
+<span id="perClick">
+1
+</span>
 
+</div>
 
-  <div class="panel">
-
-    <div class="panelTitle">
-      🏆 Опытный инженер
-    </div>
-
-    <div class="panelText">
-      Достигни 5 уровня.
-    </div>
-
-    <div class="progress">
-      <div id="taskLevelFill"></div>
-    </div>
-
-    <div class="panelText">
-
-      Уровень
-
-      <span id="taskLevelText">
-        1
-      </span>
-
-      /5 · Награда 2500 ⚙️
-
-    </div>
-
-    <button
-      id="taskLevelButton"
-      class="claim"
-    >
-      Забрать награду
-    </button>
-
-  </div>
-
-
-  <div class="panel">
-
-    <div class="panelTitle">
-      🎁 Ежедневный бонус
-    </div>
-
-    <div class="panelText">
-
-      Серия:
-
-      <b>
-        <span id="streak">
-          0
-        </span>
-
-        дней
-      </b>
-
-      <br><br>
-
-      Следующая награда:
-
-      <span id="dailyRewardAmount">
-        500
-      </span>
-
-      ⚙️
-
-    </div>
-
-    <button
-      id="dailyButton"
-      class="claim"
-    >
-      Забрать бонус
-    </button>
-
-  </div>
-
-
-  <div class="panel">
-
-    <div class="panelTitle">
-      ⚡ Энергобуст x2
-    </div>
-
-    <div class="panelText">
-      Удваивает клики и производство на 5 минут.
-    </div>
-
-    <button
-      id="boostButton"
-      class="claim"
-    >
-      Активировать x2
-    </button>
-
-    <div
-      id="boostStatus"
-      class="panelText"
-    >
-      Доступен сегодня
-    </div>
-
-  </div>
-
-</section>
-
-
-<section
-  id="shopScreen"
-  class="screen"
+<button
+id="clickUpgradeButton"
+class="buy"
 >
 
-  <div class="title">
+Улучшить
 
-    <button
-      class="back"
-      data-go="factoryScreen"
-    >
-      ←
-    </button>
+<br>
 
-    Магазин
+⚙️
 
-  </div>
+<span id="clickCost">
+10
+</span>
 
+</button>
 
-  <div class="panel">
+</div>
 
-    <div class="panelTitle">
-      💎 Алмазы
-    </div>
+<div class="stat">
 
-    <div class="panelText">
-      Здесь позже появятся покупки и Telegram Stars.
-    </div>
+<div class="statTitle">
+Доход в секунду
+</div>
 
-  </div>
+<div class="statNumber">
 
++
+<span id="passiveIncome">
+0
+</span>
 
-  <div class="upgrade">
+/с
 
-    <div class="upIcon">
-      💎
-    </div>
+</div>
 
-    <div>
+<button
+id="autoButton"
+class="buy"
+>
 
-      <div class="upName">
-        Набор алмазов
-      </div>
+Улучшить
 
-      <div class="upMeta">
-        500 💎
-      </div>
+<br>
 
-    </div>
+⚙️
 
-    <button
-      class="upBtn"
-      disabled
-    >
-      Скоро
-    </button>
+<span id="autoCost">
+25
+</span>
 
-  </div>
+</button>
 
+</div>
 
-  <div class="upgrade">
+<div class="stat">
 
-    <div class="upIcon">
-      ⚙️
-    </div>
+<div class="statTitle">
+Рабочие
+</div>
 
-    <div>
+<div class="statNumber">
 
-      <div class="upName">
-        Ящик деталей
-      </div>
+<span id="workersCount">
+0
+</span>
 
-      <div class="upMeta">
-        50 000 ⚙️
-      </div>
+/10
 
-    </div>
+</div>
 
-    <button
-      class="upBtn"
-      disabled
-    >
-      Скоро
-    </button>
+<button
+id="workerHireButton"
+class="buy"
+>
 
-  </div>
+Нанять
+
+<br>
+
+⚙️
+
+<span id="workerCost">
+50
+</span>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
+<!-- UPGRADES -->
+
+<section
+id="upgradesScreen"
+class="screen"
+>
+
+<div class="title">
+
+<button
+class="back"
+data-go="factoryScreen"
+>
+←
+</button>
+
+Улучшения
+
+</div>
+
+<div class="tabs">
+
+<button class="tab active">
+Производство
+</button>
+
+<button class="tab">
+Рабочие
+</button>
+
+<button class="tab">
+Особые
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+📦
+</div>
+
+<div>
+
+<div class="upName">
+Конвейер
+</div>
+
+<div class="upMeta">
+
+Ур.
+
+<span id="conveyorLevel">
+0
+</span>
+
+</div>
+
+<div class="gain">
++5/с
+</div>
+
+</div>
+
+<button
+id="conveyorButton"
+class="upBtn"
+>
+
+Улучшить
+
+<span>
+
+⚙️
+
+<span id="conveyorCost">
+800
+</span>
+
+</span>
+
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+🏭
+</div>
+
+<div>
+
+<div class="upName">
+Сборочный цех
+</div>
+
+<div class="upMeta">
+
+Ур.
+
+<span id="factoryLevel">
+0
+</span>
+
+</div>
+
+<div class="gain">
++100/с
+</div>
+
+</div>
+
+<button
+id="factoryButton"
+class="upBtn"
+>
+
+Улучшить
+
+<span>
+
+⚙️
+
+<span id="factoryCost">
+12000
+</span>
+
+</span>
+
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+🦾
+</div>
+
+<div>
+
+<div class="upName">
+Роборука
+</div>
+
+<div class="upMeta">
+
+Ур.
+
+<span id="armLevel">
+0
+</span>
+
+</div>
+
+<div class="gain">
++25/с
+</div>
+
+</div>
+
+<button
+id="armButton"
+class="upBtn"
+>
+
+Улучшить
+
+<span>
+
+⚙️
+
+<span id="armCost">
+3000
+</span>
+
+</span>
+
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+🏗️
+</div>
+
+<div>
+
+<div class="upName">
+Новый цех
+</div>
+
+<div class="upMeta">
+Открывает новый вид продукции
+</div>
+
+<div class="gain">
+Скоро
+</div>
+
+</div>
+
+<button
+class="upBtn"
+disabled
+>
+
+Открыть
+
+<span>
+⚙️ 1M
+</span>
+
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+🏚️
+</div>
+
+<div>
+
+<div class="upName">
+Склад
+</div>
+
+<div class="upMeta">
+Увеличивает вместимость
+</div>
+
+<div class="gain">
+Скоро
+</div>
+
+</div>
+
+<button
+class="upBtn"
+disabled
+>
+
+Улучшить
+
+<span>
+⚙️ 75K
+</span>
+
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+🚚
+</div>
+
+<div>
+
+<div class="upName">
+Грузовик
+</div>
+
+<div class="upMeta">
+Ускоряет доставку
+</div>
+
+<div class="gain">
+Скоро
+</div>
+
+</div>
+
+<button
+class="upBtn"
+disabled
+>
+
+Открыть
+
+<span>
+⚙️ 500K
+</span>
+
+</button>
+
+</div>
+
+</section>
+
+<!-- MAP -->
+
+<section
+id="mapScreen"
+class="screen"
+>
+
+<div class="title">
+
+<button
+class="back"
+data-go="factoryScreen"
+>
+←
+</button>
+
+Карта
+
+</div>
+
+<div class="map">
+
+<div class="island i1"></div>
+
+<div class="island i2"></div>
+
+<div class="island i3"></div>
+
+<div class="garage"></div>
+
+<div class="city"></div>
+
+<div class="port">
+🏗️
+</div>
+
+<div class="rocket">
+🚀
+</div>
+
+<div class="route"></div>
+
+<div class="node n1">
+
+<b>
+1. Гараж
+</b>
+
+<div>
+✅ Текущая локация
+</div>
+
+</div>
+
+<div class="node n2">
+
+<b>
+2. Город
+</b>
+
+<div>
+🔒 Требуется 5.0M
+</div>
+
+</div>
+
+<div class="node n3">
+
+<b>
+3. Порт
+</b>
+
+<div>
+🔒 Требуется 50M
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- EVENTS -->
+
+<section
+id="eventsScreen"
+class="screen"
+>
+
+<div class="title">
+
+<button
+class="back"
+data-go="factoryScreen"
+>
+←
+</button>
+
+События
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">
+👆 Рабочая смена
+</div>
+
+<div class="panelText">
+Сделай 100 кликов.
+</div>
+
+<div class="progress">
+
+<div id="taskClicksFill"></div>
+
+</div>
+
+<div class="panelText">
+
+<span id="taskClicksText">
+0
+</span>
+
+/100 · 500 ⚙️
+
+</div>
+
+<button
+id="taskClicksButton"
+class="claim"
+>
+
+Забрать награду
+
+</button>
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">
+🤖 Автоматизация
+</div>
+
+<div class="panelText">
+Купи 3 авто-робота.
+</div>
+
+<div class="progress">
+
+<div id="taskAutoFill"></div>
+
+</div>
+
+<div class="panelText">
+
+<span id="taskAutoText">
+0
+</span>
+
+/3 · 1000 ⚙️
+
+</div>
+
+<button
+id="taskAutoButton"
+class="claim"
+>
+
+Забрать награду
+
+</button>
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">
+🏆 Опытный инженер
+</div>
+
+<div class="panelText">
+Достигни 5 уровня.
+</div>
+
+<div class="progress">
+
+<div id="taskLevelFill"></div>
+
+</div>
+
+<div class="panelText">
+
+Уровень
+
+<span id="taskLevelText">
+1
+</span>
+
+/5 · 2500 ⚙️
+
+</div>
+
+<button
+id="taskLevelButton"
+class="claim"
+>
+
+Забрать награду
+
+</button>
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">
+🎁 Ежедневный бонус
+</div>
+
+<div class="panelText">
+
+Серия:
+
+<b>
+
+<span id="streak">
+0
+</span>
+
+дней
+
+</b>
+
+<br><br>
+
+Следующая награда:
+
+<span id="dailyRewardAmount">
+500
+</span>
+
+⚙️
+
+</div>
+
+<button
+id="dailyButton"
+class="claim"
+>
+
+Забрать бонус
+
+</button>
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">
+⚡ Энергобуст x2
+</div>
+
+<div class="panelText">
+Удваивает доход на 5 минут.
+</div>
+
+<button
+id="boostButton"
+class="claim"
+>
+
+Активировать x2
+
+</button>
+
+<div
+id="boostStatus"
+class="panelText"
+>
+Доступен сегодня
+</div>
+
+</div>
+
+</section>
+
+<!-- SHOP -->
+
+<section
+id="shopScreen"
+class="screen"
+>
+
+<div class="title">
+
+<button
+class="back"
+data-go="factoryScreen"
+>
+←
+</button>
+
+Магазин
+
+</div>
+
+<div class="panel">
+
+<div class="panelTitle">
+💎 Алмазы
+</div>
+
+<div class="panelText">
+Позже здесь будут Telegram Stars.
+</div>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+💎
+</div>
+
+<div>
+
+<div class="upName">
+Набор алмазов
+</div>
+
+<div class="upMeta">
+500 💎
+</div>
+
+</div>
+
+<button
+class="upBtn"
+disabled
+>
+Скоро
+</button>
+
+</div>
+
+<div class="upgrade">
+
+<div class="upIcon">
+⚙️
+</div>
+
+<div>
+
+<div class="upName">
+Ящик деталей
+</div>
+
+<div class="upMeta">
+50 000 ⚙️
+</div>
+
+</div>
+
+<button
+class="upBtn"
+disabled
+>
+Скоро
+</button>
+
+</div>
+
+</section>
+
+<!-- NAV -->
 
 <nav class="bottom">
 
-  <button
-    class="nav active"
-    data-screen="factoryScreen"
-  >
-    <span>🏭</span>
-    Фабрика
-  </button>
+<button
+class="nav active"
+data-screen="factoryScreen"
+>
 
-  <button
-    class="nav"
-    data-screen="upgradesScreen"
-  >
-    <span>🛠️</span>
-    Улучшения
-  </button>
+<span>
+🏭
+</span>
 
-  <button
-    class="nav"
-    data-screen="mapScreen"
-  >
-    <span>🗺️</span>
-    Карта
-  </button>
+Фабрика
 
-  <button
-    class="nav"
-    data-screen="eventsScreen"
-  >
-    <span>⭐</span>
-    События
-  </button>
+</button>
 
-  <button
-    class="nav"
-    data-screen="shopScreen"
-  >
-    <span>🛒</span>
-    Магазин
-  </button>
+<button
+class="nav"
+data-screen="upgradesScreen"
+>
+
+<span>
+🛠️
+</span>
+
+Улучшения
+
+</button>
+
+<button
+class="nav"
+data-screen="mapScreen"
+>
+
+<span>
+🗺️
+</span>
+
+Карта
+
+</button>
+
+<button
+class="nav"
+data-screen="eventsScreen"
+>
+
+<span>
+⭐
+</span>
+
+События
+
+</button>
+
+<button
+class="nav"
+data-screen="shopScreen"
+>
+
+<span>
+🛒
+</span>
+
+Магазин
+
+</button>
 
 </nav>
 
 </div>
 
-
 <script>
-
 document.addEventListener(
   "dblclick",
-  e => e.preventDefault(),
-  {
-    passive:false
-  }
+  event => event.preventDefault(),
+  {passive:false}
 );
-
 
 document.addEventListener(
   "gesturestart",
-  e => e.preventDefault(),
-  {
-    passive:false
-  }
+  event => event.preventDefault(),
+  {passive:false}
 );
-
 
 document.addEventListener(
   "gesturechange",
-  e => e.preventDefault(),
-  {
-    passive:false
-  }
+  event => event.preventDefault(),
+  {passive:false}
 );
-
 
 document.addEventListener(
   "gestureend",
-  e => e.preventDefault(),
-  {
-    passive:false
-  }
+  event => event.preventDefault(),
+  {passive:false}
 );
 
+const $ = id =>
+  document.getElementById(id);
+
+function numberValue(
+  key,
+  fallback
+){
+  const raw =
+    localStorage.getItem(key);
+
+  if(
+    raw === null
+  ){
+    return fallback;
+  }
+
+  const value =
+    Number(raw);
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    fallback;
+}
 
 let coins =
-  Number(
-    localStorage.getItem(
-      "coins"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "coins",
+    0
+  );
 
 let perClick =
-  Number(
-    localStorage.getItem(
-      "perClick"
-    )
-  )
-  ||
-  1;
-
+  numberValue(
+    "perClick",
+    1
+  );
 
 let level =
-  Number(
-    localStorage.getItem(
-      "level"
-    )
-  )
-  ||
-  1;
-
+  numberValue(
+    "level",
+    1
+  );
 
 let xp =
-  Number(
-    localStorage.getItem(
-      "xp"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "xp",
+    0
+  );
 
 let xpNeed =
-  Number(
-    localStorage.getItem(
-      "xpNeed"
-    )
-  )
-  ||
-  100;
-
+  numberValue(
+    "xpNeed",
+    100
+  );
 
 let totalClicks =
-  Number(
-    localStorage.getItem(
-      "totalClicks"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "totalClicks",
+    0
+  );
 
 let clickLevel =
-  Number(
-    localStorage.getItem(
-      "clickLevel"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "clickLevel",
+    0
+  );
 
 let clickCost =
-  Number(
-    localStorage.getItem(
-      "upgradeCost"
-    )
-  )
-  ||
-  10;
-
+  numberValue(
+    "upgradeCost",
+    10
+  );
 
 let autoLevel =
-  Number(
-    localStorage.getItem(
-      "autoLevel"
+  numberValue(
+    "autoLevel",
+    numberValue(
+      "passiveIncome",
+      0
     )
-  )
-  ||
-  Number(
-    localStorage.getItem(
-      "passiveIncome"
-    )
-  )
-  ||
-  0;
-
+  );
 
 let autoCost =
-  Number(
-    localStorage.getItem(
-      "passiveCost"
-    )
-  )
-  ||
-  25;
-
+  numberValue(
+    "passiveCost",
+    25
+  );
 
 let conveyorLevel =
-  Number(
-    localStorage.getItem(
-      "conveyorLevel"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "conveyorLevel",
+    0
+  );
 
 let conveyorCost =
-  Number(
-    localStorage.getItem(
-      "conveyorCost"
-    )
-  )
-  ||
-  800;
-
+  numberValue(
+    "conveyorCost",
+    800
+  );
 
 let armLevel =
-  Number(
-    localStorage.getItem(
-      "armLevel"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "armLevel",
+    0
+  );
 
 let armCost =
-  Number(
-    localStorage.getItem(
-      "armCost"
-    )
-  )
-  ||
-  3000;
-
+  numberValue(
+    "armCost",
+    3000
+  );
 
 let factoryLevel =
-  Number(
-    localStorage.getItem(
-      "factoryLevel"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "factoryLevel",
+    0
+  );
 
 let factoryCost =
-  Number(
-    localStorage.getItem(
-      "factoryCost"
-    )
-  )
-  ||
-  12000;
-
+  numberValue(
+    "factoryCost",
+    12000
+  );
 
 let workers =
-  Number(
-    localStorage.getItem(
-      "workers"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "workers",
+    0
+  );
 
 let workerCost =
-  Number(
-    localStorage.getItem(
-      "workerCost"
-    )
-  )
-  ||
-  50;
-
+  numberValue(
+    "workerCost",
+    50
+  );
 
 let gems =
-  Number(
-    localStorage.getItem(
-      "gems"
-    )
-  )
-  ||
-  120;
-
+  numberValue(
+    "gems",
+    120
+  );
 
 let taskClicksClaimed =
   localStorage.getItem(
     "taskClicksClaimed"
-  )
-  ===
-  "true";
-
+  ) === "true";
 
 let taskAutoClaimed =
   localStorage.getItem(
     "taskAutoClaimed"
-  )
-  ===
-  "true";
-
+  ) === "true";
 
 let taskLevelClaimed =
   localStorage.getItem(
     "taskLevelClaimed"
-  )
-  ===
-  "true";
-
+  ) === "true";
 
 let streak =
-  Number(
-    localStorage.getItem(
-      "dailyStreak"
-    )
-  )
-  ||
-  0;
-
+  numberValue(
+    "dailyStreak",
+    0
+  );
 
 let lastDailyDate =
   localStorage.getItem(
@@ -1423,7 +3273,6 @@ let lastDailyDate =
   ||
   "";
 
-
 let lastBoostDate =
   localStorage.getItem(
     "lastBoostDate"
@@ -1431,61 +3280,22 @@ let lastBoostDate =
   ||
   "";
 
-
 let boostEnd =
-  Number(
-    localStorage.getItem(
-      "boostEnd"
-    )
-  )
-  ||
-  0;
-
-
-const $ =
-  id =>
-    document.getElementById(
-      id
-    );
-
-
-function today(){
-
-  const d =
-    new Date();
-
-  return (
-    d.getFullYear()
-    +
-    "-"
-    +
-    String(
-      d.getMonth()+1
-    ).padStart(
-      2,
-      "0"
-    )
-    +
-    "-"
-    +
-    String(
-      d.getDate()
-    ).padStart(
-      2,
-      "0"
-    )
+  numberValue(
+    "boostEnd",
+    0
   );
 
-}
-
-
-function yesterday(){
-
+function dateKey(
+  offset = 0
+){
   const d =
     new Date();
 
   d.setDate(
-    d.getDate()-1
+    d.getDate()
+    +
+    offset
   );
 
   return (
@@ -1494,7 +3304,9 @@ function yesterday(){
     "-"
     +
     String(
-      d.getMonth()+1
+      d.getMonth()
+      +
+      1
     ).padStart(
       2,
       "0"
@@ -1509,111 +3321,88 @@ function yesterday(){
       "0"
     )
   );
-
 }
 
-
-function compact(n){
-
-  n =
-    Math.floor(
-      n
-    );
+function compact(
+  value
+){
+  value =
+    Math.floor(value);
 
   if(
-    n >=
+    value >=
     1000000000
   ){
-
     return (
-      n / 1000000000
+      value
+      /
+      1000000000
     )
-    .toFixed(
-      1
-    )
+    .toFixed(1)
     .replace(
       ".0",
       ""
     )
     +
     "B";
-
   }
 
-
   if(
-    n >=
+    value >=
     1000000
   ){
-
     return (
-      n / 1000000
+      value
+      /
+      1000000
     )
-    .toFixed(
-      1
-    )
+    .toFixed(1)
     .replace(
       ".0",
       ""
     )
     +
     "M";
-
   }
 
-
   if(
-    n >=
+    value >=
     1000
   ){
-
     return (
-      n / 1000
+      value
+      /
+      1000
     )
-    .toFixed(
-      1
-    )
+    .toFixed(1)
     .replace(
       ".0",
       ""
     )
     +
     "K";
-
   }
 
-
-  return String(
-    n
-  );
-
+  return String(value);
 }
 
-
 function boostActive(){
-
   return (
     Date.now()
     <
     boostEnd
   );
-
 }
 
-
 function multiplier(){
-
   return boostActive()
     ?
     2
     :
     1;
-
 }
 
-
 function passiveIncome(){
-
   return (
     autoLevel
     +
@@ -1625,219 +3414,107 @@ function passiveIncome(){
     +
     factoryLevel * 100
   );
-
 }
 
-
 function checkLevel(){
-
   while(
-    xp >=
-    xpNeed
+    xp >= xpNeed
   ){
+    xp -= xpNeed;
 
-    xp -=
-      xpNeed;
-
-    level++;
+    level += 1;
 
     xpNeed =
       Math.floor(
-        xpNeed * 1.35
+        xpNeed
+        *
+        1.35
       );
 
-    perClick++;
-
+    perClick += 1;
   }
-
 }
-
 
 function save(){
-
-  localStorage.setItem(
-    "coins",
-    coins
-  );
-
-  localStorage.setItem(
-    "perClick",
-    perClick
-  );
-
-  localStorage.setItem(
-    "level",
-    level
-  );
-
-  localStorage.setItem(
-    "xp",
-    xp
-  );
-
-  localStorage.setItem(
-    "xpNeed",
-    xpNeed
-  );
-
-  localStorage.setItem(
-    "totalClicks",
-    totalClicks
-  );
-
-  localStorage.setItem(
-    "clickLevel",
-    clickLevel
-  );
-
-  localStorage.setItem(
-    "upgradeCost",
-    clickCost
-  );
-
-  localStorage.setItem(
-    "autoLevel",
-    autoLevel
-  );
-
-  localStorage.setItem(
-    "passiveCost",
-    autoCost
-  );
-
-  localStorage.setItem(
-    "conveyorLevel",
-    conveyorLevel
-  );
-
-  localStorage.setItem(
-    "conveyorCost",
-    conveyorCost
-  );
-
-  localStorage.setItem(
-    "armLevel",
-    armLevel
-  );
-
-  localStorage.setItem(
-    "armCost",
-    armCost
-  );
-
-  localStorage.setItem(
-    "factoryLevel",
-    factoryLevel
-  );
-
-  localStorage.setItem(
-    "factoryCost",
-    factoryCost
-  );
-
-  localStorage.setItem(
-    "workers",
-    workers
-  );
-
-  localStorage.setItem(
-    "workerCost",
-    workerCost
-  );
-
-  localStorage.setItem(
-    "gems",
-    gems
-  );
-
-  localStorage.setItem(
-    "taskClicksClaimed",
-    taskClicksClaimed
-  );
-
-  localStorage.setItem(
-    "taskAutoClaimed",
-    taskAutoClaimed
-  );
-
-  localStorage.setItem(
-    "taskLevelClaimed",
-    taskLevelClaimed
-  );
-
-  localStorage.setItem(
-    "dailyStreak",
-    streak
-  );
-
-  localStorage.setItem(
-    "lastDailyDate",
-    lastDailyDate
-  );
-
-  localStorage.setItem(
-    "lastBoostDate",
-    lastBoostDate
-  );
-
-  localStorage.setItem(
-    "boostEnd",
+  const data = {
+    coins,
+    perClick,
+    level,
+    xp,
+    xpNeed,
+    totalClicks,
+    clickLevel,
+    upgradeCost:clickCost,
+    autoLevel,
+    passiveCost:autoCost,
+    conveyorLevel,
+    conveyorCost,
+    armLevel,
+    armCost,
+    factoryLevel,
+    factoryCost,
+    workers,
+    workerCost,
+    gems,
+    taskClicksClaimed,
+    taskAutoClaimed,
+    taskLevelClaimed,
+    dailyStreak:streak,
+    lastDailyDate,
+    lastBoostDate,
     boostEnd
-  );
+  };
 
+  Object.entries(data)
+    .forEach(
+      ([key,value]) => {
+        localStorage.setItem(
+          key,
+          value
+        );
+      }
+    );
 }
-
 
 function floating(
   text
 ){
-
-  const d =
+  const div =
     document.createElement(
       "div"
     );
 
-  d.className =
+  div.className =
     "floating";
 
-  d.textContent =
+  div.textContent =
     text;
 
   $("tapZone")
-    .appendChild(
-      d
-    );
+    .appendChild(div);
 
   setTimeout(
-    () =>
-      d.remove(),
+    () => div.remove(),
     700
   );
-
 }
 
-
 function tap(){
-
   const earned =
     perClick
     *
     multiplier();
 
-  coins +=
-    earned;
+  coins += earned;
 
-  xp +=
-    5;
+  xp += 5;
 
-  totalClicks++;
+  totalClicks += 1;
 
   floating(
     "+"
     +
-    compact(
-      earned
-    )
+    compact(earned)
     +
     " ⚙️"
   );
@@ -1847,483 +3524,442 @@ function tap(){
   save();
 
   update();
-
 }
-
 
 const tapZone =
   $("tapZone");
-
 
 if(
   "ontouchstart"
   in window
 ){
-
   tapZone.addEventListener(
     "touchstart",
-    e => {
-
-      e.preventDefault();
-
-      e.stopPropagation();
-
+    event => {
+      event.preventDefault();
+      event.stopPropagation();
       tap();
-
     },
     {
       passive:false
     }
   );
-
 }
 else{
-
   tapZone.addEventListener(
     "click",
-    e => {
-
-      e.preventDefault();
-
+    event => {
+      event.preventDefault();
       tap();
-
     }
   );
-
 }
-
 
 tapZone.addEventListener(
   "dblclick",
-  e => {
-
-    e.preventDefault();
-
-    e.stopPropagation();
-
+  event => {
+    event.preventDefault();
+    event.stopPropagation();
   },
   {
     passive:false
   }
 );
 
+$("clickUpgradeButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        coins < clickCost
+      ){
+        return;
+      }
 
-$("clickUpgradeButton").onclick =
-  () => {
+      coins -= clickCost;
 
-    if(
-      coins <
-      clickCost
-    ){
-      return;
-    }
+      perClick += 1;
 
-    coins -=
-      clickCost;
+      clickLevel += 1;
 
-    perClick++;
-
-    clickLevel++;
-
-    clickCost =
-      Math.floor(
-        clickCost * 1.5
-      );
-
-    save();
-
-    update();
-
-  };
-
-
-$("autoButton").onclick =
-  () => {
-
-    if(
-      coins <
-      autoCost
-    ){
-      return;
-    }
-
-    coins -=
-      autoCost;
-
-    autoLevel++;
-
-    autoCost =
-      Math.floor(
-        autoCost * 1.7
-      );
-
-    save();
-
-    update();
-
-  };
-
-
-$("workerHireButton").onclick =
-  () => {
-
-    if(
-      workers >=
-      10
-      ||
-      coins <
-      workerCost
-    ){
-      return;
-    }
-
-    coins -=
-      workerCost;
-
-    workers++;
-
-    workerCost =
-      Math.floor(
-        workerCost * 1.8
-      );
-
-    save();
-
-    update();
-
-  };
-
-
-$("conveyorButton").onclick =
-  () => {
-
-    if(
-      level <
-      3
-      ||
-      coins <
-      conveyorCost
-    ){
-      return;
-    }
-
-    coins -=
-      conveyorCost;
-
-    conveyorLevel++;
-
-    conveyorCost =
-      Math.floor(
-        conveyorCost * 1.8
-      );
-
-    save();
-
-    update();
-
-  };
-
-
-$("armButton").onclick =
-  () => {
-
-    if(
-      level <
-      5
-      ||
-      coins <
-      armCost
-    ){
-      return;
-    }
-
-    coins -=
-      armCost;
-
-    armLevel++;
-
-    armCost =
-      Math.floor(
-        armCost * 1.85
-      );
-
-    save();
-
-    update();
-
-  };
-
-
-$("factoryButton").onclick =
-  () => {
-
-    if(
-      level <
-      8
-      ||
-      coins <
-      factoryCost
-    ){
-      return;
-    }
-
-    coins -=
-      factoryCost;
-
-    factoryLevel++;
-
-    factoryCost =
-      Math.floor(
-        factoryCost * 1.9
-      );
-
-    save();
-
-    update();
-
-  };
-
-
-$("taskClicksButton").onclick =
-  () => {
-
-    if(
-      totalClicks >=
-      100
-      &&
-      !taskClicksClaimed
-    ){
-
-      coins +=
-        500;
-
-      taskClicksClaimed =
-        true;
+      clickCost =
+        Math.floor(
+          clickCost
+          *
+          1.5
+        );
 
       save();
 
       update();
-
     }
+  );
 
-  };
+$("autoButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        coins < autoCost
+      ){
+        return;
+      }
 
+      coins -= autoCost;
 
-$("taskAutoButton").onclick =
-  () => {
+      autoLevel += 1;
 
-    if(
-      autoLevel >=
-      3
-      &&
-      !taskAutoClaimed
-    ){
-
-      coins +=
-        1000;
-
-      taskAutoClaimed =
-        true;
+      autoCost =
+        Math.floor(
+          autoCost
+          *
+          1.7
+        );
 
       save();
 
       update();
-
     }
+  );
 
-  };
+$("workerHireButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        workers >= 10
+        ||
+        coins < workerCost
+      ){
+        return;
+      }
 
+      coins -= workerCost;
 
-$("taskLevelButton").onclick =
-  () => {
+      workers += 1;
 
-    if(
-      level >=
-      5
-      &&
-      !taskLevelClaimed
-    ){
-
-      coins +=
-        2500;
-
-      taskLevelClaimed =
-        true;
+      workerCost =
+        Math.floor(
+          workerCost
+          *
+          1.8
+        );
 
       save();
 
       update();
-
     }
+  );
 
-  };
+$("conveyorButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        level < 3
+        ||
+        coins < conveyorCost
+      ){
+        return;
+      }
 
+      coins -= conveyorCost;
 
-$("dailyButton").onclick =
-  () => {
+      conveyorLevel += 1;
 
-    const t =
-      today();
+      conveyorCost =
+        Math.floor(
+          conveyorCost
+          *
+          1.8
+        );
 
-    if(
-      lastDailyDate ===
-      t
-    ){
-      return;
+      save();
+
+      update();
     }
+  );
 
-    if(
-      lastDailyDate ===
-      yesterday()
-    ){
+$("armButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        level < 5
+        ||
+        coins < armCost
+      ){
+        return;
+      }
 
-      streak++;
+      coins -= armCost;
 
+      armLevel += 1;
+
+      armCost =
+        Math.floor(
+          armCost
+          *
+          1.85
+        );
+
+      save();
+
+      update();
     }
-    else{
+  );
+
+$("factoryButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        level < 8
+        ||
+        coins < factoryCost
+      ){
+        return;
+      }
+
+      coins -= factoryCost;
+
+      factoryLevel += 1;
+
+      factoryCost =
+        Math.floor(
+          factoryCost
+          *
+          1.9
+        );
+
+      save();
+
+      update();
+    }
+  );
+
+$("taskClicksButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        totalClicks >= 100
+        &&
+        !taskClicksClaimed
+      ){
+        coins += 500;
+
+        taskClicksClaimed =
+          true;
+
+        save();
+
+        update();
+      }
+    }
+  );
+
+$("taskAutoButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        autoLevel >= 3
+        &&
+        !taskAutoClaimed
+      ){
+        coins += 1000;
+
+        taskAutoClaimed =
+          true;
+
+        save();
+
+        update();
+      }
+    }
+  );
+
+$("taskLevelButton")
+  .addEventListener(
+    "click",
+    () => {
+      if(
+        level >= 5
+        &&
+        !taskLevelClaimed
+      ){
+        coins += 2500;
+
+        taskLevelClaimed =
+          true;
+
+        save();
+
+        update();
+      }
+    }
+  );
+
+$("dailyButton")
+  .addEventListener(
+    "click",
+    () => {
+      const today =
+        dateKey();
+
+      if(
+        lastDailyDate === today
+      ){
+        return;
+      }
 
       streak =
+        lastDailyDate
+        ===
+        dateKey(-1)
+        ?
+        streak + 1
+        :
         1;
 
+      if(
+        streak > 7
+      ){
+        streak = 7;
+      }
+
+      coins +=
+        streak * 500;
+
+      lastDailyDate =
+        today;
+
+      save();
+
+      update();
     }
-
-
-    if(
-      streak >
-      7
-    ){
-
-      streak =
-        7;
-
-    }
-
-
-    coins +=
-      streak * 500;
-
-    lastDailyDate =
-      t;
-
-    save();
-
-    update();
-
-  };
-
+  );
 
 function activateBoost(){
-
-  const t =
-    today();
+  const today =
+    dateKey();
 
   if(
-    lastBoostDate ===
-    t
+    lastBoostDate === today
   ){
     return;
   }
-
 
   boostEnd =
     Date.now()
     +
     5 * 60 * 1000;
 
-
   lastBoostDate =
-    t;
-
+    today;
 
   save();
 
   update();
-
 }
 
+$("boostButton")
+  .addEventListener(
+    "click",
+    activateBoost
+  );
 
-$("boostButton").onclick =
-  activateBoost;
-
-
-$("boostShortcut").onclick =
-  activateBoost;
-
+$("boostShortcut")
+  .addEventListener(
+    "click",
+    activateBoost
+  );
 
 function openScreen(
   id
 ){
-
   document
     .querySelectorAll(
       ".screen"
     )
     .forEach(
-      s =>
-        s.classList.remove(
-          "active"
-        )
+      screen => {
+        screen
+          .classList
+          .remove(
+            "active"
+          );
+      }
     );
-
 
   $(id)
-    .classList.add(
+    .classList
+    .add(
       "active"
     );
-
 
   document
     .querySelectorAll(
       ".nav"
     )
     .forEach(
-      b =>
-        b.classList.toggle(
-          "active",
-          b.dataset.screen === id
-        )
+      button => {
+        button
+          .classList
+          .toggle(
+            "active",
+            button.dataset.screen
+            ===
+            id
+          );
+      }
     );
-
 
   window.scrollTo(
     0,
     0
   );
-
 }
-
 
 document
   .querySelectorAll(
     "[data-screen]"
   )
   .forEach(
-    b =>
-      b.onclick =
-        () =>
-          openScreen(
-            b.dataset.screen
-          )
+    button => {
+      button
+        .addEventListener(
+          "click",
+          () => {
+            openScreen(
+              button.dataset.screen
+            );
+          }
+        );
+    }
   );
-
 
 document
   .querySelectorAll(
     "[data-go]"
   )
   .forEach(
-    b =>
-      b.onclick =
-        () =>
-          openScreen(
-            b.dataset.go
-          )
+    button => {
+      button
+        .addEventListener(
+          "click",
+          () => {
+            openScreen(
+              button.dataset.go
+            );
+          }
+        );
+    }
   );
 
-
 function updateTasks(){
-
-  const c =
+  const clicks =
     Math.min(
       totalClicks,
       100
@@ -2331,18 +3967,17 @@ function updateTasks(){
 
   $("taskClicksText")
     .textContent =
-      c;
+      clicks;
 
   $("taskClicksFill")
     .style.width =
-      c
+      clicks
       +
       "%";
 
   $("taskClicksButton")
     .disabled =
-      totalClicks <
-      100
+      totalClicks < 100
       ||
       taskClicksClaimed;
 
@@ -2354,8 +3989,7 @@ function updateTasks(){
       :
       "Забрать награду";
 
-
-  const a =
+  const autos =
     Math.min(
       autoLevel,
       3
@@ -2363,12 +3997,12 @@ function updateTasks(){
 
   $("taskAutoText")
     .textContent =
-      a;
+      autos;
 
   $("taskAutoFill")
     .style.width =
       (
-        a
+        autos
         /
         3
         *
@@ -2379,8 +4013,7 @@ function updateTasks(){
 
   $("taskAutoButton")
     .disabled =
-      autoLevel <
-      3
+      autoLevel < 3
       ||
       taskAutoClaimed;
 
@@ -2392,8 +4025,7 @@ function updateTasks(){
       :
       "Забрать награду";
 
-
-  const l =
+  const currentLevel =
     Math.min(
       level,
       5
@@ -2401,12 +4033,12 @@ function updateTasks(){
 
   $("taskLevelText")
     .textContent =
-      l;
+      currentLevel;
 
   $("taskLevelFill")
     .style.width =
       (
-        l
+        currentLevel
         /
         5
         *
@@ -2417,8 +4049,7 @@ function updateTasks(){
 
   $("taskLevelButton")
     .disabled =
-      level <
-      5
+      level < 5
       ||
       taskLevelClaimed;
 
@@ -2429,68 +4060,50 @@ function updateTasks(){
       "✅ Получено"
       :
       "Забрать награду";
-
 }
 
-
 function updateBonuses(){
-
-  const t =
-    today();
-
+  const today =
+    dateKey();
 
   let next =
     streak;
 
-
   if(
-    lastDailyDate !==
-    t
+    lastDailyDate !== today
   ){
-
     next =
-      lastDailyDate ===
-      yesterday()
+      lastDailyDate
+      ===
+      dateKey(-1)
       ?
       streak + 1
       :
       1;
-
   }
-
 
   if(
-    next >
-    7
+    next > 7
   ){
-
-    next =
-      7;
-
+    next = 7;
   }
-
 
   $("streak")
     .textContent =
       streak;
 
-
   $("dailyRewardAmount")
     .textContent =
-      next
-      *
-      500;
-
+      next * 500;
 
   const dailyUsed =
-    lastDailyDate ===
-    t;
-
+    lastDailyDate
+    ===
+    today;
 
   $("dailyButton")
     .disabled =
       dailyUsed;
-
 
   $("dailyButton")
     .textContent =
@@ -2499,7 +4112,6 @@ function updateBonuses(){
       "✅ Уже получено сегодня"
       :
       "Забрать бонус";
-
 
   $("dailyShortcutText")
     .textContent =
@@ -2510,19 +4122,15 @@ function updateBonuses(){
       "+"
       +
       compact(
-        next
-        *
-        500
+        next * 500
       )
       +
       " ⚙️";
 
-
   if(
     boostActive()
   ){
-
-    const left =
+    const remaining =
       Math.max(
         0,
         boostEnd
@@ -2530,19 +4138,17 @@ function updateBonuses(){
         Date.now()
       );
 
-
-    const sec =
+    const totalSeconds =
       Math.floor(
-        left
+        remaining
         /
         1000
       );
 
-
-    const mm =
+    const minutes =
       String(
         Math.floor(
-          sec
+          totalSeconds
           /
           60
         )
@@ -2552,10 +4158,9 @@ function updateBonuses(){
         "0"
       );
 
-
-    const ss =
+    const seconds =
       String(
-        sec
+        totalSeconds
         %
         60
       )
@@ -2564,110 +4169,84 @@ function updateBonuses(){
         "0"
       );
 
-
     $("boostStatus")
       .textContent =
         "⚡ x2 активно "
         +
-        mm
+        minutes
         +
         ":"
         +
-        ss;
-
+        seconds;
 
     $("boostShortcutText")
       .textContent =
         "Активно "
         +
-        mm
+        minutes
         +
         ":"
         +
-        ss;
-
+        seconds;
 
     $("boostButton")
       .disabled =
         true;
 
-
     $("boostButton")
       .textContent =
         "⚡ x2 активно";
-
   }
   else if(
-    lastBoostDate ===
-    t
+    lastBoostDate === today
   ){
-
     $("boostStatus")
       .textContent =
         "✅ Сегодня уже использован";
-
 
     $("boostShortcutText")
       .textContent =
         "Использовано";
 
-
     $("boostButton")
       .disabled =
         true;
 
-
     $("boostButton")
       .textContent =
         "✅ Использовано";
-
   }
   else{
-
     $("boostStatus")
       .textContent =
         "Доступен сегодня";
-
 
     $("boostShortcutText")
       .textContent =
         "Активировать";
 
-
     $("boostButton")
       .disabled =
         false;
 
-
     $("boostButton")
       .textContent =
         "Активировать x2";
-
   }
-
 }
 
-
 function update(){
-
   $("coins")
     .textContent =
-      compact(
-        coins
-      );
-
+      compact(coins);
 
   $("gems")
     .textContent =
-      compact(
-        gems
-      );
-
+      compact(gems);
 
   $("level")
     .textContent =
       level;
-
 
   $("xpFill")
     .style.width =
@@ -2682,7 +4261,6 @@ function update(){
       +
       "%";
 
-
   $("perClick")
     .textContent =
       compact(
@@ -2691,178 +4269,116 @@ function update(){
         multiplier()
       );
 
-
   const income =
     passiveIncome()
     *
     multiplier();
 
-
   $("passiveIncome")
     .textContent =
-      compact(
-        income
-      );
-
+      compact(income);
 
   $("topIncome")
     .textContent =
-      compact(
-        income
-      );
-
+      compact(income);
 
   $("clickCost")
     .textContent =
-      compact(
-        clickCost
-      );
-
+      compact(clickCost);
 
   $("autoCost")
     .textContent =
-      compact(
-        autoCost
-      );
-
+      compact(autoCost);
 
   $("workersCount")
     .textContent =
       workers;
 
-
   $("workerCost")
     .textContent =
-      compact(
-        workerCost
-      );
-
+      compact(workerCost);
 
   $("conveyorLevel")
     .textContent =
       conveyorLevel;
 
-
   $("conveyorCost")
     .textContent =
-      compact(
-        conveyorCost
-      );
-
+      compact(conveyorCost);
 
   $("armLevel")
     .textContent =
       armLevel;
 
-
   $("armCost")
     .textContent =
-      compact(
-        armCost
-      );
-
+      compact(armCost);
 
   $("factoryLevel")
     .textContent =
       factoryLevel;
 
-
   $("factoryCost")
     .textContent =
-      compact(
-        factoryCost
-      );
-
+      compact(factoryCost);
 
   $("clickUpgradeButton")
     .disabled =
-      coins
-      <
-      clickCost;
-
+      coins < clickCost;
 
   $("autoButton")
     .disabled =
-      coins
-      <
-      autoCost;
-
+      coins < autoCost;
 
   $("workerHireButton")
     .disabled =
-      workers >=
-      10
+      workers >= 10
       ||
-      coins
-      <
-      workerCost;
-
+      coins < workerCost;
 
   $("conveyorButton")
     .disabled =
-      level <
-      3
+      level < 3
       ||
-      coins <
-      conveyorCost;
-
+      coins < conveyorCost;
 
   $("armButton")
     .disabled =
-      level <
-      5
+      level < 5
       ||
-      coins <
-      armCost;
-
+      coins < armCost;
 
   $("factoryButton")
     .disabled =
-      level <
-      8
+      level < 8
       ||
-      coins <
-      factoryCost;
-
+      coins < factoryCost;
 
   updateTasks();
 
   updateBonuses();
-
 }
-
 
 setInterval(
   () => {
-
     const income =
       passiveIncome()
       *
       multiplier();
 
-
     if(
-      income >
-      0
+      income > 0
     ){
-
-      coins +=
-        income;
-
+      coins += income;
       save();
-
     }
 
-
     update();
-
   },
   1000
 );
 
-
 update();
-
 </script>
 
 </body>
