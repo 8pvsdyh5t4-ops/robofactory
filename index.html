@@ -4380,6 +4380,68 @@ setInterval(
 
 update();
 </script>
+<style>
+.scene{
+  background-image:url("assets/factory-bg.png.PNG") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+}
 
+.scene > .grid,
+.scene > .window,
+.scene > .sign,
+.scene > .lamp,
+.scene > .pipe,
+.scene > .arm,
+.scene > .spark,
+.scene > .steam,
+.scene > .conveyor,
+.scene > .roller,
+.scene > .box{
+  display:none !important;
+}
+
+.machine{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+
+.machineTop,
+.glow,
+.robot,
+.hand{
+  display:none !important;
+}
+
+.clickWord{
+  top:92px !important;
+  font-size:40px !important;
+  z-index:20 !important;
+}
+
+.levelBox{
+  bottom:-18px !important;
+  z-index:20 !important;
+  background:rgba(7,25,40,.96) !important;
+}
+
+.scene:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,9,15,.15) 0%,
+      transparent 25%,
+      transparent 70%,
+      rgba(2,9,15,.32) 100%
+    );
+}
+</style>
 </body>
 </html>
