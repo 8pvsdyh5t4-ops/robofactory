@@ -5160,5 +5160,37 @@ update();
   z-index:19 !important;
 }
 </style>  
+<style>
+/* FIX ЖИВОЙ ФАБРИКИ */
+
+.scene{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+
+  background:
+    url("./assets/factory-clean.png.PNG?v=8")
+    center center / cover
+    no-repeat !important;
+
+  overflow:hidden !important;
+}
+
+/* Старого отдельного робота убираем,
+   потому что новый робот уже есть в живом слое */
+#liveRobot{
+  display:none !important;
+}
+
+/* Живой слой должен занимать всю фабрику */
+.rf-overlay{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  pointer-events:none !important;
+}
+</style>  
 </body>
 </html>
