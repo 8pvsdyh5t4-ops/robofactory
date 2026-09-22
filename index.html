@@ -4443,5 +4443,67 @@ update();
     );
 }
 </style>
+<style>
+.factory-bg,
+.scene{
+  background-image:url("./assets/factory-bg.png.PNG?v=3") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+}
+
+.factory-bg > .wallGrid,
+.factory-bg > .window,
+.factory-bg > .sign,
+.factory-bg > .factoryLamp,
+.factory-bg > .pipe1,
+.factory-bg > .pipe2,
+.factory-bg > .pipe3,
+.factory-bg > .arm,
+.factory-bg > .spark,
+.factory-bg > .steam,
+.factory-bg > .conveyor,
+.factory-bg > .roller,
+.factory-bg > .movingBox,
+.scene > .grid,
+.scene > .window,
+.scene > .sign,
+.scene > .lamp,
+.scene > .pipe,
+.scene > .arm,
+.scene > .spark,
+.scene > .steam,
+.scene > .conveyor,
+.scene > .roller,
+.scene > .box{
+  display:none !important;
+}
+
+.machine{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+
+.machineTop,
+.glow,
+.robot,
+.hand{
+  display:none !important;
+}
+
+.clickWord{
+  top:92px !important;
+  font-size:40px !important;
+  z-index:30 !important;
+}
+
+.levelBox{
+  bottom:-18px !important;
+  z-index:30 !important;
+  background:rgba(7,25,40,.96) !important;
+}
+</style>  
 </body>
 </html>
