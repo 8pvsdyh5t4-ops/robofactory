@@ -6369,5 +6369,62 @@ update();
   top:72.5% !important;
 }
 </style>  
+<style>
+/* ===== FIX v15: ТОЧНО ПО БЕЛЫМ МЕТКАМ ===== */
+
+/*
+  Нижняя часть обеих рук должна стоять
+  примерно на 64% высоты сцены.
+  Высота конструкции руки = 175px,
+  поэтому вычитаем её из координаты.
+*/
+.rf-arm-rig.left,
+.rf-arm-rig.right{
+  top:calc(64% - 175px) !important;
+  margin-top:0 !important;
+}
+
+/*
+  Белая длинная линия проходит примерно
+  на 77.4% высоты сцены.
+
+  На этой линии должен находиться НИЗ коробки,
+  а не её верх.
+*/
+.rf-box{
+  top:calc(77.4% - 46px) !important;
+  bottom:auto !important;
+
+  width:54px !important;
+  height:46px !important;
+
+  margin:0 !important;
+}
+
+/* Вертикальное положение больше вообще не меняется.
+   Коробка движется только слева направо. */
+
+.rf-box.left{
+  left:-65px !important;
+  right:auto !important;
+  animation:rfBoxExactV15 6s linear infinite !important;
+}
+
+.rf-box.right{
+  left:-65px !important;
+  right:auto !important;
+  animation:rfBoxExactV15 6s linear -3s infinite !important;
+}
+
+@keyframes rfBoxExactV15{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(560px);
+  }
+}
+</style>  
 </body>
 </html>
