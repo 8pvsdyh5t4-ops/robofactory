@@ -5745,5 +5745,1123 @@ button:disabled{
 
 })();
 </script>
+ <style>
+/* =========================================
+   ROBOFACTORY MAP v35
+   ========================================= */
+
+#mapScreen{
+  padding:14px 12px 100px !important;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      #173f60,
+      #071521 45%,
+      #040c14 100%
+    );
+}
+
+
+/* ЗАГОЛОВОК */
+
+#mapScreen .title{
+  margin-bottom:12px;
+
+  font-size:22px;
+}
+
+
+/* ОСНОВНАЯ КАРТА */
+
+#mapScreen .map{
+  position:relative !important;
+
+  min-height:690px !important;
+
+  overflow:hidden !important;
+
+  border-radius:26px !important;
+
+  border:
+    1px solid #315a78 !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(45,136,177,.35),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 25% 60%,
+      rgba(37,132,85,.32),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 72% 37%,
+      rgba(102,118,49,.32),
+      transparent 24%
+    ),
+    linear-gradient(
+      #102c45,
+      #071522
+    ) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.05),
+    0 16px 30px rgba(0,0,0,.35);
+}
+
+
+/* ФОНОВЫЕ СВЕЧЕНИЯ */
+
+.rf-map-glow{
+  position:absolute;
+
+  border-radius:50%;
+
+  filter:blur(22px);
+
+  opacity:.25;
+
+  pointer-events:none;
+}
+
+.rf-map-glow.g1{
+  width:220px;
+  height:220px;
+
+  left:-70px;
+  bottom:40px;
+
+  background:#1db2ff;
+}
+
+.rf-map-glow.g2{
+  width:200px;
+  height:200px;
+
+  right:-80px;
+  top:210px;
+
+  background:#60d34c;
+}
+
+.rf-map-glow.g3{
+  width:190px;
+  height:190px;
+
+  left:30px;
+  top:-70px;
+
+  background:#805bff;
+}
+
+
+/* ВЕРХНЯЯ ПАНЕЛЬ КАРТЫ */
+
+.rf-map-status{
+  position:absolute;
+
+  left:14px;
+  right:14px;
+  top:14px;
+
+  z-index:20;
+
+  min-height:70px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  padding:12px 14px;
+
+  border-radius:18px;
+
+  background:
+    rgba(5,24,39,.94);
+
+  border:
+    1px solid #37617e;
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.25);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.rf-map-status-title{
+  font-size:13px;
+
+  color:#91a9bc;
+
+  font-weight:800;
+}
+
+.rf-map-status-location{
+  margin-top:3px;
+
+  font-size:18px;
+
+  font-weight:1000;
+}
+
+.rf-map-status-money{
+  text-align:right;
+
+  color:#62ef87;
+
+  font-size:17px;
+
+  font-weight:1000;
+}
+
+
+/* МАРШРУТ */
+
+.rf-map-path{
+  position:absolute;
+
+  z-index:3;
+
+  left:50%;
+  top:135px;
+
+  width:7px;
+  height:425px;
+
+  transform:
+    translateX(-50%)
+    rotate(9deg);
+
+  border-radius:99px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #ffd557 0 11px,
+      transparent 11px 24px
+    );
+
+  filter:
+    drop-shadow(
+      0 0 6px rgba(255,201,55,.55)
+    );
+
+  animation:
+    rfMapPathMove
+    1.4s
+    linear
+    infinite;
+}
+
+
+/* ЛОКАЦИИ */
+
+.rf-map-place{
+  position:absolute;
+
+  z-index:10;
+
+  width:168px;
+
+  padding:12px;
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8,31,49,.97),
+      rgba(5,20,33,.97)
+    );
+
+  border:
+    1px solid #315b78;
+
+  color:#fff;
+
+  text-align:left;
+
+  box-shadow:
+    0 10px 22px rgba(0,0,0,.32);
+
+  transition:
+    transform .18s,
+    border-color .18s,
+    opacity .18s;
+}
+
+.rf-map-place:active{
+  transform:scale(.97);
+}
+
+.rf-map-place.current{
+  border-color:#29dfff;
+
+  box-shadow:
+    0 0 0 2px rgba(38,202,255,.12),
+    0 0 20px rgba(22,191,244,.22);
+}
+
+.rf-map-place.locked{
+  opacity:.68;
+
+  filter:
+    saturate(.55);
+}
+
+
+/* РАСПОЛОЖЕНИЕ */
+
+.rf-map-place.garage{
+  left:18px;
+  bottom:38px;
+}
+
+.rf-map-place.city{
+  right:17px;
+  top:290px;
+}
+
+.rf-map-place.space{
+  left:18px;
+  top:105px;
+}
+
+
+/* ИКОНКИ */
+
+.rf-map-place-icon{
+  width:54px;
+  height:54px;
+
+  display:grid;
+  place-items:center;
+
+  margin-bottom:8px;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      #193e59,
+      #102c43
+    );
+
+  font-size:32px;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.08);
+}
+
+.rf-map-place-name{
+  font-size:17px;
+
+  font-weight:1000;
+}
+
+.rf-map-place-desc{
+  min-height:30px;
+
+  margin-top:4px;
+
+  color:#9fb3c3;
+
+  font-size:11px;
+
+  line-height:1.35;
+}
+
+.rf-map-place-state{
+  margin-top:8px;
+
+  color:#5bee83;
+
+  font-size:11px;
+
+  font-weight:900;
+}
+
+.rf-map-place.locked
+.rf-map-place-state{
+  color:#ffd060;
+}
+
+
+/* МАРКЕР НА МАРШРУТЕ */
+
+.rf-map-marker{
+  position:absolute;
+
+  z-index:8;
+
+  width:54px;
+  height:54px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #2de37b,
+      #0c7846
+    );
+
+  border:
+    3px solid #8cffbd;
+
+  box-shadow:
+    0 0 20px rgba(46,236,126,.5);
+
+  font-size:26px;
+
+  animation:
+    rfMapMarker
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+.rf-map-marker.garage{
+  left:52%;
+  bottom:92px;
+}
+
+.rf-map-marker.city{
+  left:51%;
+  top:360px;
+}
+
+.rf-map-marker.space{
+  left:43%;
+  top:170px;
+}
+
+
+/* ЛЕТАЮЩИЙ ДРОН */
+
+.rf-map-drone{
+  position:absolute;
+
+  z-index:5;
+
+  right:30px;
+  top:115px;
+
+  font-size:42px;
+
+  filter:
+    drop-shadow(
+      0 8px 8px rgba(0,0,0,.35)
+    );
+
+  animation:
+    rfMapDrone
+    3s
+    ease-in-out
+    infinite;
+}
+
+
+/* ОБЛАКА */
+
+.rf-map-cloud{
+  position:absolute;
+
+  z-index:2;
+
+  font-size:36px;
+
+  opacity:.25;
+
+  pointer-events:none;
+
+  animation:
+    rfMapCloud
+    9s
+    linear
+    infinite;
+}
+
+.rf-map-cloud.c1{
+  top:210px;
+  left:-50px;
+}
+
+.rf-map-cloud.c2{
+  top:480px;
+  left:-80px;
+
+  animation-delay:-4s;
+}
+
+
+/* УВЕДОМЛЕНИЕ */
+
+.rf-map-toast{
+  position:absolute;
+
+  z-index:80;
+
+  left:50%;
+  bottom:150px;
+
+  transform:
+    translateX(-50%)
+    translateY(15px);
+
+  width:
+    calc(100% - 40px);
+
+  padding:11px 14px;
+
+  border-radius:14px;
+
+  background:
+    rgba(6,24,39,.97);
+
+  border:
+    1px solid #37617e;
+
+  text-align:center;
+
+  font-size:12px;
+
+  font-weight:900;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.2s;
+}
+
+.rf-map-toast.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+
+/* АНИМАЦИИ */
+
+@keyframes rfMapPathMove{
+
+  from{
+    background-position:
+      0 0;
+  }
+
+  to{
+    background-position:
+      0 24px;
+  }
+
+}
+
+@keyframes rfMapMarker{
+
+  0%,
+  100%{
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  50%{
+    transform:
+      translateY(-7px)
+      scale(1.06);
+  }
+
+}
+
+@keyframes rfMapDrone{
+
+  0%,
+  100%{
+    transform:
+      translate(0,0)
+      rotate(-4deg);
+  }
+
+  50%{
+    transform:
+      translate(-22px,10px)
+      rotate(5deg);
+  }
+
+}
+
+@keyframes rfMapCloud{
+
+  from{
+    transform:
+      translateX(0);
+  }
+
+  to{
+    transform:
+      translateX(520px);
+  }
+
+}
+
+
+@media(max-width:380px){
+
+  .rf-map-place{
+    width:150px;
+  }
+
+  .rf-map-place-name{
+    font-size:15px;
+  }
+
+}
+</style>
+
+
+<script>
+(function(){
+
+  const map =
+    document.querySelector(
+      "#mapScreen .map"
+    );
+
+  if(!map){
+    return;
+  }
+
+
+  /*
+    Полностью заменяем только
+    содержимое карты.
+    Нижнее меню игры не трогаем.
+  */
+
+  map.innerHTML = `
+
+    <div class="rf-map-glow g1"></div>
+    <div class="rf-map-glow g2"></div>
+    <div class="rf-map-glow g3"></div>
+
+
+    <div class="rf-map-status">
+
+      <div>
+
+        <div class="rf-map-status-title">
+          Текущая локация
+        </div>
+
+        <div
+          class="rf-map-status-location"
+          id="rfMapLocation"
+        >
+          🏭 Гараж
+        </div>
+
+      </div>
+
+      <div
+        class="rf-map-status-money"
+        id="rfMapMoney"
+      >
+        ⚙️ 0
+      </div>
+
+    </div>
+
+
+    <div class="rf-map-path"></div>
+
+
+    <div
+      class="rf-map-marker garage"
+      id="rfMapMarker"
+    >
+      🤖
+    </div>
+
+
+    <div class="rf-map-drone">
+      🚁
+    </div>
+
+
+    <div class="rf-map-cloud c1">
+      ☁️
+    </div>
+
+    <div class="rf-map-cloud c2">
+      ☁️
+    </div>
+
+
+    <button
+      class="rf-map-place space"
+      data-location="space"
+      data-cost="50000000"
+    >
+
+      <div class="rf-map-place-icon">
+        🚀
+      </div>
+
+      <div class="rf-map-place-name">
+        Космопорт
+      </div>
+
+      <div class="rf-map-place-desc">
+        Высокотехнологичное производство
+        и космические заказы.
+      </div>
+
+      <div class="rf-map-place-state">
+      </div>
+
+    </button>
+
+
+    <button
+      class="rf-map-place city"
+      data-location="city"
+      data-cost="5000000"
+    >
+
+      <div class="rf-map-place-icon">
+        🏙️
+      </div>
+
+      <div class="rf-map-place-name">
+        Город
+      </div>
+
+      <div class="rf-map-place-desc">
+        Новый рынок,
+        крупные заказы
+        и расширение производства.
+      </div>
+
+      <div class="rf-map-place-state">
+      </div>
+
+    </button>
+
+
+    <button
+      class="rf-map-place garage"
+      data-location="garage"
+      data-cost="0"
+    >
+
+      <div class="rf-map-place-icon">
+        🏭
+      </div>
+
+      <div class="rf-map-place-name">
+        Гараж
+      </div>
+
+      <div class="rf-map-place-desc">
+        Начальная фабрика RoboFactory.
+      </div>
+
+      <div class="rf-map-place-state">
+      </div>
+
+    </button>
+
+
+    <div
+      class="rf-map-toast"
+      id="rfMapToast"
+    >
+    </div>
+
+  `;
+
+
+  const names = {
+
+    garage:
+      "🏭 Гараж",
+
+    city:
+      "🏙️ Город",
+
+    space:
+      "🚀 Космопорт"
+
+  };
+
+
+  const positions = {
+
+    garage:{
+      className:
+        "garage"
+    },
+
+    city:{
+      className:
+        "city"
+    },
+
+    space:{
+      className:
+        "space"
+    }
+
+  };
+
+
+  let current =
+    localStorage.getItem(
+      "rfCurrentLocation"
+    )
+    ||
+    "garage";
+
+
+  const cards =
+    [
+      ...map.querySelectorAll(
+        ".rf-map-place"
+      )
+    ];
+
+
+  const marker =
+    map.querySelector(
+      "#rfMapMarker"
+    );
+
+
+  const locationText =
+    map.querySelector(
+      "#rfMapLocation"
+    );
+
+
+  const moneyText =
+    map.querySelector(
+      "#rfMapMoney"
+    );
+
+
+  const toast =
+    map.querySelector(
+      "#rfMapToast"
+    );
+
+
+  function compactMapNumber(
+    value
+  ){
+
+    if(value >= 1000000000){
+
+      return (
+        value/1000000000
+      )
+      .toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "B";
+
+    }
+
+
+    if(value >= 1000000){
+
+      return (
+        value/1000000
+      )
+      .toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "M";
+
+    }
+
+
+    if(value >= 1000){
+
+      return (
+        value/1000
+      )
+      .toFixed(1)
+      .replace(
+        ".0",
+        ""
+      )
+      +
+      "K";
+
+    }
+
+
+    return String(
+      Math.floor(value)
+    );
+
+  }
+
+
+  function coins(){
+
+    const value =
+      Number(
+        localStorage.getItem(
+          "coins"
+        )
+      );
+
+
+    return Number.isFinite(value)
+      ?
+      value
+      :
+      0;
+
+  }
+
+
+  function showMapToast(
+    text
+  ){
+
+    toast.textContent =
+      text;
+
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    clearTimeout(
+      showMapToast.timer
+    );
+
+
+    showMapToast.timer =
+      setTimeout(
+        function(){
+
+          toast.classList.remove(
+            "show"
+          );
+
+        },
+        1700
+      );
+
+  }
+
+
+  function moveMarker(){
+
+    marker.className =
+      "rf-map-marker "
+      +
+      positions[current]
+      .className;
+
+
+    locationText.textContent =
+      names[current];
+
+  }
+
+
+  function refreshMap(){
+
+    const balance =
+      coins();
+
+
+    moneyText.textContent =
+      "⚙️ "
+      +
+      compactMapNumber(
+        balance
+      );
+
+
+    cards.forEach(
+      card => {
+
+        const id =
+          card.dataset.location;
+
+
+        const cost =
+          Number(
+            card.dataset.cost
+          );
+
+
+        const state =
+          card.querySelector(
+            ".rf-map-place-state"
+          );
+
+
+        card.classList.toggle(
+          "current",
+          id === current
+        );
+
+
+        const unlocked =
+          cost === 0
+          ||
+          balance >= cost;
+
+
+        card.classList.toggle(
+          "locked",
+          !unlocked
+        );
+
+
+        if(
+          id === current
+        ){
+
+          state.textContent =
+            "📍 Текущая локация";
+
+        }
+        else if(
+          unlocked
+        ){
+
+          state.textContent =
+            "✅ Доступно";
+
+        }
+        else{
+
+          state.textContent =
+            "🔒 Нужно ⚙️ "
+            +
+            compactMapNumber(
+              cost
+            );
+
+        }
+
+      }
+    );
+
+
+    moveMarker();
+
+  }
+
+
+  cards.forEach(
+    card => {
+
+      card.addEventListener(
+        "click",
+        function(){
+
+          const id =
+            card.dataset.location;
+
+
+          const cost =
+            Number(
+              card.dataset.cost
+            );
+
+
+          const balance =
+            coins();
+
+
+          if(
+            balance < cost
+          ){
+
+            const missing =
+              cost
+              -
+              balance;
+
+
+            showMapToast(
+              "🔒 Не хватает ⚙️ "
+              +
+              compactMapNumber(
+                missing
+              )
+            );
+
+
+            return;
+
+          }
+
+
+          current =
+            id;
+
+
+          localStorage.setItem(
+            "rfCurrentLocation",
+            current
+          );
+
+
+          refreshMap();
+
+
+          showMapToast(
+            "📍 Локация выбрана: "
+            +
+            names[current]
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  refreshMap();
+
+
+  setInterval(
+    refreshMap,
+    1000
+  );
+
+})();
+</script> 
 </body>
 </html>
