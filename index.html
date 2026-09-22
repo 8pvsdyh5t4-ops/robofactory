@@ -5455,6 +5455,502 @@ update();
 .rf-box{
   margin-top:-115px !important;
 }
-</style>  
+</style> 
+<style>
+/* =================================================
+   ROBOFACTORY v11
+   РАЗДЕЛЬНЫЕ РУКИ + КЛИК РОБОТА + КОРОБКИ ВЫШЕ
+   ================================================= */
+
+
+/* Старые цельные руки больше не показываем */
+.rf-arm{
+  display:none !important;
+}
+
+/* Старые отдельные искры тоже убираем */
+.rf-spark{
+  display:none !important;
+}
+
+
+/* ===== НОВАЯ РУКА ===== */
+
+.rf-arm-rig{
+  position:absolute;
+
+  width:175px;
+  height:160px;
+
+  z-index:20;
+
+  pointer-events:none;
+}
+
+/* Левая */
+.rf-arm-rig.left{
+  left:-8px;
+
+  top:39%;
+  margin-top:-105px;
+}
+
+/* Правая */
+.rf-arm-rig.right{
+  right:-8px;
+
+  top:39%;
+  margin-top:-105px;
+
+  /* зеркалим всю конструкцию */
+  transform:scaleX(-1);
+}
+
+
+/* обе картинки занимают одинаковое место */
+
+.rf-arm-base-img,
+.rf-arm-upper-img{
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+}
+
+
+/* НИЖНЯЯ ЧАСТЬ РУКИ
+   остается полностью неподвижной */
+
+.rf-arm-base-img{
+  z-index:1;
+
+  clip-path:
+    inset(
+      58% 0 0 0
+    );
+}
+
+
+/* контейнер верхней части */
+
+.rf-arm-upper{
+  position:absolute;
+
+  inset:0;
+
+  z-index:2;
+
+  transform-origin:
+    18% 53%;
+
+  animation:
+    rfUpperArmMove
+    1.65s
+    ease-in-out
+    infinite;
+}
+
+
+/* показываем только верх руки */
+
+.rf-arm-upper-img{
+  clip-path:
+    inset(
+      0 0 24% 0
+    );
+}
+
+
+/* сварочная точка */
+
+.rf-weld-spark{
+  position:absolute;
+
+  left:86%;
+  top:63%;
+
+  width:34px;
+  height:34px;
+
+  border-radius:50%;
+
+  opacity:.25;
+
+  background:
+    radial-gradient(
+      circle,
+      #ffffff 0%,
+      #fff6a0 15%,
+      #ffad21 37%,
+      rgba(255,100,0,.25) 62%,
+      transparent 75%
+    );
+
+  filter:
+    drop-shadow(
+      0 0 8px #ffb21f
+    );
+
+  animation:
+    rfWeldFlash
+    .7s
+    steps(2)
+    infinite;
+}
+
+
+/* Двигается ТОЛЬКО верх */
+
+@keyframes rfUpperArmMove{
+
+  0%,
+  100%{
+    transform:
+      rotate(-2deg);
+  }
+
+  45%{
+    transform:
+      rotate(8deg);
+  }
+
+  65%{
+    transform:
+      rotate(11deg);
+  }
+
+}
+
+
+/* мерцание сварки */
+
+@keyframes rfWeldFlash{
+
+  0%,
+  55%{
+    opacity:.15;
+    transform:scale(.65);
+  }
+
+  70%{
+    opacity:1;
+    transform:scale(1.3);
+  }
+
+  100%{
+    opacity:.25;
+    transform:scale(.8);
+  }
+
+}
+
+
+/* ===== РОБОТ ===== */
+
+.rf-center-robot.rf-robot-hit{
+  animation:
+    rfRobotRealClick
+    .30s
+    cubic-bezier(.2,.9,.35,1.35)
+    !important;
+}
+
+
+@keyframes rfRobotRealClick{
+
+  0%{
+    transform:
+      translate(-50%,-50%)
+      translateY(0)
+      scale(1);
+  }
+
+  28%{
+    transform:
+      translate(-50%,-50%)
+      translateY(5px)
+      scale(.92);
+  }
+
+  62%{
+    transform:
+      translate(-50%,-50%)
+      translateY(-17px)
+      scale(1.10);
+  }
+
+  100%{
+    transform:
+      translate(-50%,-50%)
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* ===== КОРОБКИ ЧУТЬ ВЫШЕ ===== */
+
+.rf-box{
+  margin-top:-145px !important;
+}
+</style>
+
+
+<script>
+(function(){
+
+  function startV11(){
+
+    const overlay =
+      document.querySelector(
+        ".rf-overlay"
+      );
+
+    const hero =
+      document.querySelector(
+        ".hero"
+      );
+
+    if(
+      !overlay
+      ||
+      !hero
+    ){
+
+      setTimeout(
+        startV11,
+        100
+      );
+
+      return;
+    }
+
+
+    /* ===== СОЗДАЁМ НОВЫЕ РУКИ ===== */
+
+    if(
+      !overlay.querySelector(
+        ".rf-arm-rig"
+      )
+    ){
+
+      const left =
+        document.createElement(
+          "div"
+        );
+
+      left.className =
+        "rf-arm-rig left";
+
+      left.innerHTML = `
+        <img
+          class="rf-arm-base-img"
+          src="./assets/arm.png.PNG?v=11"
+          alt=""
+        >
+
+        <div class="rf-arm-upper">
+
+          <img
+            class="rf-arm-upper-img"
+            src="./assets/arm.png.PNG?v=11"
+            alt=""
+          >
+
+          <div
+            class="rf-weld-spark">
+          </div>
+
+        </div>
+      `;
+
+
+      const right =
+        document.createElement(
+          "div"
+        );
+
+      right.className =
+        "rf-arm-rig right";
+
+      right.innerHTML = `
+        <img
+          class="rf-arm-base-img"
+          src="./assets/arm.png.PNG?v=11"
+          alt=""
+        >
+
+        <div class="rf-arm-upper">
+
+          <img
+            class="rf-arm-upper-img"
+            src="./assets/arm.png.PNG?v=11"
+            alt=""
+          >
+
+          <div
+            class="rf-weld-spark">
+          </div>
+
+        </div>
+      `;
+
+
+      overlay.appendChild(
+        left
+      );
+
+      overlay.appendChild(
+        right
+      );
+
+    }
+
+
+    /* ===== РЕАКЦИЯ РОБОТА НА КЛИК ===== */
+
+    if(
+      hero.dataset.rfRobotClickV11
+      !==
+      "1"
+    ){
+
+      hero.dataset.rfRobotClickV11 =
+        "1";
+
+
+      let lastHit = 0;
+
+
+      function robotHit(event){
+
+        /* При нажатии на игровые кнопки
+           робота не дёргаем */
+
+        if(
+          event.target
+          &&
+          event.target.closest
+          &&
+          event.target.closest(
+            "button"
+          )
+        ){
+          return;
+        }
+
+
+        const now =
+          Date.now();
+
+
+        if(
+          now-lastHit
+          <
+          100
+        ){
+          return;
+        }
+
+
+        lastHit =
+          now;
+
+
+        const robot =
+          document.querySelector(
+            ".rf-center-robot"
+          );
+
+
+        if(!robot){
+          return;
+        }
+
+
+        robot.classList.remove(
+          "rf-robot-hit"
+        );
+
+
+        void robot.offsetWidth;
+
+
+        robot.classList.add(
+          "rf-robot-hit"
+        );
+
+
+        setTimeout(
+          function(){
+
+            robot.classList.remove(
+              "rf-robot-hit"
+            );
+
+          },
+          320
+        );
+
+      }
+
+
+      hero.addEventListener(
+        "pointerdown",
+        robotHit,
+        true
+      );
+
+
+      hero.addEventListener(
+        "touchstart",
+        robotHit,
+        {
+          capture:true,
+          passive:true
+        }
+      );
+
+    }
+
+  }
+
+
+  if(
+    document.readyState
+    ===
+    "loading"
+  ){
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function(){
+
+        setTimeout(
+          startV11,
+          100
+        );
+
+      }
+    );
+
+  }
+  else{
+
+    setTimeout(
+      startV11,
+      100
+    );
+
+  }
+
+})();
+</script>  
 </body>
 </html>
