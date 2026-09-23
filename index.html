@@ -23457,5 +23457,54 @@ setInterval(rf47UpgradeAllBoxes, 800);
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v47 FIX
+   RESTORE CONVEYOR MOVEMENT
+   ========================================= */
+
+/* возвращаем движение коробок */
+.moving-box.rf47-upgraded-box{
+  animation:
+    boxMove 6.3s linear infinite
+    !important;
+}
+
+/* сохраняем правильные интервалы */
+.moving-box.b2.rf47-upgraded-box{
+  animation-delay:-2.1s !important;
+}
+
+.moving-box.b3.rf47-upgraded-box{
+  animation-delay:-4.2s !important;
+}
+
+
+/* свечение теперь анимируется ВНУТРИ коробки,
+   а не ломает её движение */
+
+.rf47-box-shell{
+  animation:
+    rf47ShellPulse
+    2.1s
+    ease-in-out
+    infinite;
+}
+
+@keyframes rf47ShellPulse{
+
+  0%,
+  100%{
+    filter:
+      brightness(1);
+  }
+
+  50%{
+    filter:
+      brightness(1.14);
+  }
+
+}
+</style>
 </body>
 </html>
