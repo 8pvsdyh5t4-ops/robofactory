@@ -23484,5 +23484,933 @@ document.addEventListener(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY PRODUCTION CHAIN v1
+   ========================================= */
+
+.rf-production{
+  margin:14px 0 10px;
+  padding:14px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #102d43,
+      #071b2b
+    );
+
+  border:1px solid #315a78;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.26);
+}
+
+.rf-prod-title{
+  font-size:18px;
+  font-weight:1000;
+}
+
+.rf-prod-sub{
+  margin-top:3px;
+
+  color:#94aabc;
+
+  font-size:10px;
+}
+
+
+/* RESOURCES */
+
+.rf-prod-resources{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:6px;
+
+  margin-top:12px;
+}
+
+.rf-prod-resource{
+  min-width:0;
+
+  padding:8px 3px;
+
+  text-align:center;
+
+  border-radius:13px;
+
+  background:#081c2c;
+
+  border:1px solid #294b64;
+}
+
+.rf-prod-resource span{
+  display:block;
+
+  font-size:20px;
+}
+
+.rf-prod-resource small{
+  display:block;
+
+  margin-top:3px;
+
+  color:#8fa6b7;
+
+  font-size:7px;
+}
+
+.rf-prod-resource b{
+  display:block;
+
+  margin-top:3px;
+
+  font-size:12px;
+}
+
+
+/* PRODUCTION LINE */
+
+.rf-prod-line{
+  margin-top:12px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:5px;
+}
+
+.rf-prod-step{
+  flex:1;
+
+  min-width:0;
+
+  padding:9px 4px;
+
+  border-radius:12px;
+
+  text-align:center;
+
+  background:#0c2639;
+
+  border:1px solid #31516a;
+}
+
+.rf-prod-step span{
+  display:block;
+
+  font-size:20px;
+}
+
+.rf-prod-step small{
+  display:block;
+
+  margin-top:3px;
+
+  font-size:7px;
+
+  color:#9fb4c4;
+}
+
+.rf-prod-arrow{
+  color:#55cdf5;
+
+  font-size:14px;
+}
+
+
+/* BUTTONS */
+
+.rf-prod-actions{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:7px;
+
+  margin-top:12px;
+}
+
+.rf-prod-button{
+  min-height:48px;
+
+  padding:8px;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0daf49
+    );
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:1000;
+}
+
+.rf-prod-button.secondary{
+  background:
+    linear-gradient(
+      #1596df,
+      #0b6399
+    );
+}
+
+.rf-prod-button:disabled{
+  background:#193848;
+  color:#8196a5;
+}
+
+
+/* AUTO PRODUCTION */
+
+.rf-prod-status{
+  margin-top:10px;
+
+  padding:9px;
+
+  border-radius:12px;
+
+  background:#071724;
+
+  color:#9eb3c3;
+
+  font-size:9px;
+
+  text-align:center;
+}
+
+.rf-prod-status b{
+  color:#63ef8a;
+}
+
+
+/* ROBOT SALE */
+
+.rf-prod-sale{
+  margin-top:10px;
+
+  padding:10px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #34290f,
+      #16222a
+    );
+
+  border:1px solid #8f702a;
+}
+
+.rf-prod-sale-title{
+  font-size:11px;
+  font-weight:1000;
+}
+
+.rf-prod-sale-text{
+  margin-top:4px;
+
+  color:#c8b474;
+
+  font-size:8px;
+}
+
+.rf-prod-sale button{
+  width:100%;
+
+  min-height:45px;
+
+  margin-top:8px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      #ffbf3d,
+      #d68a12
+    );
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:1000;
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rfProdNum(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    fallback;
+
+}
+
+
+function rfProdSave(
+  key,
+  value
+){
+
+  localStorage.setItem(
+    key,
+    String(
+      Math.max(
+        0,
+        Math.floor(value)
+      )
+    )
+  );
+
+}
+
+
+function rfProdCompact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   STATE
+   ========================================= */
+
+let raw =
+  rfProdNum(
+    "rfProdRaw",
+    0
+  );
+
+
+let parts =
+  rfProdNum(
+    "rfProdParts",
+    0
+  );
+
+
+let modules =
+  rfProdNum(
+    "rfProdModules",
+    0
+  );
+
+
+let robots =
+  rfProdNum(
+    "rfProdRobots",
+    0
+  );
+
+
+/* =========================================
+   INSERT UI
+   ========================================= */
+
+const upgradesScreen =
+  document.querySelector(
+    "#upgradesScreen"
+  );
+
+
+if(!upgradesScreen){
+  return;
+}
+
+
+const production =
+  document.createElement(
+    "div"
+  );
+
+
+production.className =
+  "rf-production";
+
+
+production.innerHTML = `
+
+  <div class="rf-prod-title">
+    🏭 Производственная линия
+  </div>
+
+  <div class="rf-prod-sub">
+    Перерабатывай сырьё и собирай готовых роботов
+  </div>
+
+
+  <div class="rf-prod-resources">
+
+    <div class="rf-prod-resource">
+      <span>🪨</span>
+      <small>Сырьё</small>
+      <b id="rfProdRaw">0</b>
+    </div>
+
+    <div class="rf-prod-resource">
+      <span>⚙️</span>
+      <small>Детали</small>
+      <b id="rfProdParts">0</b>
+    </div>
+
+    <div class="rf-prod-resource">
+      <span>🔧</span>
+      <small>Модули</small>
+      <b id="rfProdModules">0</b>
+    </div>
+
+    <div class="rf-prod-resource">
+      <span>🤖</span>
+      <small>Роботы</small>
+      <b id="rfProdRobots">0</b>
+    </div>
+
+  </div>
+
+
+  <div class="rf-prod-line">
+
+    <div class="rf-prod-step">
+      <span>🪨</span>
+      <small>5 сырья</small>
+    </div>
+
+    <div class="rf-prod-arrow">
+      ➜
+    </div>
+
+    <div class="rf-prod-step">
+      <span>⚙️</span>
+      <small>1 деталь</small>
+    </div>
+
+    <div class="rf-prod-arrow">
+      ➜
+    </div>
+
+    <div class="rf-prod-step">
+      <span>🔧</span>
+      <small>1 модуль</small>
+    </div>
+
+    <div class="rf-prod-arrow">
+      ➜
+    </div>
+
+    <div class="rf-prod-step">
+      <span>🤖</span>
+      <small>1 робот</small>
+    </div>
+
+  </div>
+
+
+  <div class="rf-prod-actions">
+
+    <button
+      class="rf-prod-button secondary"
+      id="rfProdMakeParts"
+    >
+      ⚙️ Создать деталь
+    </button>
+
+    <button
+      class="rf-prod-button secondary"
+      id="rfProdMakeModule"
+    >
+      🔧 Создать модуль
+    </button>
+
+    <button
+      class="rf-prod-button"
+      id="rfProdMakeRobot"
+    >
+      🤖 Собрать робота
+    </button>
+
+    <button
+      class="rf-prod-button"
+      id="rfProdGather"
+    >
+      🪨 Получить сырьё
+    </button>
+
+  </div>
+
+
+  <div class="rf-prod-status">
+
+    Автодобыча сырья:
+    <b id="rfProdRate">
+      +0/с
+    </b>
+
+  </div>
+
+
+  <div class="rf-prod-sale">
+
+    <div class="rf-prod-sale-title">
+      🚚 Продажа готовой продукции
+    </div>
+
+    <div class="rf-prod-sale-text">
+      Каждый готовый робот продаётся за 2 500 ⚙️
+    </div>
+
+    <button id="rfProdSell">
+      Продать 1 робота
+    </button>
+
+  </div>
+`;
+
+
+/*
+Ставим производственную линию
+после заголовка и вкладок.
+*/
+
+const tabs =
+  upgradesScreen.querySelector(
+    ".tabs"
+  );
+
+
+if(tabs){
+
+  tabs.insertAdjacentElement(
+    "afterend",
+    production
+  );
+
+}
+else{
+
+  upgradesScreen.appendChild(
+    production
+  );
+
+}
+
+
+/* =========================================
+   SAVE
+   ========================================= */
+
+function rfProdSaveAll(){
+
+  rfProdSave(
+    "rfProdRaw",
+    raw
+  );
+
+
+  rfProdSave(
+    "rfProdParts",
+    parts
+  );
+
+
+  rfProdSave(
+    "rfProdModules",
+    modules
+  );
+
+
+  rfProdSave(
+    "rfProdRobots",
+    robots
+  );
+
+}
+
+
+/* =========================================
+   RAW RATE
+   ========================================= */
+
+/*
+Автодобыча зависит от уже существующих
+улучшений фабрики.
+*/
+
+function rfProdRawRate(){
+
+  const conveyor =
+    rfProdNum(
+      "conveyorLevel",
+      0
+    );
+
+
+  const workers =
+    rfProdNum(
+      "workers",
+      0
+    );
+
+
+  const factory =
+    rfProdNum(
+      "factoryLevel",
+      0
+    );
+
+
+  return (
+    1
+    +
+    conveyor
+    +
+    Math.floor(
+      workers / 2
+    )
+    +
+    factory * 3
+  );
+
+}
+
+
+/* =========================================
+   ACTIONS
+   ========================================= */
+
+document
+.querySelector(
+  "#rfProdGather"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    raw += 10;
+
+    rfProdSaveAll();
+
+    rfProdUpdate();
+
+  }
+);
+
+
+document
+.querySelector(
+  "#rfProdMakeParts"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(raw < 5){
+      return;
+    }
+
+
+    raw -= 5;
+
+    parts += 1;
+
+
+    rfProdSaveAll();
+
+    rfProdUpdate();
+
+  }
+);
+
+
+document
+.querySelector(
+  "#rfProdMakeModule"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(parts < 4){
+      return;
+    }
+
+
+    parts -= 4;
+
+    modules += 1;
+
+
+    rfProdSaveAll();
+
+    rfProdUpdate();
+
+  }
+);
+
+
+document
+.querySelector(
+  "#rfProdMakeRobot"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(
+      modules < 3
+      ||
+      parts < 2
+    ){
+      return;
+    }
+
+
+    modules -= 3;
+
+    parts -= 2;
+
+    robots += 1;
+
+
+    rfProdSaveAll();
+
+    rfProdUpdate();
+
+  }
+);
+
+
+document
+.querySelector(
+  "#rfProdSell"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(robots < 1){
+      return;
+    }
+
+
+    robots -= 1;
+
+
+    rfProdSaveAll();
+
+
+    const coins =
+      rfProdNum(
+        "coins",
+        0
+      );
+
+
+    localStorage.setItem(
+      "coins",
+      coins
+      +
+      2500
+    );
+
+
+    rfProdUpdate();
+
+  }
+);
+
+
+/* =========================================
+   UPDATE
+   ========================================= */
+
+function rfProdUpdate(){
+
+  document
+  .querySelector(
+    "#rfProdRaw"
+  )
+  .textContent =
+    rfProdCompact(
+      raw
+    );
+
+
+  document
+  .querySelector(
+    "#rfProdParts"
+  )
+  .textContent =
+    rfProdCompact(
+      parts
+    );
+
+
+  document
+  .querySelector(
+    "#rfProdModules"
+  )
+  .textContent =
+    rfProdCompact(
+      modules
+    );
+
+
+  document
+  .querySelector(
+    "#rfProdRobots"
+  )
+  .textContent =
+    rfProdCompact(
+      robots
+    );
+
+
+  document
+  .querySelector(
+    "#rfProdRate"
+  )
+  .textContent =
+    "+"
+    +
+    rfProdRawRate()
+    +
+    "/с";
+
+
+  document
+  .querySelector(
+    "#rfProdMakeParts"
+  )
+  .disabled =
+    raw < 5;
+
+
+  document
+  .querySelector(
+    "#rfProdMakeModule"
+  )
+  .disabled =
+    parts < 4;
+
+
+  document
+  .querySelector(
+    "#rfProdMakeRobot"
+  )
+  .disabled =
+    modules < 3
+    ||
+    parts < 2;
+
+
+  document
+  .querySelector(
+    "#rfProdSell"
+  )
+  .disabled =
+    robots < 1;
+
+}
+
+
+/* =========================================
+   AUTO RAW PRODUCTION
+   ========================================= */
+
+setInterval(
+  function(){
+
+    raw +=
+      rfProdRawRate();
+
+
+    rfProdSaveAll();
+
+    rfProdUpdate();
+
+  },
+  1000
+);
+
+
+/* =========================================
+   INITIAL
+   ========================================= */
+
+rfProdUpdate();
+
+})();
+</script>  
 </body>
 </html>
