@@ -10530,5 +10530,536 @@ button:disabled{
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v38
+   TELEGRAM MINI APP POLISH
+   ========================================= */
+
+html,
+body{
+  min-height:100%;
+  overscroll-behavior:none;
+}
+
+body{
+  padding-top:
+    env(safe-area-inset-top);
+
+  padding-left:
+    env(safe-area-inset-left);
+
+  padding-right:
+    env(safe-area-inset-right);
+
+  padding-bottom:
+    env(safe-area-inset-bottom);
+
+  -webkit-user-select:none;
+  user-select:none;
+
+  -webkit-touch-callout:none;
+}
+
+
+/* нижнее меню с учётом iPhone */
+
+.bottom-nav{
+  padding-bottom:
+    calc(
+      6px
+      +
+      env(safe-area-inset-bottom)
+    ) !important;
+}
+
+
+/* последний контент не залезает под меню */
+
+.screen{
+  padding-bottom:
+    calc(
+      105px
+      +
+      env(safe-area-inset-bottom)
+    );
+}
+
+
+/* картинки не перетаскиваются */
+
+img{
+  -webkit-user-drag:none;
+  user-drag:none;
+
+  pointer-events:none;
+}
+
+
+/* кнопки остаются отзывчивыми */
+
+button,
+.nav,
+#tapZone{
+  touch-action:manipulation;
+}
+
+
+/* убираем синий highlight iOS */
+
+*{
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+/* режим внутри Telegram */
+
+body.rf-telegram-app{
+  background:#050d15;
+}
+
+
+/* небольшой статус загрузки Mini App */
+
+.rf38-telegram-ready{
+  position:fixed;
+
+  z-index:999;
+
+  top:
+    calc(
+      8px
+      +
+      env(safe-area-inset-top)
+    );
+
+  left:50%;
+
+  transform:
+    translateX(-50%)
+    translateY(-10px);
+
+  padding:
+    6px 10px;
+
+  border-radius:99px;
+
+  background:
+    rgba(14,42,61,.94);
+
+  border:
+    1px solid #315b77;
+
+  color:#aeeaff;
+
+  font-size:9px;
+  font-weight:900;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.25s;
+}
+
+.rf38-telegram-ready.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   TELEGRAM DETECTION
+   ========================================= */
+
+const tg =
+  window.Telegram
+  &&
+  window.Telegram.WebApp
+  ?
+  window.Telegram.WebApp
+  :
+  null;
+
+
+let telegramMode =
+  false;
+
+
+if(tg){
+
+  telegramMode =
+    true;
+
+
+  document.body.classList.add(
+    "rf-telegram-app"
+  );
+
+
+  try{
+
+    tg.ready();
+
+  }
+  catch(e){}
+
+
+  try{
+
+    tg.expand();
+
+  }
+  catch(e){}
+
+
+  /*
+  Если Telegram поддерживает отключение
+  вертикальных свайпов Mini App.
+  */
+
+  try{
+
+    if(
+      typeof tg.disableVerticalSwipes
+      ===
+      "function"
+    ){
+
+      tg.disableVerticalSwipes();
+
+    }
+
+  }
+  catch(e){}
+
+}
+
+
+/* =========================================
+   TELEGRAM READY MESSAGE
+   ========================================= */
+
+if(
+  telegramMode
+){
+
+  const ready =
+    document.createElement(
+      "div"
+    );
+
+
+  ready.className =
+    "rf38-telegram-ready";
+
+
+  ready.textContent =
+    "🤖 RoboFactory подключена к Telegram";
+
+
+  document.body.appendChild(
+    ready
+  );
+
+
+  setTimeout(
+    function(){
+
+      ready.classList.add(
+        "show"
+      );
+
+  },
+  300
+  );
+
+
+  setTimeout(
+    function(){
+
+      ready.classList.remove(
+        "show"
+      );
+
+  },
+  1800
+  );
+
+}
+
+
+/* =========================================
+   HAPTIC HELPERS
+   ========================================= */
+
+function haptic(
+  type
+){
+
+  if(
+    !tg
+    ||
+    !tg.HapticFeedback
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    if(
+      type ===
+      "click"
+    ){
+
+      tg.HapticFeedback
+      .impactOccurred(
+        "light"
+      );
+
+    }
+
+
+    if(
+      type ===
+      "buy"
+    ){
+
+      tg.HapticFeedback
+      .impactOccurred(
+        "medium"
+      );
+
+    }
+
+
+    if(
+      type ===
+      "success"
+    ){
+
+      tg.HapticFeedback
+      .notificationOccurred(
+        "success"
+      );
+
+    }
+
+
+    if(
+      type ===
+      "error"
+    ){
+
+      tg.HapticFeedback
+      .notificationOccurred(
+        "error"
+      );
+
+    }
+
+  }
+  catch(e){}
+
+}
+
+
+/* =========================================
+   ROBOT CLICK VIBRATION
+   ========================================= */
+
+const tapZone =
+  document.querySelector(
+    "#tapZone"
+  );
+
+
+if(tapZone){
+
+  tapZone.addEventListener(
+    "pointerdown",
+    function(){
+
+      haptic(
+        "click"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   BUTTON HAPTICS
+   ========================================= */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const button =
+      event.target.closest(
+        "button"
+      );
+
+
+    if(!button){
+      return;
+    }
+
+
+    if(
+      button.disabled
+    ){
+
+      haptic(
+        "error"
+      );
+
+
+      return;
+
+    }
+
+
+    const text =
+      (
+        button.textContent
+        ||
+        ""
+      )
+      .toLowerCase();
+
+
+    if(
+      text.includes(
+        "купить"
+      )
+      ||
+      text.includes(
+        "нанять"
+      )
+      ||
+      text.includes(
+        "забрать"
+      )
+      ||
+      text.includes(
+        "надеть"
+      )
+    ){
+
+      haptic(
+        "buy"
+      );
+
+    }
+
+  },
+  true
+);
+
+
+/* =========================================
+   PREVENT ACCIDENTAL DOUBLE TAP ZOOM
+   ========================================= */
+
+let lastTouchEnd =
+  0;
+
+
+document.addEventListener(
+  "touchend",
+  function(event){
+
+    const now =
+      Date.now();
+
+
+    if(
+      now
+      -
+      lastTouchEnd
+      <=
+      280
+    ){
+
+      event.preventDefault();
+
+    }
+
+
+    lastTouchEnd =
+      now;
+
+  },
+  {
+    passive:false
+  }
+);
+
+
+/* =========================================
+   SAVE WHEN TELEGRAM / SAFARI CLOSES
+   ========================================= */
+
+function forceSaveSignal(){
+
+  try{
+
+    localStorage.setItem(
+      "rfLastActive",
+      String(
+        Date.now()
+      )
+    );
+
+  }
+  catch(e){}
+
+}
+
+
+document.addEventListener(
+  "visibilitychange",
+  function(){
+
+    if(
+      document.visibilityState
+      ===
+      "hidden"
+    ){
+
+      forceSaveSignal();
+
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  "pagehide",
+  forceSaveSignal
+);
+
+
+})();
+</script>  
 </body>
 </html>
