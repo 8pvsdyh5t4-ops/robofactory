@@ -10034,5 +10034,501 @@ setTimeout(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v37
+   UI POLISH
+   ========================================= */
+
+/* ---------- ОБЩАЯ ПЛАВНОСТЬ ---------- */
+
+.screen{
+  animation:
+    rf37ScreenIn
+    .22s
+    ease-out;
+}
+
+@keyframes rf37ScreenIn{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+
+/* ---------- ЕДИНЫЕ ЗАГОЛОВКИ ---------- */
+
+.title{
+  letter-spacing:.2px;
+  text-shadow:
+    0 1px 0 rgba(0,0,0,.5);
+}
+
+
+/* ---------- ЕДИНЫЕ КАРТОЧКИ ---------- */
+
+.panel,
+.upgrade,
+.worker-dashboard,
+.rf-map-place,
+.rf36-achievement,
+.rf36-shop-card,
+.rf36-streak-card{
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    box-shadow .16s ease;
+}
+
+
+/* лёгкий живой эффект */
+
+.panel:active,
+.upgrade:active,
+.worker-dashboard:active,
+.rf-map-place:active,
+.rf36-achievement:active,
+.rf36-shop-card:active{
+  transform:scale(.985);
+}
+
+
+/* ---------- КНОПКИ ---------- */
+
+button{
+  -webkit-tap-highlight-color:
+    transparent;
+
+  transition:
+    transform .12s ease,
+    filter .12s ease,
+    opacity .12s ease;
+}
+
+button:active{
+  transform:scale(.965);
+}
+
+button:disabled{
+  opacity:.56;
+}
+
+
+/* ---------- НИЖНЕЕ МЕНЮ ---------- */
+
+.bottom-nav{
+  backdrop-filter:
+    blur(16px);
+
+  background:
+    rgba(5,15,24,.94) !important;
+
+  border-top:
+    1px solid rgba(80,130,165,.22);
+}
+
+.nav{
+  position:relative;
+
+  transition:
+    color .18s ease,
+    transform .18s ease,
+    background .18s ease;
+}
+
+.nav.active{
+  color:#44cfff !important;
+
+  transform:
+    translateY(-2px);
+}
+
+
+/* подсветка активной вкладки */
+
+.nav.active::before{
+  content:"";
+
+  position:absolute;
+
+  left:16%;
+  right:16%;
+  top:-5px;
+
+  height:3px;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #27cfff,
+      transparent
+    );
+
+  box-shadow:
+    0 0 12px rgba(39,207,255,.55);
+}
+
+
+/* ---------- ВЕРХНИЕ БАЛАНСЫ ---------- */
+
+.topbar{
+  backdrop-filter:
+    blur(12px);
+
+  background:
+    rgba(5,15,24,.91) !important;
+
+  border-bottom:
+    1px solid rgba(80,130,165,.18);
+}
+
+
+/* ---------- ЦИФРЫ ---------- */
+
+.coins,
+.gems,
+.rf-map-status-money,
+.rf36-shop-wallet b,
+.worker-count{
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+/* ---------- КАРТОЧКИ УЛУЧШЕНИЙ ---------- */
+
+#upgradesScreen .upgrade{
+  overflow:hidden;
+}
+
+#upgradesScreen .upgrade::after{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255,255,255,.03) 50%,
+      transparent 60%,
+      transparent 100%
+    );
+
+  transform:
+    translateX(-100%);
+
+  transition:
+    transform .45s ease;
+}
+
+#upgradesScreen .upgrade:active::after{
+  transform:
+    translateX(100%);
+}
+
+
+/* ---------- WORKERS ---------- */
+
+.worker-slot{
+  position:relative;
+}
+
+.worker-slot.active::after{
+  content:"";
+
+  position:absolute;
+
+  inset:5px;
+
+  border-radius:10px;
+
+  box-shadow:
+    inset 0 0 12px rgba(90,235,135,.16);
+
+  pointer-events:none;
+}
+
+
+/* ---------- MAP ---------- */
+
+.rf-map-place.current{
+  animation:
+    rf37CurrentPlace
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+@keyframes rf37CurrentPlace{
+  0%,
+  100%{
+    box-shadow:
+      0 0 0 2px rgba(38,202,255,.10),
+      0 0 18px rgba(22,191,244,.15);
+  }
+
+  50%{
+    box-shadow:
+      0 0 0 3px rgba(38,202,255,.18),
+      0 0 26px rgba(22,191,244,.28);
+  }
+}
+
+
+/* ---------- EVENTS ---------- */
+
+.rf36-achievement.ready{
+  animation:
+    rf37RewardReady
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes rf37RewardReady{
+  0%,
+  100%{
+    box-shadow:
+      0 0 12px rgba(255,185,45,.10);
+  }
+
+  50%{
+    box-shadow:
+      0 0 24px rgba(255,185,45,.28);
+  }
+}
+
+
+/* ---------- SHOP ---------- */
+
+.rf36-shop-card.featured{
+  position:relative;
+  overflow:hidden;
+}
+
+.rf36-shop-card.featured::before{
+  content:"";
+
+  position:absolute;
+
+  width:40%;
+  height:200%;
+
+  top:-50%;
+  left:-60%;
+
+  transform:
+    rotate(20deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.08),
+      transparent
+    );
+
+  animation:
+    rf37ShopShine
+    3.5s
+    ease-in-out
+    infinite;
+}
+
+@keyframes rf37ShopShine{
+  0%{
+    left:-60%;
+  }
+
+  55%{
+    left:120%;
+  }
+
+  100%{
+    left:120%;
+  }
+}
+
+
+/* ---------- СКРОЛЛ ---------- */
+
+*{
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    #214763
+    #07131d;
+}
+
+
+/* ---------- УМЕНЬШАЕМ ЛИШНИЕ ДЕРГАНИЯ ---------- */
+
+@media(
+  prefers-reduced-motion:
+  reduce
+){
+  *,
+  *::before,
+  *::after{
+    animation-duration:
+      .01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      .01ms !important;
+  }
+}
+
+
+/* ---------- МАЛЕНЬКИЕ ЭКРАНЫ ---------- */
+
+@media(max-width:380px){
+
+  .title{
+    font-size:20px !important;
+  }
+
+  .nav{
+    font-size:10px;
+  }
+
+}
+</style>
+
+
+<script>
+(function(){
+
+  /* =========================================
+     ACTIVE BOTTOM NAV FIX
+     ========================================= */
+
+  const navs =
+    [
+      ...document.querySelectorAll(
+        ".nav[data-screen]"
+      )
+    ];
+
+
+  function syncNav(
+    screenId
+  ){
+
+    navs.forEach(
+      nav => {
+
+        nav.classList.toggle(
+          "active",
+          nav.dataset.screen
+          ===
+          screenId
+        );
+
+      }
+    );
+
+  }
+
+
+  navs.forEach(
+    nav => {
+
+      nav.addEventListener(
+        "click",
+        function(){
+
+          syncNav(
+            nav.dataset.screen
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* определяем текущий видимый экран */
+
+  function detectCurrentScreen(){
+
+    const screens =
+      [
+        ...document.querySelectorAll(
+          ".screen"
+        )
+      ];
+
+
+    const visible =
+      screens.find(
+        screen => {
+
+          const style =
+            getComputedStyle(
+              screen
+            );
+
+
+          return (
+            style.display
+            !==
+            "none"
+            &&
+            style.visibility
+            !==
+            "hidden"
+          );
+
+        }
+      );
+
+
+    if(
+      visible
+      &&
+      visible.id
+    ){
+
+      syncNav(
+        visible.id
+      );
+
+    }
+
+  }
+
+
+  detectCurrentScreen();
+
+
+  /* небольшая страховка после переходов */
+
+  setInterval(
+    detectCurrentScreen,
+    700
+  );
+
+})();
+</script>
 </body>
 </html>
