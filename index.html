@@ -23068,5 +23068,394 @@ setInterval(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v47
+   BETTER CONVEYOR BOXES
+   ========================================= */
+
+.rf47-upgraded-box{
+  position:relative !important;
+  overflow:visible !important;
+  border-radius:10px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #6fd7ff 0%,
+      #2ea6da 32%,
+      #12688f 70%,
+      #0a4059 100%
+    ) !important;
+
+  border:1px solid rgba(173,238,255,.75) !important;
+
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.28),
+    inset 0 -6px 10px rgba(0,0,0,.28),
+    0 5px 14px rgba(0,0,0,.30),
+    0 0 12px rgba(67,201,255,.18) !important;
+
+  transform-style:preserve-3d;
+  isolation:isolate;
+}
+
+.rf47-upgraded-box::before{
+  content:"";
+
+  position:absolute;
+  left:8%;
+  right:8%;
+  top:-4px;
+  height:26%;
+
+  border-radius:8px 8px 4px 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.45),
+      rgba(255,255,255,.08)
+    );
+
+  border:1px solid rgba(255,255,255,.22);
+
+  box-shadow:
+    0 3px 6px rgba(255,255,255,.10);
+
+  z-index:1;
+  pointer-events:none;
+}
+
+.rf47-upgraded-box::after{
+  content:"";
+
+  position:absolute;
+  left:7%;
+  right:7%;
+  bottom:10%;
+  height:16%;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(91,255,153,.15),
+      rgba(83,222,255,.6),
+      rgba(91,255,153,.15)
+    );
+
+  filter:blur(.2px);
+
+  box-shadow:
+    0 0 8px rgba(69,222,255,.35);
+
+  z-index:1;
+  pointer-events:none;
+}
+
+.rf47-box-shell{
+  position:absolute;
+  inset:0;
+  border-radius:10px;
+  pointer-events:none;
+  z-index:2;
+}
+
+.rf47-box-panel{
+  position:absolute;
+  left:11%;
+  top:22%;
+  width:78%;
+  height:48%;
+
+  border-radius:6px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10,45,62,.85),
+      rgba(5,27,39,.92)
+    );
+
+  border:1px solid rgba(138,222,255,.22);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -3px 6px rgba(0,0,0,.24);
+}
+
+.rf47-box-stripe{
+  position:absolute;
+  left:14%;
+  right:14%;
+  top:49%;
+  height:3px;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,208,79,.12),
+      rgba(255,208,79,.95),
+      rgba(255,208,79,.12)
+    );
+
+  box-shadow:
+    0 0 8px rgba(255,208,79,.35);
+}
+
+.rf47-box-corner{
+  position:absolute;
+  width:8px;
+  height:8px;
+
+  border-radius:2px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #dff7ff,
+      #74dfff
+    );
+
+  box-shadow:
+    0 0 6px rgba(103,227,255,.35);
+}
+
+.rf47-box-corner.c1{
+  left:10%;
+  top:20%;
+}
+.rf47-box-corner.c2{
+  right:10%;
+  top:20%;
+}
+.rf47-box-corner.c3{
+  left:10%;
+  bottom:18%;
+}
+.rf47-box-corner.c4{
+  right:10%;
+  bottom:18%;
+}
+
+.rf47-box-label{
+  position:absolute;
+  right:12%;
+  top:25%;
+
+  padding:1px 4px;
+
+  border-radius:4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffcb4f,
+      #d78b14
+    );
+
+  color:#fff;
+
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:.4px;
+
+  box-shadow:
+    0 1px 4px rgba(0,0,0,.25);
+
+  z-index:3;
+}
+
+.rf47-box-glow{
+  position:absolute;
+  left:18%;
+  bottom:20%;
+  width:18px;
+  height:6px;
+
+  border-radius:99px;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(96,255,174,.95) 0%,
+      rgba(96,255,174,.2) 65%,
+      transparent 100%
+    );
+
+  filter:blur(.6px);
+
+  z-index:3;
+  pointer-events:none;
+}
+
+.rf47-box-lines{
+  position:absolute;
+  inset:0;
+  border-radius:10px;
+  pointer-events:none;
+  z-index:2;
+}
+
+.rf47-box-lines span{
+  position:absolute;
+  background:rgba(255,255,255,.12);
+  border-radius:99px;
+}
+
+.rf47-box-lines span:nth-child(1){
+  left:16%;
+  top:18%;
+  width:2px;
+  height:52%;
+}
+
+.rf47-box-lines span:nth-child(2){
+  right:16%;
+  top:18%;
+  width:2px;
+  height:52%;
+}
+
+.rf47-box-lines span:nth-child(3){
+  left:18%;
+  right:18%;
+  top:30%;
+  height:2px;
+}
+
+.rf47-box-lines span:nth-child(4){
+  left:18%;
+  right:18%;
+  bottom:22%;
+  height:2px;
+}
+
+/* небольшое мерцание */
+@keyframes rf47BoxPulse{
+  0%,100%{
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.28),
+      inset 0 -6px 10px rgba(0,0,0,.28),
+      0 5px 14px rgba(0,0,0,.30),
+      0 0 12px rgba(67,201,255,.18);
+  }
+
+  50%{
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.28),
+      inset 0 -6px 10px rgba(0,0,0,.28),
+      0 5px 14px rgba(0,0,0,.30),
+      0 0 18px rgba(67,201,255,.28);
+  }
+}
+
+.rf47-upgraded-box{
+  animation:rf47BoxPulse 2.1s ease-in-out infinite;
+}
+</style>
+
+<script>
+(function(){
+
+"use strict";
+
+/* =========================================
+   ROBOFACTORY v47
+   BOX UPGRADE SCRIPT
+   ========================================= */
+
+const BOX_SELECTORS = [
+  ".conveyor .box",
+  ".conveyor .crate",
+  ".conveyor .cargo-box",
+  ".conveyor .package-box",
+  ".conveyor-box",
+  ".belt-box",
+  ".moving-box",
+  ".hero .conveyor .box"
+].join(",");
+
+function rf47LooksLikeFactoryBox(el){
+  if(!el) return false;
+
+  const badParents = [
+    ".rf42-contract",
+    ".rf43-daily",
+    ".rf44-prestige",
+    ".shop-grid",
+    ".skins-grid",
+    ".modal",
+    ".popup"
+  ];
+
+  for(const sel of badParents){
+    if(el.closest(sel)) return false;
+  }
+
+  const rect = el.getBoundingClientRect();
+
+  if(rect.width < 12 || rect.height < 12) return false;
+  if(rect.width > 160 || rect.height > 160) return false;
+
+  return true;
+}
+
+function rf47BuildBoxDecor(el){
+  if(el.dataset.rf47Box === "1") return;
+  if(!rf47LooksLikeFactoryBox(el)) return;
+
+  el.dataset.rf47Box = "1";
+  el.classList.add("rf47-upgraded-box");
+
+  const shell = document.createElement("div");
+  shell.className = "rf47-box-shell";
+  shell.innerHTML = `
+    <div class="rf47-box-panel"></div>
+    <div class="rf47-box-stripe"></div>
+    <div class="rf47-box-corner c1"></div>
+    <div class="rf47-box-corner c2"></div>
+    <div class="rf47-box-corner c3"></div>
+    <div class="rf47-box-corner c4"></div>
+    <div class="rf47-box-label">RF</div>
+    <div class="rf47-box-glow"></div>
+    <div class="rf47-box-lines">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  `;
+
+  el.appendChild(shell);
+}
+
+function rf47UpgradeAllBoxes(){
+  const candidates = document.querySelectorAll(BOX_SELECTORS);
+
+  candidates.forEach(el => {
+    rf47BuildBoxDecor(el);
+  });
+}
+
+/* если коробки создаются динамически */
+const rf47Observer = new MutationObserver(function(){
+  rf47UpgradeAllBoxes();
+});
+
+rf47Observer.observe(document.body, {
+  childList:true,
+  subtree:true
+});
+
+rf47UpgradeAllBoxes();
+setInterval(rf47UpgradeAllBoxes, 800);
+
+})();
+</script>
 </body>
 </html>
