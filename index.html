@@ -23068,6 +23068,113 @@ setInterval(
 
 })();
 </script>
- 
+ <script>
+/* ROBOFACTORY v46 LIVE UI FIX: read-only rendering after existing purchases. */
+(function () {
+  "use strict";
+  if (window.__rf46LiveUIInstalled) return;
+  window.__rf46LiveUIInstalled = true;
+
+  const upgrades = {
+    click: ["clickLevel", "upgradeCost", 10, 1],
+    auto: ["autoLevel", "passiveCost", 25, 1],
+    worker: ["workers", "workerCost", 50, 1],
+    conveyor: ["conveyorLevel", "conveyorCost", 800, 3],
+    arm: ["armLevel", "armCost", 3000, 5],
+    factory: ["factoryLevel", "factoryCost", 12000, 8]
+  };
+  const selector = "#coins, #perClick, #passiveIncome, #topIncome, " +
+    "#workersCount, [data-level], [data-cost], [data-buy], #workerHireBig";
+  let pending = false;
+
+  function number(key, fallback) {
+    const raw = localStorage.getItem(key);
+    if (raw === null || raw.trim() === "") return fallback;
+    const value = Number(raw);
+    return Number.isFinite(value) && value >= 0 ? value : fallback;
+  }
+
+  function compact(value) {
+    value = Math.floor(value);
+    for (const [limit, suffix] of [[1e9, "B"], [1e6, "M"], [1e3, "K"]]) {
+      if (value >= limit) return (value / limit).toFixed(1).replace(".0", "") + suffix;
+    }
+    return String(value);
+  }
+
+  function text(selector, value) {
+    const next = String(value);
+    document.querySelectorAll(selector).forEach(function (element) {
+      if (element.textContent !== next) element.textContent = next;
+    });
+  }
+
+  function refresh() {
+    pending = false;
+    observer.disconnect();
+    try {
+      const coins = number("coins", 0);
+      const level = number("level", 1);
+      const levels = {};
+      Object.entries(upgrades).forEach(function ([type, spec]) {
+        // Match the base game's legacy autoLevel fallback.
+        const fallback = type === "auto" ? number("passiveIncome", 0) : 0;
+        const count = number(spec[0], fallback);
+        const cost = number(spec[1], spec[2]);
+        levels[type] = count;
+        text('[data-level="' + type + '"]', count);
+        text('[data-cost="' + type + '"]', compact(cost));
+        const disabled = coins < cost || level < spec[3] ||
+          (type === "worker" && count >= 10);
+        document.querySelectorAll('[data-buy="' + type + '"]' +
+          (type === "worker" ? ", #workerHireBig" : "")).forEach(function (button) {
+          if (button.disabled !== disabled) button.disabled = disabled;
+        });
+      });
+      // Preserve v46's displayed base income and temporary x2 boost.
+      // Prestige/zone rewards are applied by the existing saving code.
+      const boost = Date.now() < number("boostEnd", 0) ? 2 : 1;
+      const income = (levels.auto + levels.worker * 2 + levels.conveyor * 5 +
+        levels.arm * 25 + levels.factory * 100) * boost;
+      text("#coins", compact(coins));
+      text("#perClick", compact(number("perClick", 1) * boost));
+      text("#passiveIncome, #topIncome", compact(income));
+      text("#workersCount", levels.worker);
+    } catch (error) {
+      // Unavailable storage must not interfere with the original game.
+    } finally {
+      // Observe only purchase UI. Disconnect while rendering to avoid loops.
+      document.querySelectorAll(selector).forEach(function (element) {
+        observer.observe(element, {
+          childList: true, subtree: true, characterData: true,
+          attributes: true, attributeFilter: ["disabled"]
+        });
+      });
+    }
+  }
+
+  function schedule() {
+    if (pending) return;
+    pending = true;
+    queueMicrotask(refresh);
+  }
+
+  const observer = new MutationObserver(schedule);
+  // Capture before the old handler; render after it has saved, even if its
+  // legacy update() throws on an element removed by later v46 UI patches.
+  document.addEventListener("click", function (event) {
+    if (event.target instanceof Element &&
+        event.target.closest("[data-buy], #workerHireBig")) schedule();
+  }, true);
+  window.addEventListener("storage", function (event) {
+    if (event.storageArea === localStorage) schedule();
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) schedule();
+  });
+  refresh();
+})();
+</script>
+
 </body>
 </html>
