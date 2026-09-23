@@ -21860,5 +21860,1213 @@ setInterval(
 
 })();
 </script>  
+<style>
+/* =========================================
+   ROBOFACTORY v46
+   PRODUCTION ZONES
+   ========================================= */
+
+/* ACTIVE ZONE BADGE */
+
+.rf46-zone-badge{
+  position:absolute;
+
+  z-index:38;
+
+  right:10px;
+  top:120px;
+
+  padding:6px 9px;
+
+  border-radius:99px;
+
+  background:
+    rgba(6,27,41,.92);
+
+  border:
+    1px solid #34779a;
+
+  color:#a9e9ff;
+
+  font-size:8px;
+  font-weight:1000;
+
+  backdrop-filter:
+    blur(8px);
+
+  box-shadow:
+    0 0 14px rgba(38,181,234,.12);
+}
+
+
+/* MAP ZONE BONUS */
+
+.rf46-zone-bonus{
+  margin-top:6px;
+
+  padding:5px 7px;
+
+  border-radius:9px;
+
+  background:
+    rgba(48,191,102,.10);
+
+  color:#66ee8e;
+
+  font-size:9px;
+
+  font-weight:1000;
+}
+
+
+/* UNLOCKED LOCATION */
+
+.rf-map-place.rf46-unlocked{
+  opacity:1 !important;
+
+  filter:none !important;
+}
+
+
+.rf-map-place.rf46-unlocked:not(.current){
+  border-color:#3c7c5b !important;
+}
+
+
+/* CURRENT ADVANCED ZONE */
+
+.rf-map-place.current.rf46-zone-city{
+  border-color:#45cfff !important;
+
+  box-shadow:
+    0 0 24px rgba(55,203,255,.25) !important;
+}
+
+
+.rf-map-place.current.rf46-zone-space{
+  border-color:#c77cff !important;
+
+  box-shadow:
+    0 0 26px rgba(183,100,255,.28) !important;
+}
+
+
+/* ZONE CHANGE TOAST */
+
+.rf46-toast{
+  position:fixed;
+
+  z-index:10130;
+
+  left:50%;
+
+  bottom:
+    calc(
+      100px
+      +
+      env(safe-area-inset-bottom)
+    );
+
+  width:
+    calc(100% - 40px);
+
+  max-width:370px;
+
+  padding:11px 13px;
+
+  border-radius:14px;
+
+  background:
+    rgba(7,28,44,.96);
+
+  border:
+    1px solid #35617d;
+
+  color:#fff;
+
+  text-align:center;
+
+  font-size:11px;
+
+  font-weight:1000;
+
+  transform:
+    translateX(-50%)
+    translateY(15px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.2s;
+}
+
+
+.rf46-toast.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   ZONE DATA
+   ========================================= */
+
+const RF46_ZONES =
+{
+
+  garage:
+  {
+    name:"🏭 Гараж",
+
+    multiplier:1.00,
+
+    cost:0
+  },
+
+
+  city:
+  {
+    name:"🏙️ Город",
+
+    multiplier:1.25,
+
+    cost:5000000
+  },
+
+
+  space:
+  {
+    name:"🚀 Космопорт",
+
+    multiplier:1.60,
+
+    cost:50000000
+  }
+
+};
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf46Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf46Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000000){
+
+    return (
+      value/1000000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "B";
+
+  }
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   CURRENT ZONE
+   ========================================= */
+
+function rf46CurrentZone(){
+
+  const value =
+    localStorage.getItem(
+      "rfCurrentLocation"
+    );
+
+
+  return RF46_ZONES[value]
+    ?
+    value
+    :
+    "garage";
+
+}
+
+
+function rf46ZoneMultiplier(){
+
+  return (
+    RF46_ZONES[
+      rf46CurrentZone()
+    ]
+    .multiplier
+  );
+
+}
+
+
+/* =========================================
+   PERMANENT UNLOCKS
+   ========================================= */
+
+function rf46Unlocked(
+  id
+){
+
+  if(id === "garage"){
+    return true;
+  }
+
+
+  return (
+    localStorage.getItem(
+      "rfZoneUnlocked_"
+      +
+      id
+    )
+    ===
+    "1"
+  );
+
+}
+
+
+function rf46UnlockCheck(){
+
+  const coins =
+    rf46Number(
+      "coins",
+      0
+    );
+
+
+  Object.entries(
+    RF46_ZONES
+  )
+  .forEach(
+    ([id,zone]) => {
+
+      if(id === "garage"){
+        return;
+      }
+
+
+      if(
+        coins
+        >=
+        zone.cost
+      ){
+
+        localStorage.setItem(
+          "rfZoneUnlocked_"
+          +
+          id,
+          "1"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/*
+Если игрок уже раньше выбирал
+Город или Космопорт,
+считаем эту зону открытой.
+*/
+
+const existingZone =
+  rf46CurrentZone();
+
+
+if(
+  existingZone !==
+  "garage"
+){
+
+  localStorage.setItem(
+    "rfZoneUnlocked_"
+    +
+    existingZone,
+    "1"
+  );
+
+}
+
+
+/* =========================================
+   HERO BADGE
+   ========================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+let zoneBadge =
+  null;
+
+
+if(hero){
+
+  zoneBadge =
+    document.createElement(
+      "div"
+    );
+
+
+  zoneBadge.className =
+    "rf46-zone-badge";
+
+
+  hero.appendChild(
+    zoneBadge
+  );
+
+}
+
+
+/* =========================================
+   TOAST
+   ========================================= */
+
+const toast =
+  document.createElement(
+    "div"
+  );
+
+
+toast.className =
+  "rf46-toast";
+
+
+document.body.appendChild(
+  toast
+);
+
+
+function rf46Toast(
+  text
+){
+
+  toast.textContent =
+    text;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    rf46Toast.timer
+  );
+
+
+  rf46Toast.timer =
+    setTimeout(
+      function(){
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      1700
+    );
+
+}
+
+
+/* =========================================
+   FRACTIONAL ZONE BONUS
+   ========================================= */
+
+let zoneCarry =
+  Number(
+    localStorage.getItem(
+      "rf46ZoneCarry"
+    )
+  )
+  ||
+  0;
+
+
+function rf46ZoneBonusFor(
+  income
+){
+
+  const multiplier =
+    rf46ZoneMultiplier();
+
+
+  if(
+    multiplier
+    <=
+    1
+  ){
+
+    return 0;
+
+  }
+
+
+  const exact =
+    income
+    *
+    (
+      multiplier
+      -
+      1
+    )
+    +
+    zoneCarry;
+
+
+  const bonus =
+    Math.floor(
+      exact
+    );
+
+
+  zoneCarry =
+    exact
+    -
+    bonus;
+
+
+  localStorage.setItem(
+    "rf46ZoneCarry",
+    String(
+      zoneCarry
+    )
+  );
+
+
+  return bonus;
+
+}
+
+
+/* =========================================
+   DO NOT BOOST SHOP COIN PACKS
+   ========================================= */
+
+let rf46SuppressUntil =
+  0;
+
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const button =
+      event.target.closest(
+        "[data-product]"
+      );
+
+
+    if(!button){
+      return;
+    }
+
+
+    const product =
+      button.dataset.product;
+
+
+    if(
+      product ===
+      "coins25"
+      ||
+      product ===
+      "coins100"
+    ){
+
+      rf46SuppressUntil =
+        Date.now()
+        +
+        1500;
+
+    }
+
+  },
+  true
+);
+
+
+/* =========================================
+   COIN MULTIPLIER
+   ========================================= */
+
+/*
+v45 уже обрабатывает престиж.
+
+Мы оборачиваем текущий setItem
+ещё одним слоем.
+
+Сначала добавляется бонус зоны,
+затем v45 применяет бонус престижа.
+
+Итог:
+база × зона × престиж.
+*/
+
+const rf46PreviousSetItem =
+  Storage.prototype.setItem;
+
+
+if(
+  !window.__rf46Installed
+){
+
+  window.__rf46Installed =
+    true;
+
+
+  Storage.prototype.setItem =
+    function(
+      key,
+      value
+    ){
+
+      if(
+        key !==
+        "coins"
+      ){
+
+        return rf46PreviousSetItem.call(
+          this,
+          key,
+          value
+        );
+
+      }
+
+
+      const incoming =
+        Number(
+          value
+        );
+
+
+      const current =
+        Number(
+          this.getItem(
+            "coins"
+          )
+        );
+
+
+      if(
+        !Number.isFinite(incoming)
+        ||
+        !Number.isFinite(current)
+      ){
+
+        return rf46PreviousSetItem.call(
+          this,
+          key,
+          value
+        );
+
+      }
+
+
+      /*
+      Баланс уменьшается:
+      покупка.
+
+      Бонус зоны не нужен.
+      */
+
+      if(
+        incoming
+        <=
+        current
+      ){
+
+        return rf46PreviousSetItem.call(
+          this,
+          key,
+          String(
+            incoming
+          )
+        );
+
+      }
+
+
+      /*
+      Покупные монеты за 💎
+      тоже не усиливаем.
+      */
+
+      if(
+        Date.now()
+        <
+        rf46SuppressUntil
+      ){
+
+        return rf46PreviousSetItem.call(
+          this,
+          key,
+          String(
+            incoming
+          )
+        );
+
+      }
+
+
+      const earned =
+        incoming
+        -
+        current;
+
+
+      const zoneBonus =
+        rf46ZoneBonusFor(
+          earned
+        );
+
+
+      const withZone =
+        incoming
+        +
+        zoneBonus;
+
+
+      return rf46PreviousSetItem.call(
+        this,
+        key,
+        String(
+          withZone
+        )
+      );
+
+    };
+
+}
+
+
+/* =========================================
+   MAP CONTROL
+   ========================================= */
+
+const map =
+  document.querySelector(
+    "#mapScreen .map"
+  );
+
+
+function rf46SelectZone(
+  id
+){
+
+  const zone =
+    RF46_ZONES[id];
+
+
+  if(!zone){
+    return;
+  }
+
+
+  const coins =
+    rf46Number(
+      "coins",
+      0
+    );
+
+
+  const unlocked =
+    rf46Unlocked(
+      id
+    )
+    ||
+    coins
+    >=
+    zone.cost;
+
+
+  if(!unlocked){
+
+    rf46Toast(
+      "🔒 Нужно ⚙️ "
+      +
+      rf46Compact(
+        zone.cost
+        -
+        coins
+      )
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    id !==
+    "garage"
+  ){
+
+    localStorage.setItem(
+      "rfZoneUnlocked_"
+      +
+      id,
+      "1"
+    );
+
+  }
+
+
+  localStorage.setItem(
+    "rfCurrentLocation",
+    id
+  );
+
+
+  rf46Toast(
+    zone.name
+    +
+    " • доход x"
+    +
+    zone.multiplier.toFixed(2)
+  );
+
+
+  rf46Update();
+
+}
+
+
+/*
+Перехватываем нажатия карты раньше
+старого обработчика v35.
+
+Так открытые зоны остаются доступны
+даже после траты монет.
+*/
+
+if(map){
+
+  map.addEventListener(
+    "click",
+    function(event){
+
+      const place =
+        event.target.closest(
+          ".rf-map-place"
+        );
+
+
+      if(!place){
+        return;
+      }
+
+
+      const id =
+        place.dataset.location;
+
+
+      if(
+        !RF46_ZONES[id]
+      ){
+        return;
+      }
+
+
+      event.preventDefault();
+
+      event.stopImmediatePropagation();
+
+
+      rf46SelectZone(
+        id
+      );
+
+    },
+    true
+  );
+
+}
+
+
+/* =========================================
+   UPDATE MAP
+   ========================================= */
+
+function rf46UpdateMap(){
+
+  if(!map){
+    return;
+  }
+
+
+  const current =
+    rf46CurrentZone();
+
+
+  const coins =
+    rf46Number(
+      "coins",
+      0
+    );
+
+
+  map
+  .querySelectorAll(
+    ".rf-map-place"
+  )
+  .forEach(
+    card => {
+
+      const id =
+        card.dataset.location;
+
+
+      const zone =
+        RF46_ZONES[id];
+
+
+      if(!zone){
+        return;
+      }
+
+
+      if(
+        id !==
+        "garage"
+        &&
+        coins
+        >=
+        zone.cost
+      ){
+
+        localStorage.setItem(
+          "rfZoneUnlocked_"
+          +
+          id,
+          "1"
+        );
+
+      }
+
+
+      const unlocked =
+        rf46Unlocked(
+          id
+        );
+
+
+      card.classList.toggle(
+        "current",
+        id === current
+      );
+
+
+      card.classList.toggle(
+        "locked",
+        !unlocked
+      );
+
+
+      card.classList.toggle(
+        "rf46-unlocked",
+        unlocked
+      );
+
+
+      card.classList.toggle(
+        "rf46-zone-city",
+        id === "city"
+      );
+
+
+      card.classList.toggle(
+        "rf46-zone-space",
+        id === "space"
+      );
+
+
+      let bonus =
+        card.querySelector(
+          ".rf46-zone-bonus"
+        );
+
+
+      if(!bonus){
+
+        bonus =
+          document.createElement(
+            "div"
+          );
+
+
+        bonus.className =
+          "rf46-zone-bonus";
+
+
+        const desc =
+          card.querySelector(
+            ".rf-map-place-desc"
+          );
+
+
+        if(desc){
+
+          desc.insertAdjacentElement(
+            "afterend",
+            bonus
+          );
+
+        }
+
+      }
+
+
+      bonus.textContent =
+        "⚙️ Доход x"
+        +
+        zone.multiplier.toFixed(2);
+
+
+      const state =
+        card.querySelector(
+          ".rf-map-place-state"
+        );
+
+
+      if(state){
+
+        if(
+          id === current
+        ){
+
+          state.textContent =
+            "📍 Активная зона";
+
+        }
+        else if(unlocked){
+
+          state.textContent =
+            "✅ Открыто • выбрать";
+
+        }
+        else{
+
+          state.textContent =
+            "🔒 Нужно ⚙️ "
+            +
+            rf46Compact(
+              zone.cost
+            );
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /*
+  Старый маркер карты.
+  */
+
+  const marker =
+    map.querySelector(
+      "#rfMapMarker"
+    );
+
+
+  if(marker){
+
+    marker.className =
+      "rf-map-marker "
+      +
+      current;
+
+  }
+
+
+  const location =
+    map.querySelector(
+      "#rfMapLocation"
+    );
+
+
+  if(location){
+
+    location.textContent =
+      RF46_ZONES[
+        current
+      ]
+      .name;
+
+  }
+
+}
+
+
+/* =========================================
+   UPDATE HERO
+   ========================================= */
+
+function rf46UpdateHero(){
+
+  if(!zoneBadge){
+    return;
+  }
+
+
+  const id =
+    rf46CurrentZone();
+
+
+  const zone =
+    RF46_ZONES[id];
+
+
+  zoneBadge.textContent =
+    zone.name
+    +
+    "  •  x"
+    +
+    zone.multiplier.toFixed(2);
+
+}
+
+
+/* =========================================
+   SAVE MULTIPLIER
+   ========================================= */
+
+function rf46SaveMultiplier(){
+
+  localStorage.setItem(
+    "rfZoneMultiplier",
+    String(
+      rf46ZoneMultiplier()
+    )
+  );
+
+}
+
+
+/* =========================================
+   RUN
+   ========================================= */
+
+function rf46Update(){
+
+  rf46UnlockCheck();
+
+  rf46UpdateMap();
+
+  rf46UpdateHero();
+
+  rf46SaveMultiplier();
+
+}
+
+
+rf46Update();
+
+
+/*
+v35 тоже обновляет карту каждую секунду,
+поэтому v46 слегка чаще восстанавливает
+новое состояние.
+
+Да, буквально приходится присматривать
+за собственным старым кодом 😄
+*/
+
+setInterval(
+  rf46Update,
+  350
+);
+
+})();
+</script>
 </body>
 </html>
