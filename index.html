@@ -14936,5 +14936,1447 @@ setInterval(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v42
+   FACTORY CONTRACTS
+   ========================================= */
+
+.rf42-contract{
+  margin:10px 12px 0;
+  padding:14px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12,39,58,.97),
+      rgba(6,23,37,.97)
+    );
+
+  border:
+    1px solid #315b78;
+
+  box-shadow:
+    0 9px 20px rgba(0,0,0,.25);
+}
+
+
+/* HEADER */
+
+.rf42-contract-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+
+  gap:10px;
+}
+
+.rf42-contract-title{
+  font-size:17px;
+  font-weight:1000;
+}
+
+.rf42-contract-sub{
+  margin-top:3px;
+
+  color:#92a9ba;
+
+  font-size:10px;
+}
+
+
+/* RARITY */
+
+.rf42-rarity{
+  padding:5px 8px;
+
+  border-radius:99px;
+
+  font-size:8px;
+  font-weight:1000;
+}
+
+.rf42-rarity.common{
+  background:#153448;
+  color:#a9c4d5;
+}
+
+.rf42-rarity.rare{
+  background:#163962;
+  color:#67bdff;
+
+  box-shadow:
+    0 0 12px rgba(60,159,255,.18);
+}
+
+.rf42-rarity.epic{
+  background:#412568;
+  color:#d79aff;
+
+  box-shadow:
+    0 0 14px rgba(171,83,255,.22);
+}
+
+
+/* ORDER */
+
+.rf42-order{
+  display:grid;
+
+  grid-template-columns:
+    50px
+    minmax(0,1fr);
+
+  gap:10px;
+
+  align-items:center;
+
+  margin-top:13px;
+}
+
+.rf42-order-icon{
+  width:50px;
+  height:50px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:15px;
+
+  background:#14364d;
+
+  font-size:27px;
+}
+
+.rf42-order-name{
+  font-size:14px;
+  font-weight:1000;
+}
+
+.rf42-order-desc{
+  margin-top:3px;
+
+  color:#98adbd;
+
+  font-size:10px;
+}
+
+
+/* PROGRESS */
+
+.rf42-progress{
+  height:9px;
+
+  margin-top:12px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:#06131d;
+}
+
+.rf42-progress-fill{
+  width:0;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #27c7ff,
+      #63ef89
+    );
+
+  box-shadow:
+    0 0 10px rgba(54,215,255,.25);
+
+  transition:width .25s;
+}
+
+.rf42-meta{
+  display:flex;
+  justify-content:space-between;
+
+  margin-top:6px;
+
+  color:#9db1c1;
+
+  font-size:9px;
+}
+
+.rf42-timer{
+  color:#ffd066;
+
+  font-weight:900;
+}
+
+
+/* REWARD */
+
+.rf42-reward{
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+
+  gap:10px;
+
+  margin-top:12px;
+
+  padding:10px;
+
+  border-radius:14px;
+
+  background:#071724;
+
+  border:
+    1px solid #233f54;
+}
+
+.rf42-reward-text span{
+  display:block;
+
+  color:#8ea6b8;
+
+  font-size:9px;
+}
+
+.rf42-reward-text b{
+  display:block;
+
+  margin-top:3px;
+
+  color:#63ef89;
+
+  font-size:16px;
+}
+
+.rf42-claim{
+  min-width:105px;
+  min-height:44px;
+
+  padding:7px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0caf49
+    );
+
+  color:#fff;
+
+  font-size:10px;
+  font-weight:1000;
+}
+
+.rf42-claim:disabled{
+  background:#18394b;
+  color:#8095a4;
+}
+
+
+/* READY */
+
+.rf42-contract.ready{
+  border-color:#e0a736;
+
+  box-shadow:
+    0 0 20px rgba(255,184,44,.18);
+}
+
+.rf42-contract.ready .rf42-progress-fill{
+  background:
+    linear-gradient(
+      90deg,
+      #ffb72e,
+      #ffdc70
+    );
+}
+
+
+/* FAILED */
+
+.rf42-contract.failed{
+  opacity:.75;
+
+  border-color:#7a3a3a;
+}
+
+
+/* NEW CONTRACT POPUP */
+
+.rf42-popup{
+  position:fixed;
+
+  z-index:10060;
+
+  left:50%;
+  top:50%;
+
+  width:
+    calc(100% - 38px);
+
+  max-width:360px;
+
+  padding:19px;
+
+  border-radius:23px;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      #12384f,
+      #071b2a
+    );
+
+  border:
+    1px solid #47d8ff;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+  text-align:center;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.rf42-popup.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+
+  pointer-events:auto;
+}
+
+.rf42-popup-icon{
+  font-size:45px;
+}
+
+.rf42-popup h3{
+  margin:6px 0 0;
+
+  font-size:20px;
+}
+
+.rf42-popup p{
+  margin:5px 0 0;
+
+  color:#9fb4c4;
+
+  font-size:11px;
+}
+
+.rf42-popup button{
+  width:100%;
+  min-height:50px;
+
+  margin-top:13px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      #29d971,
+      #0da947
+    );
+
+  color:#fff;
+
+  font-weight:1000;
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf42Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf42Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   INSERT CONTRACT
+   ========================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+if(!hero){
+  return;
+}
+
+
+const card =
+  document.createElement(
+    "div"
+  );
+
+
+card.className =
+  "rf42-contract";
+
+
+card.id =
+  "rf42Contract";
+
+
+card.innerHTML = `
+
+  <div class="rf42-contract-head">
+
+    <div>
+
+      <div class="rf42-contract-title">
+        📋 Контракт фабрики
+      </div>
+
+      <div class="rf42-contract-sub">
+        Выполни заказ до окончания времени
+      </div>
+
+    </div>
+
+    <div
+      class="rf42-rarity common"
+      id="rf42Rarity"
+    >
+      ОБЫЧНЫЙ
+    </div>
+
+  </div>
+
+
+  <div class="rf42-order">
+
+    <div
+      class="rf42-order-icon"
+      id="rf42Icon"
+    >
+      ⚙️
+    </div>
+
+    <div>
+
+      <div
+        class="rf42-order-name"
+        id="rf42Name"
+      >
+        Производственный заказ
+      </div>
+
+      <div
+        class="rf42-order-desc"
+        id="rf42Desc"
+      >
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="rf42-progress">
+
+    <div
+      class="rf42-progress-fill"
+      id="rf42Fill"
+    >
+    </div>
+
+  </div>
+
+
+  <div class="rf42-meta">
+
+    <span id="rf42ProgressText">
+      0 / 0
+    </span>
+
+    <span
+      class="rf42-timer"
+      id="rf42Timer"
+    >
+      00:00
+    </span>
+
+  </div>
+
+
+  <div class="rf42-reward">
+
+    <div class="rf42-reward-text">
+
+      <span>
+        Награда
+      </span>
+
+      <b id="rf42Reward">
+        ⚙️ 0
+      </b>
+
+    </div>
+
+    <button
+      class="rf42-claim"
+      id="rf42Claim"
+      disabled
+    >
+      В процессе
+    </button>
+
+  </div>
+`;
+
+
+/*
+Ставим после v40 milestones.
+Если их нет, после hero.
+*/
+
+const milestones =
+  document.querySelector(
+    "#rf40Milestones"
+  );
+
+
+if(milestones){
+
+  milestones.insertAdjacentElement(
+    "afterend",
+    card
+  );
+
+}
+else{
+
+  hero.insertAdjacentElement(
+    "afterend",
+    card
+  );
+
+}
+
+
+/* =========================================
+   POPUP
+   ========================================= */
+
+const popup =
+  document.createElement(
+    "div"
+  );
+
+
+popup.className =
+  "rf42-popup";
+
+
+popup.innerHTML = `
+
+  <div class="rf42-popup-icon">
+    📋
+  </div>
+
+  <h3>
+    Новый контракт
+  </h3>
+
+  <p id="rf42PopupText">
+  </p>
+
+  <button id="rf42PopupClose">
+    Принять заказ
+  </button>
+`;
+
+
+document.body.appendChild(
+  popup
+);
+
+
+document
+.querySelector(
+  "#rf42PopupClose"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    popup.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* =========================================
+   CONTRACT DATA
+   ========================================= */
+
+function rf42CreateContract(){
+
+  const level =
+    Math.max(
+      rf42Number(
+        "level",
+        1
+      ),
+      1
+    );
+
+
+  const roll =
+    Math.random();
+
+
+  let rarity =
+    "common";
+
+
+  if(
+    roll > .85
+  ){
+
+    rarity =
+      "epic";
+
+  }
+  else if(
+    roll > .55
+  ){
+
+    rarity =
+      "rare";
+
+  }
+
+
+  let multiplier =
+    1;
+
+
+  let duration =
+    6 * 60;
+
+
+  if(
+    rarity ===
+    "rare"
+  ){
+
+    multiplier =
+      1.8;
+
+
+    duration =
+      7 * 60;
+
+  }
+
+
+  if(
+    rarity ===
+    "epic"
+  ){
+
+    multiplier =
+      3;
+
+
+    duration =
+      9 * 60;
+
+  }
+
+
+  const type =
+    Math.random()
+    <
+    .5
+    ?
+    "clicks"
+    :
+    "coins";
+
+
+  let target =
+    0;
+
+
+  if(
+    type ===
+    "clicks"
+  ){
+
+    target =
+      Math.floor(
+        (
+          80
+          +
+          level
+          *
+          12
+        )
+        *
+        multiplier
+      );
+
+  }
+  else{
+
+    target =
+      Math.floor(
+        (
+          2500
+          +
+          level
+          *
+          1200
+        )
+        *
+        multiplier
+      );
+
+  }
+
+
+  const reward =
+    Math.floor(
+      (
+        1500
+        +
+        level
+        *
+        900
+      )
+      *
+      multiplier
+  );
+
+
+  const contract =
+  {
+
+    id:
+      Date.now(),
+
+    rarity:
+      rarity,
+
+    type:
+      type,
+
+    target:
+      target,
+
+    progress:
+      0,
+
+    reward:
+      reward,
+
+    expires:
+      Date.now()
+      +
+      duration
+      *
+      1000,
+
+    startClicks:
+      rf42Number(
+        "totalClicks",
+        0
+      ),
+
+    lastCoins:
+      rf42Number(
+        "coins",
+        0
+      )
+
+  };
+
+
+  localStorage.setItem(
+    "rf42Contract",
+    JSON.stringify(
+      contract
+    )
+  );
+
+
+  return contract;
+
+}
+
+
+/* =========================================
+   LOAD
+   ========================================= */
+
+function rf42Load(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        "rf42Contract"
+      );
+
+
+    if(!raw){
+      return null;
+    }
+
+
+    return JSON.parse(
+      raw
+    );
+
+  }
+  catch(e){
+
+    return null;
+
+  }
+
+}
+
+
+function rf42Save(
+  contract
+){
+
+  localStorage.setItem(
+    "rf42Contract",
+    JSON.stringify(
+      contract
+    )
+  );
+
+}
+
+
+/* =========================================
+   CURRENT CONTRACT
+   ========================================= */
+
+let contract =
+  rf42Load();
+
+
+if(!contract){
+
+  contract =
+    rf42CreateContract();
+
+
+  setTimeout(
+    function(){
+
+      document.querySelector(
+        "#rf42PopupText"
+      )
+      .textContent =
+        contract.type
+        ===
+        "clicks"
+        ?
+        "Новый заказ: выполнить "
+        +
+        rf42Compact(
+          contract.target
+        )
+        +
+        " кликов."
+        :
+        "Новый заказ: произвести "
+        +
+        rf42Compact(
+          contract.target
+        )
+        +
+        " ⚙️.";
+
+
+      popup.classList.add(
+        "show"
+      );
+
+    },
+    700
+  );
+
+}
+
+
+/* =========================================
+   COIN PROGRESS TRACKING
+   ========================================= */
+
+function rf42TrackCoins(){
+
+  if(
+    !contract
+    ||
+    contract.type
+    !==
+    "coins"
+  ){
+
+    return;
+
+  }
+
+
+  const current =
+    rf42Number(
+      "coins",
+      0
+    );
+
+
+  const last =
+    Number(
+      contract.lastCoins
+    )
+    ||
+    current;
+
+
+  if(
+    current > last
+  ){
+
+    contract.progress +=
+      current
+      -
+      last;
+
+  }
+
+
+  contract.lastCoins =
+    current;
+
+
+  rf42Save(
+    contract
+  );
+
+}
+
+
+/* =========================================
+   UPDATE
+   ========================================= */
+
+function rf42Update(){
+
+  if(!contract){
+    return;
+  }
+
+
+  const now =
+    Date.now();
+
+
+  const remaining =
+    Math.max(
+      contract.expires
+      -
+      now,
+      0
+    );
+
+
+  const seconds =
+    Math.floor(
+      remaining
+      /
+      1000
+    );
+
+
+  const minutes =
+    Math.floor(
+      seconds
+      /
+      60
+    );
+
+
+  const sec =
+    seconds
+    %
+    60;
+
+
+  if(
+    contract.type
+    ===
+    "clicks"
+  ){
+
+    const total =
+      rf42Number(
+        "totalClicks",
+        0
+      );
+
+
+    contract.progress =
+      Math.max(
+        total
+        -
+        contract.startClicks,
+        0
+      );
+
+  }
+  else{
+
+    rf42TrackCoins();
+
+  }
+
+
+  const done =
+    contract.progress
+    >=
+    contract.target;
+
+
+  const failed =
+    remaining
+    <=
+    0
+    &&
+    !done;
+
+
+  card.classList.toggle(
+    "ready",
+    done
+  );
+
+
+  card.classList.toggle(
+    "failed",
+    failed
+  );
+
+
+  const rarityEl =
+    document.querySelector(
+      "#rf42Rarity"
+    );
+
+
+  rarityEl.className =
+    "rf42-rarity "
+    +
+    contract.rarity;
+
+
+  rarityEl.textContent =
+    contract.rarity
+    ===
+    "epic"
+    ?
+    "ЭПИЧЕСКИЙ"
+    :
+    contract.rarity
+    ===
+    "rare"
+    ?
+    "РЕДКИЙ"
+    :
+    "ОБЫЧНЫЙ";
+
+
+  document.querySelector(
+    "#rf42Icon"
+  )
+  .textContent =
+    contract.type
+    ===
+    "clicks"
+    ?
+    "👆"
+    :
+    "⚙️";
+
+
+  document.querySelector(
+    "#rf42Name"
+  )
+  .textContent =
+    contract.type
+    ===
+    "clicks"
+    ?
+    "Активная сборка"
+    :
+    "Производственный заказ";
+
+
+  document.querySelector(
+    "#rf42Desc"
+  )
+  .textContent =
+    contract.type
+    ===
+    "clicks"
+    ?
+    "Сделай нужное количество кликов по роботу."
+    :
+    "Заработай нужное количество деталей до конца таймера.";
+
+
+  const progress =
+    Math.min(
+      contract.progress
+      /
+      contract.target
+      *
+      100,
+      100
+    );
+
+
+  document.querySelector(
+    "#rf42Fill"
+  )
+  .style.width =
+    progress
+    +
+    "%";
+
+
+  document.querySelector(
+    "#rf42ProgressText"
+  )
+  .textContent =
+    rf42Compact(
+      Math.min(
+        contract.progress,
+        contract.target
+      )
+    )
+    +
+    " / "
+    +
+    rf42Compact(
+      contract.target
+    );
+
+
+  document.querySelector(
+    "#rf42Timer"
+  )
+  .textContent =
+    failed
+    ?
+    "Время вышло"
+    :
+    String(
+      minutes
+    )
+    .padStart(
+      2,
+      "0"
+    )
+    +
+    ":"
+    +
+    String(
+      sec
+    )
+    .padStart(
+      2,
+      "0"
+    );
+
+
+  document.querySelector(
+    "#rf42Reward"
+  )
+  .textContent =
+    "⚙️ "
+    +
+    rf42Compact(
+      contract.reward
+    );
+
+
+  const claim =
+    document.querySelector(
+      "#rf42Claim"
+    );
+
+
+  if(done){
+
+    claim.disabled =
+      false;
+
+
+    claim.textContent =
+      "Забрать";
+
+  }
+  else if(failed){
+
+    claim.disabled =
+      false;
+
+
+    claim.textContent =
+      "Новый заказ";
+
+  }
+  else{
+
+    claim.disabled =
+      true;
+
+
+    claim.textContent =
+      "В процессе";
+
+  }
+
+
+  rf42Save(
+    contract
+  );
+
+}
+
+
+/* =========================================
+   CLAIM / NEW
+   ========================================= */
+
+document
+.querySelector(
+  "#rf42Claim"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    const now =
+      Date.now();
+
+
+    const done =
+      contract.progress
+      >=
+      contract.target;
+
+
+    const failed =
+      now
+      >=
+      contract.expires
+      &&
+      !done;
+
+
+    if(done){
+
+      localStorage.setItem(
+        "coins",
+        rf42Number(
+          "coins",
+          0
+        )
+        +
+        contract.reward
+      );
+
+
+      try{
+
+        const tg =
+          window.Telegram
+          &&
+          window.Telegram.WebApp;
+
+
+        if(
+          tg
+          &&
+          tg.HapticFeedback
+        ){
+
+          tg.HapticFeedback
+          .notificationOccurred(
+            "success"
+          );
+
+        }
+
+      }
+      catch(e){}
+
+    }
+
+
+    if(
+      done
+      ||
+      failed
+    ){
+
+      contract =
+        rf42CreateContract();
+
+
+      document.querySelector(
+        "#rf42PopupText"
+      )
+      .textContent =
+        done
+        ?
+        "Контракт выполнен. Новый заказ уже готов."
+        :
+        "Срок прошлого заказа закончился. Выдан новый контракт.";
+
+
+      popup.classList.add(
+        "show"
+      );
+
+
+      setTimeout(
+        function(){
+
+          location.reload();
+
+        },
+        650
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   RUN
+   ========================================= */
+
+rf42Update();
+
+
+setInterval(
+  rf42Update,
+  500
+);
+
+})();
+</script>
 </body>
 </html>
