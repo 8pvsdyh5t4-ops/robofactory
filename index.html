@@ -21094,5 +21094,771 @@ setInterval(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v45
+   PRESTIGE INCOME MULTIPLIER
+   ========================================= */
+
+.rf45-multiplier{
+  position:absolute;
+
+  z-index:37;
+
+  left:10px;
+  top:120px;
+
+  padding:5px 8px;
+
+  border-radius:99px;
+
+  background:
+    rgba(18,39,28,.9);
+
+  border:
+    1px solid #3b9861;
+
+  color:#72f39a;
+
+  font-size:8px;
+  font-weight:1000;
+
+  backdrop-filter:blur(8px);
+
+  opacity:0;
+
+  transform:
+    translateY(-4px);
+
+  transition:.2s;
+}
+
+.rf45-multiplier.show{
+  opacity:1;
+
+  transform:
+    translateY(0);
+}
+
+
+/* небольшой эффект получения
+   престижного бонуса */
+
+.rf45-income-pop{
+  position:fixed;
+
+  z-index:10120;
+
+  right:14px;
+  top:105px;
+
+  padding:7px 10px;
+
+  border-radius:12px;
+
+  background:
+    rgba(12,48,29,.94);
+
+  border:
+    1px solid #3db86b;
+
+  color:#78f49c;
+
+  font-size:10px;
+  font-weight:1000;
+
+  opacity:0;
+
+  transform:
+    translateY(8px);
+
+  pointer-events:none;
+}
+
+.rf45-income-pop.show{
+  animation:
+    rf45IncomePop
+    .85s
+    ease-out;
+}
+
+@keyframes rf45IncomePop{
+
+  0%{
+    opacity:0;
+    transform:translateY(8px);
+  }
+
+  20%{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  75%{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  100%{
+    opacity:0;
+    transform:translateY(-9px);
+  }
+
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   PRESTIGE MULTIPLIER
+   ========================================= */
+
+function rf45Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf45Cores(){
+
+  return Math.max(
+    rf45Number(
+      "rfPrestigeCores",
+      0
+    ),
+    0
+  );
+
+}
+
+
+function rf45Multiplier(){
+
+  return (
+    1
+    +
+    rf45Cores()
+    *
+    0.10
+  );
+
+}
+
+
+/* =========================================
+   UI BADGE
+   ========================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+let badge =
+  null;
+
+
+if(hero){
+
+  badge =
+    document.createElement(
+      "div"
+    );
+
+
+  badge.className =
+    "rf45-multiplier";
+
+
+  hero.appendChild(
+    badge
+  );
+
+}
+
+
+/* BONUS POP */
+
+const incomePop =
+  document.createElement(
+    "div"
+  );
+
+
+incomePop.className =
+  "rf45-income-pop";
+
+
+document.body.appendChild(
+  incomePop
+);
+
+
+function rf45Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+let lastPop =
+  0;
+
+
+function rf45ShowBonus(
+  amount
+){
+
+  /*
+  Не показываем эффект на каждый
+  отдельный клик, иначе экран
+  превратится в новогоднюю гирлянду.
+  */
+
+  const now =
+    Date.now();
+
+
+  if(
+    now
+    -
+    lastPop
+    <
+    1300
+  ){
+
+    return;
+
+  }
+
+
+  if(amount <= 0){
+    return;
+  }
+
+
+  lastPop =
+    now;
+
+
+  incomePop.textContent =
+    "🔩 +"
+    +
+    rf45Compact(
+      amount
+    )
+    +
+    " ⚙️";
+
+
+  incomePop.classList.remove(
+    "show"
+  );
+
+
+  void incomePop.offsetWidth;
+
+
+  incomePop.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================================
+   FRACTIONAL BONUS
+   ========================================= */
+
+/*
+Например:
+1 клик = 1 ⚙️
+бонус = 10%
+
+Нельзя каждый раз округлять 0.1 до нуля.
+
+Поэтому остаток накапливается:
+10 кликов => ещё +1 ⚙️.
+*/
+
+let carry =
+  Number(
+    localStorage.getItem(
+      "rf45BonusCarry"
+    )
+  )
+  ||
+  0;
+
+
+function rf45BonusFor(
+  income
+){
+
+  const multiplier =
+    rf45Multiplier();
+
+
+  if(
+    multiplier
+    <=
+    1
+  ){
+
+    return 0;
+
+  }
+
+
+  const exactBonus =
+    income
+    *
+    (
+      multiplier
+      -
+      1
+    )
+    +
+    carry;
+
+
+  const bonus =
+    Math.floor(
+      exactBonus
+    );
+
+
+  carry =
+    exactBonus
+    -
+    bonus;
+
+
+  localStorage.setItem(
+    "rf45BonusCarry",
+    String(
+      carry
+    )
+  );
+
+
+  return bonus;
+
+}
+
+
+/* =========================================
+   IMPORTANT:
+   DO NOT MULTIPLY SHOP COIN PACKS
+   ========================================= */
+
+let suppressIncomeUntil =
+  0;
+
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const button =
+      event.target.closest(
+        "[data-product]"
+      );
+
+
+    if(!button){
+      return;
+    }
+
+
+    const product =
+      button.dataset.product;
+
+
+    if(
+      product ===
+      "coins25"
+      ||
+      product ===
+      "coins100"
+    ){
+
+      suppressIncomeUntil =
+        Date.now()
+        +
+        1500;
+
+    }
+
+  },
+  true
+);
+
+
+/* =========================================
+   INTERCEPT COIN SAVES
+   ========================================= */
+
+const originalSetItem =
+  Storage.prototype.setItem;
+
+
+/*
+Защита от повторной установки v45.
+*/
+
+if(
+  !window.__rf45Installed
+){
+
+  window.__rf45Installed =
+    true;
+
+
+  Storage.prototype.setItem =
+    function(
+      key,
+      value
+    ){
+
+      /*
+      Все остальные localStorage ключи
+      работают как обычно.
+      */
+
+      if(
+        key
+        !==
+        "coins"
+      ){
+
+        return originalSetItem.call(
+          this,
+          key,
+          value
+        );
+
+      }
+
+
+      const incoming =
+        Number(
+          value
+        );
+
+
+      const oldValue =
+        Number(
+          this.getItem(
+            "coins"
+          )
+        );
+
+
+      if(
+        !Number.isFinite(incoming)
+        ||
+        !Number.isFinite(oldValue)
+      ){
+
+        return originalSetItem.call(
+          this,
+          key,
+          value
+        );
+
+      }
+
+
+      /*
+      Если баланс уменьшается:
+      игрок что-то купил.
+
+      Никакого множителя.
+      */
+
+      if(
+        incoming
+        <=
+        oldValue
+      ){
+
+        return originalSetItem.call(
+          this,
+          key,
+          String(
+            incoming
+          )
+        );
+
+      }
+
+
+      /*
+      Покупка монет в магазине
+      также остаётся без престижа.
+      */
+
+      if(
+        Date.now()
+        <
+        suppressIncomeUntil
+      ){
+
+        return originalSetItem.call(
+          this,
+          key,
+          String(
+            incoming
+          )
+        );
+
+      }
+
+
+      const earned =
+        incoming
+        -
+        oldValue;
+
+
+      const bonus =
+        rf45BonusFor(
+          earned
+        );
+
+
+      const finalValue =
+        incoming
+        +
+        bonus;
+
+
+      originalSetItem.call(
+        this,
+        key,
+        String(
+          finalValue
+        )
+      );
+
+
+      if(
+        bonus
+        >
+        0
+      ){
+
+        rf45ShowBonus(
+          bonus
+        );
+
+      }
+
+    };
+
+}
+
+
+/* =========================================
+   UPDATE PRESTIGE UI
+   ========================================= */
+
+function rf45Update(){
+
+  const cores =
+    rf45Cores();
+
+
+  const multiplier =
+    rf45Multiplier();
+
+
+  /*
+  Поддерживаем значения из v44.
+  */
+
+  originalSetItem.call(
+    localStorage,
+    "prestigeMultiplier",
+    String(
+      multiplier
+    )
+  );
+
+
+  originalSetItem.call(
+    localStorage,
+    "rfPrestigeMultiplier",
+    String(
+      multiplier
+    )
+  );
+
+
+  if(!badge){
+    return;
+  }
+
+
+  if(
+    cores
+    <=
+    0
+  ){
+
+    badge.classList.remove(
+      "show"
+    );
+
+
+    return;
+
+  }
+
+
+  badge.textContent =
+    "🔩 ДОХОД x"
+    +
+    multiplier.toFixed(2);
+
+
+  badge.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================================
+   PRESTIGE CARD TEXT
+   ========================================= */
+
+function rf45UpdatePrestigeCard(){
+
+  const bonus =
+    document.querySelector(
+      "#rf44Bonus"
+    );
+
+
+  if(!bonus){
+    return;
+  }
+
+
+  const percent =
+    Math.round(
+      (
+        rf45Multiplier()
+        -
+        1
+      )
+      *
+      100
+    );
+
+
+  bonus.textContent =
+    "+"
+    +
+    percent
+    +
+    "%";
+
+}
+
+
+/* =========================================
+   RUN
+   ========================================= */
+
+rf45Update();
+
+
+rf45UpdatePrestigeCard();
+
+
+setInterval(
+  function(){
+
+    rf45Update();
+
+    rf45UpdatePrestigeCard();
+
+  },
+  1000
+);
+
+})();
+</script>  
 </body>
 </html>
