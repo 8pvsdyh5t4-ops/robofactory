@@ -19802,5 +19802,1297 @@ setInterval(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v44
+   PRESTIGE SYSTEM
+   ========================================= */
+
+.rf44-prestige{
+  margin:10px 12px 0;
+  padding:15px;
+
+  border-radius:21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(36,27,55,.98),
+      rgba(9,22,34,.98)
+    );
+
+  border:1px solid #6b4b8f;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.28);
+
+  display:none;
+}
+
+.rf44-prestige.show{
+  display:block;
+}
+
+.rf44-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+
+  gap:10px;
+}
+
+.rf44-title{
+  font-size:18px;
+  font-weight:1000;
+
+  color:#e4c0ff;
+}
+
+.rf44-sub{
+  margin-top:3px;
+
+  color:#a99aba;
+
+  font-size:10px;
+}
+
+.rf44-core-count{
+  padding:6px 9px;
+
+  border-radius:99px;
+
+  background:#251b33;
+
+  border:1px solid #815cad;
+
+  color:#e2b7ff;
+
+  font-size:10px;
+  font-weight:1000;
+}
+
+
+/* BONUS */
+
+.rf44-bonus-box{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:8px;
+
+  margin-top:12px;
+}
+
+.rf44-stat{
+  padding:11px;
+
+  border-radius:15px;
+
+  background:#0b1b29;
+
+  border:1px solid #2a4356;
+}
+
+.rf44-stat span{
+  display:block;
+
+  color:#94aabc;
+
+  font-size:9px;
+}
+
+.rf44-stat b{
+  display:block;
+
+  margin-top:4px;
+
+  font-size:17px;
+}
+
+.rf44-stat.bonus b{
+  color:#64ef8c;
+}
+
+.rf44-stat.reward b{
+  color:#e4b7ff;
+}
+
+
+/* PROGRESS */
+
+.rf44-progress{
+  margin-top:12px;
+}
+
+.rf44-progress-label{
+  display:flex;
+  justify-content:space-between;
+
+  color:#9daeb9;
+
+  font-size:9px;
+}
+
+.rf44-progress-bar{
+  height:8px;
+
+  margin-top:6px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:#07131d;
+}
+
+.rf44-progress-fill{
+  width:0;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8b5bd1,
+      #d28cff
+    );
+
+  box-shadow:
+    0 0 10px rgba(190,110,255,.25);
+
+  transition:width .25s;
+}
+
+
+/* BUTTON */
+
+.rf44-button{
+  width:100%;
+  min-height:52px;
+
+  margin-top:13px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      #9a60df,
+      #6c35ab
+    );
+
+  color:white;
+
+  font-weight:1000;
+
+  box-shadow:
+    inset 0 -5px rgba(0,0,0,.12);
+}
+
+.rf44-button:disabled{
+  background:#392f47;
+  color:#84788f;
+}
+
+
+/* WARNING */
+
+.rf44-warning{
+  margin-top:10px;
+
+  padding:10px;
+
+  border-radius:13px;
+
+  background:
+    rgba(125,63,63,.18);
+
+  border:1px solid rgba(170,85,85,.35);
+
+  color:#d2a6a6;
+
+  font-size:9px;
+
+  line-height:1.4;
+}
+
+
+/* MODAL */
+
+.rf44-modal{
+  position:fixed;
+
+  z-index:10100;
+
+  inset:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:18px;
+
+  background:
+    rgba(2,8,13,.72);
+
+  backdrop-filter:
+    blur(7px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.2s;
+}
+
+.rf44-modal.show{
+  opacity:1;
+
+  pointer-events:auto;
+}
+
+.rf44-modal-card{
+  width:100%;
+  max-width:370px;
+
+  padding:20px;
+
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #21172f,
+      #081a29
+    );
+
+  border:1px solid #815aad;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55);
+
+  text-align:center;
+}
+
+.rf44-modal-icon{
+  font-size:50px;
+}
+
+.rf44-modal-card h3{
+  margin:6px 0 0;
+
+  font-size:22px;
+
+  color:#e3baff;
+}
+
+.rf44-modal-card p{
+  margin:7px 0 0;
+
+  color:#a9a0b3;
+
+  font-size:10px;
+
+  line-height:1.45;
+}
+
+.rf44-modal-reward{
+  margin-top:14px;
+
+  padding:13px;
+
+  border-radius:16px;
+
+  background:#071521;
+
+  color:#e2b5ff;
+
+  font-size:21px;
+  font-weight:1000;
+}
+
+.rf44-modal-actions{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:8px;
+
+  margin-top:14px;
+}
+
+.rf44-cancel{
+  min-height:49px;
+
+  border-radius:13px;
+
+  background:#24323d;
+
+  color:#b8c6d0;
+
+  font-weight:1000;
+}
+
+.rf44-confirm{
+  min-height:49px;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      #9d63e4,
+      #6b35aa
+    );
+
+  color:#fff;
+
+  font-weight:1000;
+}
+
+
+/* SMALL CORE BADGE */
+
+.rf44-core-badge{
+  position:absolute;
+
+  z-index:36;
+
+  left:10px;
+  top:94px;
+
+  padding:5px 8px;
+
+  border-radius:99px;
+
+  background:
+    rgba(31,19,43,.9);
+
+  border:1px solid #6f4c96;
+
+  color:#e4b9ff;
+
+  font-size:8px;
+  font-weight:1000;
+
+  backdrop-filter:
+    blur(8px);
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf44Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf44Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   INSERT UI
+   ========================================= */
+
+const host =
+  document.querySelector(
+    ".rf43-daily"
+  )
+  ||
+  document.querySelector(
+    "#rf42Contract"
+  )
+  ||
+  document.querySelector(
+    "#rf40Milestones"
+  );
+
+
+if(!host){
+  return;
+}
+
+
+const prestige =
+  document.createElement(
+    "div"
+  );
+
+
+prestige.className =
+  "rf44-prestige";
+
+
+prestige.id =
+  "rf44Prestige";
+
+
+prestige.innerHTML = `
+
+  <div class="rf44-head">
+
+    <div>
+
+      <div class="rf44-title">
+        🔩 Перезапуск фабрики
+      </div>
+
+      <div class="rf44-sub">
+        Сбрось прогресс и получи постоянное усиление
+      </div>
+
+    </div>
+
+    <div
+      class="rf44-core-count"
+      id="rf44CoreCount"
+    >
+      🔩 0
+    </div>
+
+  </div>
+
+
+  <div class="rf44-bonus-box">
+
+    <div class="rf44-stat bonus">
+
+      <span>
+        Постоянный бонус
+      </span>
+
+      <b id="rf44Bonus">
+        +0%
+      </b>
+
+    </div>
+
+    <div class="rf44-stat reward">
+
+      <span>
+        Получишь
+      </span>
+
+      <b id="rf44Reward">
+        🔩 0
+      </b>
+
+    </div>
+
+  </div>
+
+
+  <div class="rf44-progress">
+
+    <div class="rf44-progress-label">
+
+      <span>
+        Прогресс престижа
+      </span>
+
+      <span id="rf44ProgressText">
+        0 / 30
+      </span>
+
+    </div>
+
+    <div class="rf44-progress-bar">
+
+      <div
+        class="rf44-progress-fill"
+        id="rf44ProgressFill"
+      >
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="rf44-button"
+    id="rf44Open"
+  >
+    Перезапустить фабрику
+  </button>
+
+
+  <div class="rf44-warning">
+    Сбросятся уровень, XP, ⚙️ и основные производственные улучшения.
+    Алмазы, скины, карта, достижения и ежедневная серия сохранятся.
+  </div>
+`;
+
+
+host.insertAdjacentElement(
+  "afterend",
+  prestige
+);
+
+
+/* =========================================
+   CORE BADGE
+   ========================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+if(
+  hero
+  &&
+  !hero.querySelector(
+    ".rf44-core-badge"
+  )
+){
+
+  const badge =
+    document.createElement(
+      "div"
+    );
+
+
+  badge.className =
+    "rf44-core-badge";
+
+
+  badge.id =
+    "rf44CoreBadge";
+
+
+  hero.appendChild(
+    badge
+  );
+
+}
+
+
+/* =========================================
+   MODAL
+   ========================================= */
+
+const modal =
+  document.createElement(
+    "div"
+  );
+
+
+modal.className =
+  "rf44-modal";
+
+
+modal.innerHTML = `
+
+  <div class="rf44-modal-card">
+
+    <div class="rf44-modal-icon">
+      🔩
+    </div>
+
+    <h3>
+      Перезапуск производства
+    </h3>
+
+    <p>
+      Ты начнёшь фабрику заново,
+      но получишь постоянный бонус,
+      который останется навсегда.
+    </p>
+
+    <div
+      class="rf44-modal-reward"
+      id="rf44ModalReward"
+    >
+      +0 🔩
+    </div>
+
+    <div class="rf44-modal-actions">
+
+      <button
+        class="rf44-cancel"
+        id="rf44Cancel"
+      >
+        Отмена
+      </button>
+
+      <button
+        class="rf44-confirm"
+        id="rf44Confirm"
+      >
+        Перезапустить
+      </button>
+
+    </div>
+
+  </div>
+`;
+
+
+document.body.appendChild(
+  modal
+);
+
+
+/* =========================================
+   CORE / BONUS LOGIC
+   ========================================= */
+
+function rf44Cores(){
+
+  return Math.max(
+    rf44Number(
+      "rfPrestigeCores",
+      0
+    ),
+    0
+  );
+
+}
+
+
+/*
+Каждое ядро = +10%
+постоянного бонуса.
+*/
+
+function rf44BonusMultiplier(){
+
+  return (
+    1
+    +
+    rf44Cores()
+    *
+    0.10
+  );
+
+}
+
+
+/*
+Количество ядер за текущий престиж.
+
+30-39 = 1
+40-49 = 2
+50-59 = 3
+и так далее.
+
+Плюс небольшой бонус
+за крупные уровни.
+*/
+
+function rf44RewardCores(){
+
+  const level =
+    rf44Number(
+      "level",
+      1
+    );
+
+
+  if(level < 30){
+    return 0;
+  }
+
+
+  return Math.max(
+    1,
+    Math.floor(
+      (
+        level
+        -
+        20
+      )
+      /
+      10
+    )
+  );
+
+}
+
+
+/* =========================================
+   APPLY PERMANENT BONUS
+   ========================================= */
+
+/*
+Мы НЕ переписываем старую формулу дохода.
+Вместо этого сохраняем постоянный множитель,
+который следующие версии и новые механики
+могут использовать.
+
+Также поддерживаем ключ
+prestigeMultiplier,
+если основной код позже начнёт его читать.
+*/
+
+function rf44ApplyMultiplier(){
+
+  const multiplier =
+    rf44BonusMultiplier();
+
+
+  localStorage.setItem(
+    "prestigeMultiplier",
+    String(multiplier)
+  );
+
+
+  localStorage.setItem(
+    "rfPrestigeMultiplier",
+    String(multiplier)
+  );
+
+}
+
+
+/* =========================================
+   UPDATE UI
+   ========================================= */
+
+function rf44Update(){
+
+  const level =
+    rf44Number(
+      "level",
+      1
+    );
+
+
+  const cores =
+    rf44Cores();
+
+
+  const reward =
+    rf44RewardCores();
+
+
+  const bonusPercent =
+    Math.round(
+      (
+        rf44BonusMultiplier()
+        -
+        1
+      )
+      *
+      100
+    );
+
+
+  document.querySelector(
+    "#rf44CoreCount"
+  )
+  .textContent =
+    "🔩 "
+    +
+    cores;
+
+
+  document.querySelector(
+    "#rf44Bonus"
+  )
+  .textContent =
+    "+"
+    +
+    bonusPercent
+    +
+    "%";
+
+
+  document.querySelector(
+    "#rf44Reward"
+  )
+  .textContent =
+    "🔩 "
+    +
+    reward;
+
+
+  document.querySelector(
+    "#rf44ProgressText"
+  )
+  .textContent =
+    level
+    +
+    " / 30";
+
+
+  document.querySelector(
+    "#rf44ProgressFill"
+  )
+  .style.width =
+    Math.min(
+      level
+      /
+      30
+      *
+      100,
+      100
+    )
+    +
+    "%";
+
+
+  const open =
+    document.querySelector(
+      "#rf44Open"
+    );
+
+
+  open.disabled =
+    level < 30;
+
+
+  open.textContent =
+    level >= 30
+    ?
+    "Перезапустить за 🔩 "
+    +
+    reward
+    :
+    "Откроется на 30 уровне";
+
+
+  prestige.classList.toggle(
+    "show",
+    level >= 25
+  );
+
+
+  const badge =
+    document.querySelector(
+      "#rf44CoreBadge"
+    );
+
+
+  if(badge){
+
+    badge.textContent =
+      "🔩 "
+      +
+      cores
+      +
+      "  •  +"
+      +
+      bonusPercent
+      +
+      "%";
+
+  }
+
+
+  rf44ApplyMultiplier();
+
+}
+
+
+/* =========================================
+   MODAL OPEN / CLOSE
+   ========================================= */
+
+document
+.querySelector(
+  "#rf44Open"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    const reward =
+      rf44RewardCores();
+
+
+    if(reward <= 0){
+      return;
+    }
+
+
+    document.querySelector(
+      "#rf44ModalReward"
+    )
+    .textContent =
+      "+"
+      +
+      reward
+      +
+      " 🔩";
+
+
+    modal.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+document
+.querySelector(
+  "#rf44Cancel"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    modal.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* =========================================
+   PRESTIGE RESET
+   ========================================= */
+
+function rf44Reset(){
+
+  const reward =
+    rf44RewardCores();
+
+
+  if(reward <= 0){
+    return;
+  }
+
+
+  const oldCores =
+    rf44Cores();
+
+
+  const newCores =
+    oldCores
+    +
+    reward;
+
+
+  /*
+  Сначала сохраняем постоянные ядра.
+  */
+
+  localStorage.setItem(
+    "rfPrestigeCores",
+    String(
+      newCores
+    )
+  );
+
+
+  /*
+  Сбрасываем только базовый производственный
+  прогресс.
+
+  ВАЖНО:
+  не трогаем gems, skins, achievements,
+  map, daily streak и prestige.
+  */
+
+  const resetValues =
+  {
+
+    coins:0,
+
+    level:1,
+
+    xp:0,
+
+    xpNeed:100,
+
+    perClick:1,
+
+    totalClicks:0,
+
+    workers:0,
+
+    workerCost:50,
+
+    autoRobots:0,
+
+    conveyorLevel:0,
+
+    armLevel:0,
+
+    factoryLevel:0
+
+  };
+
+
+  Object.entries(
+    resetValues
+  )
+  .forEach(
+    ([key,value]) => {
+
+      localStorage.setItem(
+        key,
+        String(value)
+      );
+
+    }
+  );
+
+
+  /*
+  Сбрасываем известные покупочные
+  состояния производственных улучшений,
+  если они существуют.
+  */
+
+  const resetKeys =
+  [
+    "clickLevel",
+    "autoLevel",
+    "autoRobotLevel",
+
+    "conveyorCost",
+    "armCost",
+    "factoryCost",
+
+    "clickCost",
+    "autoCost",
+
+    "passivePerSecond",
+    "passiveRate",
+    "perSecond",
+    "incomePerSecond",
+    "passive",
+
+    "boostEnd",
+
+    "rf42Contract",
+
+    "rf43Daily",
+
+    "rf41SupplyExpires",
+    "rf41NextSupply"
+  ];
+
+
+  resetKeys.forEach(
+    key => {
+
+      localStorage.removeItem(
+        key
+      );
+
+    }
+  );
+
+
+  /*
+  Новое значение постоянного бонуса.
+  */
+
+  const multiplier =
+    1
+    +
+    newCores
+    *
+    .10;
+
+
+  localStorage.setItem(
+    "prestigeMultiplier",
+    String(multiplier)
+  );
+
+
+  localStorage.setItem(
+    "rfPrestigeMultiplier",
+    String(multiplier)
+  );
+
+
+  localStorage.setItem(
+    "rfLastActive",
+    String(
+      Date.now()
+    )
+  );
+
+
+  /*
+  Сохраняем статистику количества престижей.
+  */
+
+  localStorage.setItem(
+    "rfPrestigeCount",
+    String(
+      rf44Number(
+        "rfPrestigeCount",
+        0
+      )
+      +
+      1
+    )
+  );
+
+
+  try{
+
+    const tg =
+      window.Telegram
+      &&
+      window.Telegram.WebApp;
+
+
+    if(
+      tg
+      &&
+      tg.HapticFeedback
+    ){
+
+      tg.HapticFeedback
+      .notificationOccurred(
+        "success"
+      );
+
+    }
+
+  }
+  catch(e){}
+
+
+  modal.classList.remove(
+    "show"
+  );
+
+
+  setTimeout(
+    function(){
+
+      location.reload();
+
+    },
+    350
+  );
+
+}
+
+
+/* =========================================
+   CONFIRM
+   ========================================= */
+
+document
+.querySelector(
+  "#rf44Confirm"
+)
+.addEventListener(
+  "click",
+  rf44Reset
+);
+
+
+/* =========================================
+   SAFETY CLOSE
+   ========================================= */
+
+modal.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      event.target
+      ===
+      modal
+    ){
+
+      modal.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   RUN
+   ========================================= */
+
+rf44Update();
+
+
+setInterval(
+  rf44Update,
+  1000
+);
+
+})();
+</script>
 </body>
 </html>
