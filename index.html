@@ -17820,5 +17820,1987 @@ setInterval(
 
 })();
 </script>  
+<style>
+/* =========================================
+   ROBOFACTORY v43
+   DAILY CONTRACTS
+   ========================================= */
+
+.rf43-daily{
+  margin:10px 12px 0;
+  padding:14px;
+
+  border-radius:21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12,39,58,.98),
+      rgba(6,23,37,.98)
+    );
+
+  border:1px solid #315b78;
+
+  box-shadow:
+    0 9px 20px rgba(0,0,0,.24);
+}
+
+.rf43-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.rf43-title{
+  font-size:17px;
+  font-weight:1000;
+}
+
+.rf43-sub{
+  margin-top:3px;
+
+  color:#92a9ba;
+
+  font-size:10px;
+}
+
+.rf43-streak{
+  padding:6px 9px;
+
+  border-radius:99px;
+
+  background:#35280f;
+
+  border:1px solid #9d7728;
+
+  color:#ffd365;
+
+  font-size:9px;
+  font-weight:1000;
+}
+
+
+/* TIMER */
+
+.rf43-timer{
+  margin-top:10px;
+
+  padding:8px 10px;
+
+  border-radius:12px;
+
+  background:#071724;
+
+  color:#9eb4c4;
+
+  font-size:9px;
+
+  text-align:center;
+}
+
+.rf43-timer b{
+  color:#ffd269;
+}
+
+
+/* TASK */
+
+.rf43-task{
+  display:grid;
+
+  grid-template-columns:
+    46px
+    minmax(0,1fr)
+    82px;
+
+  gap:9px;
+
+  align-items:center;
+
+  margin-top:9px;
+
+  padding:10px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0d293f,
+      #071d2e
+    );
+
+  border:1px solid #294b64;
+}
+
+.rf43-task.ready{
+  border-color:#d7a236;
+
+  box-shadow:
+    0 0 14px rgba(255,183,44,.14);
+}
+
+.rf43-task.claimed{
+  opacity:.68;
+}
+
+.rf43-icon{
+  width:44px;
+  height:44px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:13px;
+
+  background:#15384f;
+
+  font-size:24px;
+}
+
+.rf43-task-title{
+  font-size:12px;
+  font-weight:1000;
+}
+
+.rf43-task-desc{
+  margin-top:2px;
+
+  color:#98adbd;
+
+  font-size:9px;
+}
+
+.rf43-progress{
+  height:6px;
+
+  margin-top:7px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:#06131d;
+}
+
+.rf43-progress-fill{
+  width:0;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #28caff,
+      #62ef8a
+    );
+
+  transition:width .25s;
+}
+
+.rf43-progress-text{
+  margin-top:4px;
+
+  color:#8ea6b8;
+
+  font-size:8px;
+}
+
+
+/* RARITY */
+
+.rf43-rarity{
+  display:inline-block;
+
+  margin-top:4px;
+
+  padding:3px 6px;
+
+  border-radius:99px;
+
+  font-size:7px;
+  font-weight:1000;
+}
+
+.rf43-rarity.common{
+  background:#163347;
+  color:#a9c2d2;
+}
+
+.rf43-rarity.rare{
+  background:#183b62;
+  color:#71c4ff;
+}
+
+.rf43-rarity.epic{
+  background:#43265f;
+  color:#d59bff;
+}
+
+
+/* CLAIM */
+
+.rf43-claim{
+  min-height:46px;
+
+  padding:6px;
+
+  border-radius:11px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0caf49
+    );
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:1000;
+}
+
+.rf43-claim:disabled{
+  background:#18394b;
+  color:#8397a5;
+}
+
+
+/* DAILY BONUS */
+
+.rf43-bonus{
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+
+  gap:10px;
+
+  margin-top:11px;
+
+  padding:12px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #362913,
+      #182127
+    );
+
+  border:1px solid #8e6e28;
+}
+
+.rf43-bonus.ready{
+  border-color:#f2b934;
+
+  box-shadow:
+    0 0 20px rgba(255,185,45,.18);
+
+  animation:
+    rf43BonusPulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+.rf43-bonus-title{
+  font-size:12px;
+  font-weight:1000;
+}
+
+.rf43-bonus-desc{
+  margin-top:3px;
+
+  color:#c8b171;
+
+  font-size:8px;
+}
+
+.rf43-bonus-value{
+  margin-top:5px;
+
+  color:#68ef8d;
+
+  font-size:13px;
+  font-weight:1000;
+}
+
+.rf43-bonus button{
+  min-width:93px;
+  min-height:45px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      #ffbd37,
+      #d68a12
+    );
+
+  color:#fff;
+
+  font-size:9px;
+  font-weight:1000;
+}
+
+.rf43-bonus button:disabled{
+  background:#44391f;
+  color:#9d8d63;
+}
+
+@keyframes rf43BonusPulse{
+  0%,100%{
+    box-shadow:
+      0 0 12px rgba(255,185,45,.10);
+  }
+
+  50%{
+    box-shadow:
+      0 0 25px rgba(255,185,45,.28);
+  }
+}
+
+
+/* POPUP */
+
+.rf43-popup{
+  position:fixed;
+
+  z-index:10070;
+
+  left:50%;
+  top:50%;
+
+  width:
+    calc(100% - 38px);
+
+  max-width:350px;
+
+  padding:19px;
+
+  border-radius:23px;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      #153c54,
+      #071b2b
+    );
+
+  border:1px solid #49d9ff;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+  text-align:center;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.rf43-popup.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+
+  pointer-events:auto;
+}
+
+.rf43-popup-icon{
+  font-size:48px;
+}
+
+.rf43-popup h3{
+  margin:5px 0 0;
+
+  font-size:21px;
+}
+
+.rf43-popup p{
+  margin:6px 0 0;
+
+  color:#9fb4c4;
+
+  font-size:10px;
+}
+
+.rf43-popup-reward{
+  margin-top:13px;
+
+  padding:12px;
+
+  border-radius:15px;
+
+  background:#061521;
+
+  color:#6bef91;
+
+  font-size:20px;
+  font-weight:1000;
+}
+
+.rf43-popup button{
+  width:100%;
+  min-height:49px;
+
+  margin-top:12px;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0daf49
+    );
+
+  color:#fff;
+
+  font-weight:1000;
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf43Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf43Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+function rf43DateKey(
+  offset
+){
+
+  const date =
+    new Date();
+
+
+  date.setDate(
+    date.getDate()
+    +
+    (
+      offset
+      ||
+      0
+    )
+  );
+
+
+  return (
+    date.getFullYear()
+    +
+    "-"
+    +
+    String(
+      date.getMonth()+1
+    )
+    .padStart(2,"0")
+    +
+    "-"
+    +
+    String(
+      date.getDate()
+    )
+    .padStart(2,"0")
+  );
+
+}
+
+
+/* =========================================
+   UI
+   ========================================= */
+
+const host =
+  document.querySelector(
+    "#rf42Contract"
+  )
+  ||
+  document.querySelector(
+    "#rf40Milestones"
+  );
+
+
+if(!host){
+  return;
+}
+
+
+const daily =
+  document.createElement(
+    "div"
+  );
+
+
+daily.className =
+  "rf43-daily";
+
+
+daily.innerHTML = `
+
+  <div class="rf43-head">
+
+    <div>
+
+      <div class="rf43-title">
+        📅 Ежедневные контракты
+      </div>
+
+      <div class="rf43-sub">
+        Выполни все 3 задания за сегодня
+      </div>
+
+    </div>
+
+    <div
+      class="rf43-streak"
+      id="rf43Streak"
+    >
+      🔥 0
+    </div>
+
+  </div>
+
+
+  <div class="rf43-timer">
+
+    Новые задания через
+
+    <b id="rf43ResetTimer">
+      00:00:00
+    </b>
+
+  </div>
+
+
+  <div id="rf43TaskList">
+  </div>
+
+
+  <div
+    class="rf43-bonus"
+    id="rf43Bonus"
+  >
+
+    <div>
+
+      <div class="rf43-bonus-title">
+        🎁 Бонус за комплект
+      </div>
+
+      <div class="rf43-bonus-desc">
+        Выполни и забери все 3 задания
+      </div>
+
+      <div
+        class="rf43-bonus-value"
+        id="rf43BonusValue"
+      >
+      </div>
+
+    </div>
+
+    <button
+      id="rf43BonusClaim"
+      disabled
+    >
+      Закрыто
+    </button>
+
+  </div>
+`;
+
+
+host.insertAdjacentElement(
+  "afterend",
+  daily
+);
+
+
+/* =========================================
+   POPUP
+   ========================================= */
+
+const popup =
+  document.createElement(
+    "div"
+  );
+
+
+popup.className =
+  "rf43-popup";
+
+
+popup.innerHTML = `
+
+  <div class="rf43-popup-icon">
+    🏆
+  </div>
+
+  <h3>
+    День выполнен!
+  </h3>
+
+  <p>
+    Все ежедневные контракты закрыты.
+  </p>
+
+  <div
+    class="rf43-popup-reward"
+    id="rf43PopupReward"
+  >
+  </div>
+
+  <button id="rf43PopupClose">
+    Отлично
+  </button>
+`;
+
+
+document.body.appendChild(
+  popup
+);
+
+
+document
+.querySelector(
+  "#rf43PopupClose"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    popup.classList.remove(
+      "show"
+    );
+
+  }
+);
+
+
+/* =========================================
+   CREATE DAILY DATA
+   ========================================= */
+
+function rf43CreateTask(
+  type,
+  level
+){
+
+  const roll =
+    Math.random();
+
+
+  let rarity =
+    "common";
+
+
+  let multiplier =
+    1;
+
+
+  if(roll > .88){
+
+    rarity =
+      "epic";
+
+
+    multiplier =
+      2.2;
+
+  }
+  else if(roll > .58){
+
+    rarity =
+      "rare";
+
+
+    multiplier =
+      1.5;
+
+  }
+
+
+  if(type === "clicks"){
+
+    return {
+
+      id:"clicks",
+
+      rarity:rarity,
+
+      icon:"👆",
+
+      title:"Активная смена",
+
+      desc:"Сделай клики по роботу",
+
+      target:
+        Math.floor(
+          (
+            120
+            +
+            level*18
+          )
+          *
+          multiplier
+        ),
+
+      reward:
+        Math.floor(
+          (
+            1400
+            +
+            level*700
+          )
+          *
+          multiplier
+        ),
+
+      gems:
+        rarity === "epic"
+        ?
+        2
+        :
+        0,
+
+      claimed:false
+
+    };
+
+  }
+
+
+  if(type === "coins"){
+
+    return {
+
+      id:"coins",
+
+      rarity:rarity,
+
+      icon:"⚙️",
+
+      title:"План производства",
+
+      desc:"Заработай детали за день",
+
+      target:
+        Math.floor(
+          (
+            4000
+            +
+            level*2200
+          )
+          *
+          multiplier
+        ),
+
+      reward:
+        Math.floor(
+          (
+            1800
+            +
+            level*850
+          )
+          *
+          multiplier
+        ),
+
+      gems:
+        rarity === "epic"
+        ?
+        2
+        :
+        0,
+
+      claimed:false
+
+    };
+
+  }
+
+
+  return {
+
+    id:"time",
+
+    rarity:rarity,
+
+    icon:"⏱️",
+
+    title:"Контроль производства",
+
+    desc:"Проведи время на фабрике",
+
+    target:
+      Math.floor(
+        (
+          300
+          +
+          level*12
+        )
+        *
+        multiplier
+      ),
+
+    reward:
+      Math.floor(
+        (
+          1200
+          +
+          level*600
+        )
+        *
+        multiplier
+      ),
+
+    gems:
+      rarity === "epic"
+      ?
+      2
+      :
+      0,
+
+    claimed:false
+
+  };
+
+}
+
+
+function rf43CreateDaily(){
+
+  const level =
+    Math.max(
+      rf43Number(
+        "level",
+        1
+      ),
+      1
+    );
+
+
+  return {
+
+    date:
+      rf43DateKey(0),
+
+    startClicks:
+      rf43Number(
+        "totalClicks",
+        0
+      ),
+
+    lastCoins:
+      rf43Number(
+        "coins",
+        0
+      ),
+
+    earnedCoins:
+      0,
+
+    activeSeconds:
+      0,
+
+    lastActiveTick:
+      Date.now(),
+
+    tasks:
+    [
+      rf43CreateTask(
+        "clicks",
+        level
+      ),
+
+      rf43CreateTask(
+        "coins",
+        level
+      ),
+
+      rf43CreateTask(
+        "time",
+        level
+      )
+    ],
+
+    bonusClaimed:
+      false
+
+  };
+
+}
+
+
+/* =========================================
+   LOAD / SAVE
+   ========================================= */
+
+function rf43Load(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        "rf43Daily"
+      );
+
+
+    if(!raw){
+      return null;
+    }
+
+
+    return JSON.parse(
+      raw
+    );
+
+  }
+  catch(e){
+
+    return null;
+
+  }
+
+}
+
+
+function rf43Save(){
+
+  localStorage.setItem(
+    "rf43Daily",
+    JSON.stringify(
+      state
+    )
+  );
+
+}
+
+
+/* =========================================
+   STATE
+   ========================================= */
+
+let state =
+  rf43Load();
+
+
+if(
+  !state
+  ||
+  state.date
+  !==
+  rf43DateKey(0)
+){
+
+  state =
+    rf43CreateDaily();
+
+
+  rf43Save();
+
+}
+
+
+/* =========================================
+   BUILD TASK CARDS
+   ========================================= */
+
+const list =
+  document.querySelector(
+    "#rf43TaskList"
+  );
+
+
+function rf43BuildCards(){
+
+  list.innerHTML =
+    "";
+
+
+  state.tasks.forEach(
+    task => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "rf43-task";
+
+
+      card.dataset.task =
+        task.id;
+
+
+      card.innerHTML = `
+
+        <div class="rf43-icon">
+          ${task.icon}
+        </div>
+
+        <div>
+
+          <div class="rf43-task-title">
+            ${task.title}
+          </div>
+
+          <div class="rf43-task-desc">
+            ${task.desc}
+          </div>
+
+          <div class="rf43-rarity ${task.rarity}">
+            ${
+              task.rarity === "epic"
+              ?
+              "ЭПИЧЕСКОЕ"
+              :
+              task.rarity === "rare"
+              ?
+              "РЕДКОЕ"
+              :
+              "ОБЫЧНОЕ"
+            }
+          </div>
+
+          <div class="rf43-progress">
+
+            <div class="rf43-progress-fill">
+            </div>
+
+          </div>
+
+          <div class="rf43-progress-text">
+          </div>
+
+        </div>
+
+        <button class="rf43-claim">
+          В процессе
+        </button>
+
+      `;
+
+
+      card
+      .querySelector(
+        ".rf43-claim"
+      )
+      .addEventListener(
+        "click",
+        function(){
+
+          rf43ClaimTask(
+            task.id
+          );
+
+        }
+      );
+
+
+      list.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   PROGRESS
+   ========================================= */
+
+function rf43TaskProgress(
+  task
+){
+
+  if(task.id === "clicks"){
+
+    return Math.max(
+      rf43Number(
+        "totalClicks",
+        0
+      )
+      -
+      state.startClicks,
+      0
+    );
+
+  }
+
+
+  if(task.id === "coins"){
+
+    return Math.max(
+      state.earnedCoins,
+      0
+    );
+
+  }
+
+
+  if(task.id === "time"){
+
+    return Math.max(
+      state.activeSeconds,
+      0
+    );
+
+  }
+
+
+  return 0;
+
+}
+
+
+/* =========================================
+   EARNED COINS TRACKING
+   ========================================= */
+
+function rf43TrackCoins(){
+
+  const current =
+    rf43Number(
+      "coins",
+      0
+    );
+
+
+  const previous =
+    Number(
+      state.lastCoins
+    )
+    ||
+    current;
+
+
+  if(current > previous){
+
+    state.earnedCoins +=
+      current
+      -
+      previous;
+
+  }
+
+
+  state.lastCoins =
+    current;
+
+}
+
+
+/* =========================================
+   ACTIVE TIME
+   ========================================= */
+
+function rf43TrackTime(){
+
+  const now =
+    Date.now();
+
+
+  const last =
+    Number(
+      state.lastActiveTick
+    )
+    ||
+    now;
+
+
+  if(
+    document.visibilityState
+    ===
+    "visible"
+  ){
+
+    const seconds =
+      Math.min(
+        Math.floor(
+          (
+            now
+            -
+            last
+          )
+          /
+          1000
+        ),
+        5
+      );
+
+
+    if(seconds > 0){
+
+      state.activeSeconds +=
+        seconds;
+
+    }
+
+  }
+
+
+  state.lastActiveTick =
+    now;
+
+}
+
+
+/* =========================================
+   CLAIM TASK
+   ========================================= */
+
+function rf43ClaimTask(
+  id
+){
+
+  const task =
+    state.tasks.find(
+      item =>
+        item.id === id
+    );
+
+
+  if(
+    !task
+    ||
+    task.claimed
+  ){
+
+    return;
+
+  }
+
+
+  const progress =
+    rf43TaskProgress(
+      task
+    );
+
+
+  if(
+    progress
+    <
+    task.target
+  ){
+
+    return;
+
+  }
+
+
+  task.claimed =
+    true;
+
+
+  localStorage.setItem(
+    "coins",
+    rf43Number(
+      "coins",
+      0
+    )
+    +
+    task.reward
+  );
+
+
+  if(task.gems){
+
+    localStorage.setItem(
+      "gems",
+      rf43Number(
+        "gems",
+        120
+      )
+      +
+      task.gems
+    );
+
+  }
+
+
+  rf43Save();
+
+
+  try{
+
+    const tg =
+      window.Telegram
+      &&
+      window.Telegram.WebApp;
+
+
+    if(
+      tg
+      &&
+      tg.HapticFeedback
+    ){
+
+      tg.HapticFeedback
+      .notificationOccurred(
+        "success"
+      );
+
+    }
+
+  }
+  catch(e){}
+
+
+  rf43Update();
+
+}
+
+
+/* =========================================
+   FULL DAY BONUS
+   ========================================= */
+
+function rf43AllClaimed(){
+
+  return state.tasks.every(
+    task =>
+      task.claimed
+  );
+
+}
+
+
+function rf43BonusReward(){
+
+  const level =
+    Math.max(
+      rf43Number(
+        "level",
+        1
+      ),
+      1
+    );
+
+
+  return {
+
+    coins:
+      5000
+      +
+      level
+      *
+      1500,
+
+    gems:
+      5
+
+  };
+
+}
+
+
+document
+.querySelector(
+  "#rf43BonusClaim"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(
+      !rf43AllClaimed()
+      ||
+      state.bonusClaimed
+    ){
+
+      return;
+
+    }
+
+
+    const reward =
+      rf43BonusReward();
+
+
+    state.bonusClaimed =
+      true;
+
+
+    localStorage.setItem(
+      "coins",
+      rf43Number(
+        "coins",
+        0
+      )
+      +
+      reward.coins
+    );
+
+
+    localStorage.setItem(
+      "gems",
+      rf43Number(
+        "gems",
+        120
+      )
+      +
+      reward.gems
+    );
+
+
+    /* =====================================
+       STREAK
+       ===================================== */
+
+    let streak =
+      rf43Number(
+        "rf43DailyStreak",
+        0
+      );
+
+
+    const last =
+      localStorage.getItem(
+        "rf43LastCompletedDay"
+      );
+
+
+    if(
+      last ===
+      rf43DateKey(-1)
+    ){
+
+      streak++;
+
+    }
+    else if(
+      last !==
+      rf43DateKey(0)
+    ){
+
+      streak =
+        1;
+
+    }
+
+
+    localStorage.setItem(
+      "rf43DailyStreak",
+      streak
+    );
+
+
+    localStorage.setItem(
+      "rf43LastCompletedDay",
+      rf43DateKey(0)
+    );
+
+
+    rf43Save();
+
+
+    document.querySelector(
+      "#rf43PopupReward"
+    )
+    .textContent =
+      "⚙️ "
+      +
+      rf43Compact(
+        reward.coins
+      )
+      +
+      "  +  💎 "
+      +
+      reward.gems;
+
+
+    popup.classList.add(
+      "show"
+    );
+
+
+    rf43Update();
+
+  }
+);
+
+
+/* =========================================
+   RESET TIMER
+   ========================================= */
+
+function rf43ResetTime(){
+
+  const now =
+    new Date();
+
+
+  const tomorrow =
+    new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()+1,
+      0,
+      0,
+      0
+    );
+
+
+  let seconds =
+    Math.max(
+      Math.floor(
+        (
+          tomorrow
+          -
+          now
+        )
+        /
+        1000
+      ),
+      0
+    );
+
+
+  const hours =
+    Math.floor(
+      seconds/3600
+    );
+
+
+  seconds %=
+    3600;
+
+
+  const minutes =
+    Math.floor(
+      seconds/60
+    );
+
+
+  const secs =
+    seconds%60;
+
+
+  return (
+    String(hours)
+    .padStart(2,"0")
+    +
+    ":"
+    +
+    String(minutes)
+    .padStart(2,"0")
+    +
+    ":"
+    +
+    String(secs)
+    .padStart(2,"0")
+  );
+
+}
+
+
+/* =========================================
+   UPDATE
+   ========================================= */
+
+function rf43Update(){
+
+  /*
+  Если наступил новый день,
+  создаём новый комплект.
+  */
+
+  if(
+    state.date
+    !==
+    rf43DateKey(0)
+  ){
+
+    state =
+      rf43CreateDaily();
+
+
+    rf43Save();
+
+
+    rf43BuildCards();
+
+  }
+
+
+  rf43TrackCoins();
+
+
+  rf43TrackTime();
+
+
+  document.querySelector(
+    "#rf43ResetTimer"
+  )
+  .textContent =
+    rf43ResetTime();
+
+
+  const streak =
+    rf43Number(
+      "rf43DailyStreak",
+      0
+    );
+
+
+  document.querySelector(
+    "#rf43Streak"
+  )
+  .textContent =
+    "🔥 "
+    +
+    streak;
+
+
+  state.tasks.forEach(
+    task => {
+
+      const card =
+        list.querySelector(
+          '[data-task="'
+          +
+          task.id
+          +
+          '"]'
+        );
+
+
+      if(!card){
+        return;
+      }
+
+
+      const progress =
+        rf43TaskProgress(
+          task
+        );
+
+
+      const percent =
+        Math.min(
+          progress
+          /
+          task.target
+          *
+          100,
+          100
+        );
+
+
+      card
+      .querySelector(
+        ".rf43-progress-fill"
+      )
+      .style.width =
+        percent
+        +
+        "%";
+
+
+      let progressText =
+        "";
+
+
+      if(task.id === "time"){
+
+        const currentMin =
+          Math.floor(
+            progress/60
+          );
+
+
+        const targetMin =
+          Math.ceil(
+            task.target/60
+          );
+
+
+        progressText =
+          currentMin
+          +
+          " / "
+          +
+          targetMin
+          +
+          " мин";
+
+      }
+      else{
+
+        progressText =
+          rf43Compact(
+            Math.min(
+              progress,
+              task.target
+            )
+          )
+          +
+          " / "
+          +
+          rf43Compact(
+            task.target
+          );
+
+      }
+
+
+      card
+      .querySelector(
+        ".rf43-progress-text"
+      )
+      .textContent =
+        progressText;
+
+
+      const ready =
+        progress
+        >=
+        task.target;
+
+
+      const button =
+        card.querySelector(
+          ".rf43-claim"
+        );
+
+
+      card.classList.toggle(
+        "ready",
+        ready
+        &&
+        !task.claimed
+      );
+
+
+      card.classList.toggle(
+        "claimed",
+        task.claimed
+      );
+
+
+      if(task.claimed){
+
+        button.disabled =
+          true;
+
+
+        button.textContent =
+          "✅ Готово";
+
+      }
+      else if(ready){
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          task.gems
+          ?
+          "⚙️ + 💎"
+          :
+          "Забрать";
+
+      }
+      else{
+
+        button.disabled =
+          true;
+
+
+        button.textContent =
+          "В процессе";
+
+      }
+
+    }
+  );
+
+
+  const all =
+    rf43AllClaimed();
+
+
+  const bonus =
+    rf43BonusReward();
+
+
+  const bonusBox =
+    document.querySelector(
+      "#rf43Bonus"
+    );
+
+
+  const bonusButton =
+    document.querySelector(
+      "#rf43BonusClaim"
+    );
+
+
+  document.querySelector(
+    "#rf43BonusValue"
+  )
+  .textContent =
+    "⚙️ "
+    +
+    rf43Compact(
+      bonus.coins
+    )
+    +
+    " + 💎 "
+    +
+    bonus.gems;
+
+
+  bonusBox.classList.toggle(
+    "ready",
+    all
+    &&
+    !state.bonusClaimed
+  );
+
+
+  if(state.bonusClaimed){
+
+    bonusButton.disabled =
+      true;
+
+
+    bonusButton.textContent =
+      "✅ Получено";
+
+  }
+  else if(all){
+
+    bonusButton.disabled =
+      false;
+
+
+    bonusButton.textContent =
+      "Забрать";
+
+  }
+  else{
+
+    bonusButton.disabled =
+      true;
+
+
+    bonusButton.textContent =
+      "Закрыто";
+
+  }
+
+
+  rf43Save();
+
+}
+
+
+/* =========================================
+   RUN
+   ========================================= */
+
+rf43BuildCards();
+
+
+rf43Update();
+
+
+setInterval(
+  rf43Update,
+  1000
+);
+
+})();
+</script>
 </body>
 </html>
