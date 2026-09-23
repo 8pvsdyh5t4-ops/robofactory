@@ -23185,8 +23185,304 @@ setInterval(
   color: transparent;
 }
 </style>
+<script>
+/* =========================================
+   ROBOFACTORY OFFLINE INCOME FIX
+   ========================================= */
+
+(function(){
+
+"use strict";
 
 
+function rfOfflineNum(
+  key,
+  fallback
+){
 
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    fallback;
+
+}
+
+
+/* =========================================
+   СЧИТАЕМ ПАССИВНЫЙ ДОХОД
+   ТОЧНО ТАК ЖЕ, КАК v39
+   ========================================= */
+
+function rfOfflinePassive(){
+
+  const keys =
+  [
+    "passivePerSecond",
+    "passiveRate",
+    "perSecond",
+    "incomePerSecond",
+    "passive"
+  ];
+
+
+  for(
+    const key
+    of
+    keys
+  ){
+
+    const raw =
+      localStorage.getItem(
+        key
+      );
+
+
+    if(raw !== null){
+
+      const value =
+        Number(raw);
+
+
+      if(
+        Number.isFinite(value)
+        &&
+        value >= 0
+      ){
+
+        return value;
+
+      }
+
+    }
+
+  }
+
+
+  const workers =
+    rfOfflineNum(
+      "workers",
+      0
+    );
+
+
+  const conveyor =
+    rfOfflineNum(
+      "conveyorLevel",
+      0
+    );
+
+
+  const arm =
+    rfOfflineNum(
+      "armLevel",
+      0
+    );
+
+
+  const factory =
+    rfOfflineNum(
+      "factoryLevel",
+      0
+    );
+
+
+  return (
+    workers * 2
+    +
+    conveyor * 5
+    +
+    arm * 25
+    +
+    factory * 100
+  );
+
+}
+
+
+/* =========================================
+   ЗАПОМИНАЕМ НАГРАДУ СРАЗУ ПРИ ЗАГРУЗКЕ
+   ========================================= */
+
+const rfOfflineLastActive =
+  Number(
+    localStorage.getItem(
+      "rfLastActive"
+    )
+  )
+  ||
+  Date.now();
+
+
+const rfOfflineNow =
+  Date.now();
+
+
+let rfOfflineSeconds =
+  Math.floor(
+    (
+      rfOfflineNow
+      -
+      rfOfflineLastActive
+    )
+    /
+    1000
+  );
+
+
+/* максимум 8 часов */
+
+rfOfflineSeconds =
+  Math.min(
+    rfOfflineSeconds,
+    8 * 60 * 60
+  );
+
+
+const rfOfflineReward =
+  Math.floor(
+    rfOfflineSeconds
+    *
+    rfOfflinePassive()
+  );
+
+
+/* =========================================
+   ПЕРЕХВАТ КНОПКИ
+   ========================================= */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const button =
+      event.target.closest(
+        "#rf39OfflineClaim"
+      );
+
+
+    if(!button){
+      return;
+    }
+
+
+    /*
+    Не даём старому обработчику v39
+    выполнить свою проблемную логику.
+    */
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+
+    if(
+      rfOfflineReward <= 0
+    ){
+
+      const box =
+        document.querySelector(
+          ".rf39-offline"
+        );
+
+
+      if(box){
+
+        box.classList.remove(
+          "show"
+        );
+
+      }
+
+
+      return;
+
+    }
+
+
+    const currentCoins =
+      rfOfflineNum(
+        "coins",
+        0
+      );
+
+
+    /*
+    Начисляем награду.
+    v45/v46 при наличии сами применят
+    бонус престижа и зоны.
+    */
+
+    localStorage.setItem(
+      "coins",
+      currentCoins
+      +
+      rfOfflineReward
+    );
+
+
+    /*
+    Сразу закрываем оффлайн-период,
+    чтобы награду нельзя было забрать дважды.
+    */
+
+    localStorage.setItem(
+      "rfLastActive",
+      String(
+        Date.now()
+      )
+    );
+
+
+    sessionStorage.setItem(
+      "rf39OfflineClaimed",
+      "1"
+    );
+
+
+    const box =
+      document.querySelector(
+        ".rf39-offline"
+      );
+
+
+    if(box){
+
+      box.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    /*
+    ВАЖНО:
+    перезагружаем сразу,
+    пока старое состояние игры
+    не успело перезаписать баланс.
+    */
+
+    setTimeout(
+      function(){
+
+        location.reload();
+
+      },
+      40
+    );
+
+  },
+  true
+);
+
+})();
+</script>
 </body>
 </html>
