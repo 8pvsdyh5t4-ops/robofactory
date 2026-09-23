@@ -12197,5 +12197,1341 @@ setTimeout(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v40
+   LEVEL PROGRESSION
+   ========================================= */
+
+/* ---------- LEVEL PROGRESS CARD ---------- */
+
+.rf40-level-card{
+  margin:10px 12px 0;
+  padding:13px 14px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(11,40,61,.96),
+      rgba(6,24,39,.96)
+    );
+
+  border:
+    1px solid #315a78;
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.22);
+}
+
+.rf40-level-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  gap:10px;
+}
+
+.rf40-level-title{
+  font-size:13px;
+  font-weight:1000;
+}
+
+.rf40-level-next{
+  color:#9eb4c4;
+
+  font-size:10px;
+  font-weight:800;
+}
+
+.rf40-level-progress{
+  height:9px;
+
+  margin-top:9px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:#06131d;
+}
+
+.rf40-level-progress-fill{
+  width:0;
+  height:100%;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #1fc9ff,
+      #64ef8c
+    );
+
+  box-shadow:
+    0 0 10px rgba(46,213,255,.35);
+
+  transition:
+    width .3s ease;
+}
+
+.rf40-level-meta{
+  display:flex;
+  justify-content:space-between;
+
+  margin-top:6px;
+
+  color:#8fa8ba;
+
+  font-size:9px;
+}
+
+
+/* ---------- MILESTONE PANEL ---------- */
+
+.rf40-milestones{
+  margin:10px 12px 0;
+
+  display:grid;
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:6px;
+}
+
+.rf40-milestone{
+  min-width:0;
+
+  padding:8px 3px;
+
+  border-radius:13px;
+
+  text-align:center;
+
+  background:#0b2234;
+
+  border:
+    1px solid #294b64;
+
+  opacity:.55;
+}
+
+.rf40-milestone.done{
+  opacity:1;
+
+  background:
+    linear-gradient(
+      145deg,
+      #163c2a,
+      #0c291d
+    );
+
+  border-color:#37bd6c;
+
+  box-shadow:
+    0 0 12px rgba(54,211,110,.12);
+}
+
+.rf40-milestone.current{
+  opacity:1;
+
+  border-color:#d3a33b;
+
+  box-shadow:
+    0 0 15px rgba(255,185,45,.18);
+
+  animation:
+    rf40MilestonePulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+.rf40-milestone span{
+  display:block;
+
+  font-size:8px;
+
+  color:#91a7b7;
+}
+
+.rf40-milestone b{
+  display:block;
+
+  margin-top:4px;
+
+  font-size:15px;
+}
+
+.rf40-milestone small{
+  display:block;
+
+  margin-top:3px;
+
+  font-size:7px;
+
+  color:#efc864;
+}
+
+@keyframes rf40MilestonePulse{
+  0%,
+  100%{
+    box-shadow:
+      0 0 10px rgba(255,185,45,.1);
+  }
+
+  50%{
+    box-shadow:
+      0 0 22px rgba(255,185,45,.28);
+  }
+}
+
+
+/* ---------- LEVEL REWARD POPUP ---------- */
+
+.rf40-reward{
+  position:fixed;
+
+  z-index:10020;
+
+  left:50%;
+  top:50%;
+
+  width:
+    calc(100% - 38px);
+
+  max-width:380px;
+
+  padding:18px;
+
+  border-radius:23px;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      #173f59,
+      #081d2e
+    );
+
+  border:
+    1px solid #48d6ff;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.rf40-reward.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+
+  pointer-events:auto;
+}
+
+.rf40-reward-icon{
+  text-align:center;
+
+  font-size:45px;
+}
+
+.rf40-reward h3{
+  margin:
+    7px 0 0;
+
+  text-align:center;
+
+  font-size:22px;
+}
+
+.rf40-reward p{
+  margin:
+    6px 0 0;
+
+  text-align:center;
+
+  color:#a7bdcb;
+
+  font-size:11px;
+}
+
+.rf40-reward-value{
+  margin-top:14px;
+
+  padding:13px;
+
+  border-radius:16px;
+
+  background:#071521;
+
+  text-align:center;
+
+  color:#67ef8d;
+
+  font-size:23px;
+
+  font-weight:1000;
+}
+
+.rf40-reward button{
+  width:100%;
+
+  min-height:52px;
+
+  margin-top:13px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0daf49
+    );
+
+  color:#fff;
+
+  font-weight:1000;
+}
+
+
+/* ---------- FACTORY DEVELOPMENT ---------- */
+
+body.rf40-stage-2 .hero::after,
+body.rf40-stage-3 .hero::after,
+body.rf40-stage-4 .hero::after{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:1;
+
+  pointer-events:none;
+
+  mix-blend-mode:screen;
+}
+
+body.rf40-stage-2 .hero::after{
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255,178,45,.07),
+      transparent 40%
+    );
+}
+
+body.rf40-stage-3 .hero::after{
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255,190,65,.12),
+      transparent 45%
+    );
+}
+
+body.rf40-stage-4 .hero::after{
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(255,210,90,.17),
+      transparent 48%
+    );
+
+  animation:
+    rf40FactoryGlow
+    3s
+    ease-in-out
+    infinite;
+}
+
+@keyframes rf40FactoryGlow{
+  0%,
+  100%{
+    opacity:.75;
+  }
+
+  50%{
+    opacity:1;
+  }
+}
+
+
+/* ---------- LEVEL STAGE BADGE ---------- */
+
+.rf40-stage-badge{
+  position:absolute;
+
+  z-index:35;
+
+  right:10px;
+  top:94px;
+
+  padding:
+    5px 8px;
+
+  border-radius:99px;
+
+  background:
+    rgba(7,26,41,.88);
+
+  border:
+    1px solid #315a78;
+
+  color:#9fdcf1;
+
+  font-size:8px;
+  font-weight:900;
+
+  backdrop-filter:
+    blur(8px);
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf40Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf40Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   PROGRESS UI
+   ========================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+let progressCard =
+  document.querySelector(
+    "#rf40LevelCard"
+  );
+
+
+if(!progressCard){
+
+  progressCard =
+    document.createElement(
+      "div"
+    );
+
+
+  progressCard.id =
+    "rf40LevelCard";
+
+
+  progressCard.className =
+    "rf40-level-card";
+
+
+  progressCard.innerHTML = `
+    <div class="rf40-level-top">
+
+      <div class="rf40-level-title">
+        ⭐ Прогресс уровня
+      </div>
+
+      <div
+        class="rf40-level-next"
+        id="rf40Next"
+      >
+      </div>
+
+    </div>
+
+    <div class="rf40-level-progress">
+
+      <div
+        class="rf40-level-progress-fill"
+        id="rf40ProgressFill"
+      >
+      </div>
+
+    </div>
+
+    <div class="rf40-level-meta">
+
+      <span id="rf40XpText">
+        0 / 100 XP
+      </span>
+
+      <span id="rf40LevelText">
+        Уровень 1
+      </span>
+
+    </div>
+  `;
+
+
+  if(hero){
+
+    hero.insertAdjacentElement(
+      "afterend",
+      progressCard
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   MILESTONES
+   ========================================= */
+
+let milestones =
+  document.querySelector(
+    "#rf40Milestones"
+  );
+
+
+if(!milestones){
+
+  milestones =
+    document.createElement(
+      "div"
+    );
+
+
+  milestones.id =
+    "rf40Milestones";
+
+
+  milestones.className =
+    "rf40-milestones";
+
+
+  milestones.innerHTML = `
+
+    <div
+      class="rf40-milestone"
+      data-level="5"
+    >
+      <span>Уровень</span>
+      <b>5</b>
+      <small>⚙️ 5K</small>
+    </div>
+
+    <div
+      class="rf40-milestone"
+      data-level="10"
+    >
+      <span>Уровень</span>
+      <b>10</b>
+      <small>💎 10</small>
+    </div>
+
+    <div
+      class="rf40-milestone"
+      data-level="20"
+    >
+      <span>Уровень</span>
+      <b>20</b>
+      <small>⚙️ 50K</small>
+    </div>
+
+    <div
+      class="rf40-milestone"
+      data-level="30"
+    >
+      <span>Уровень</span>
+      <b>30</b>
+      <small>💎 30</small>
+    </div>
+
+  `;
+
+
+  progressCard.insertAdjacentElement(
+    "afterend",
+    milestones
+  );
+
+}
+
+
+/* =========================================
+   STAGE BADGE
+   ========================================= */
+
+if(
+  hero
+  &&
+  !hero.querySelector(
+    ".rf40-stage-badge"
+  )
+){
+
+  const badge =
+    document.createElement(
+      "div"
+    );
+
+
+  badge.className =
+    "rf40-stage-badge";
+
+
+  badge.id =
+    "rf40StageBadge";
+
+
+  hero.appendChild(
+    badge
+  );
+
+}
+
+
+/* =========================================
+   REWARD POPUP
+   ========================================= */
+
+const rewardPopup =
+  document.createElement(
+    "div"
+  );
+
+
+rewardPopup.className =
+  "rf40-reward";
+
+
+rewardPopup.innerHTML = `
+
+  <div class="rf40-reward-icon">
+    🎉
+  </div>
+
+  <h3 id="rf40RewardTitle">
+    Новый уровень
+  </h3>
+
+  <p id="rf40RewardText">
+  </p>
+
+  <div
+    class="rf40-reward-value"
+    id="rf40RewardValue"
+  >
+  </div>
+
+  <button id="rf40RewardClaim">
+    Забрать награду
+  </button>
+
+`;
+
+
+document.body.appendChild(
+  rewardPopup
+);
+
+
+let pendingReward =
+  null;
+
+
+/* =========================================
+   REWARD TABLE
+   ========================================= */
+
+function rf40LevelReward(
+  level
+){
+
+  /*
+  Каждый уровень:
+  небольшая награда.
+
+  Особые уровни:
+  крупнее.
+  */
+
+
+  if(level === 5){
+
+    return {
+      coins:5000,
+      gems:0,
+      special:true
+    };
+
+  }
+
+
+  if(level === 10){
+
+    return {
+      coins:0,
+      gems:10,
+      special:true
+    };
+
+  }
+
+
+  if(level === 20){
+
+    return {
+      coins:50000,
+      gems:0,
+      special:true
+    };
+
+  }
+
+
+  if(level === 30){
+
+    return {
+      coins:0,
+      gems:30,
+      special:true
+    };
+
+  }
+
+
+  return {
+    coins:
+      250
+      *
+      level,
+
+    gems:0,
+
+    special:false
+  };
+
+}
+
+
+/* =========================================
+   SHOW REWARD
+   ========================================= */
+
+function rf40ShowReward(
+  level
+){
+
+  const claimedKey =
+    "rf40LevelReward_"
+    +
+    level;
+
+
+  if(
+    localStorage.getItem(
+      claimedKey
+    )
+    ===
+    "1"
+  ){
+
+    return;
+
+  }
+
+
+  const reward =
+    rf40LevelReward(
+      level
+    );
+
+
+  pendingReward =
+  {
+    level:level,
+    reward:reward
+  };
+
+
+  document.querySelector(
+    "#rf40RewardTitle"
+  )
+  .textContent =
+    reward.special
+    ?
+    "🏆 Этап пройден!"
+    :
+    "⭐ Уровень "
+    +
+    level;
+
+
+  document.querySelector(
+    "#rf40RewardText"
+  )
+  .textContent =
+    reward.special
+    ?
+    "Ты достиг важного этапа развития фабрики."
+    :
+    "Фабрика становится мощнее.";
+
+
+  const rewardText =
+    reward.gems
+    ?
+    "💎 "
+    +
+    reward.gems
+    :
+    "⚙️ "
+    +
+    rf40Compact(
+      reward.coins
+    );
+
+
+  document.querySelector(
+    "#rf40RewardValue"
+  )
+  .textContent =
+    rewardText;
+
+
+  rewardPopup.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================================
+   CLAIM REWARD
+   ========================================= */
+
+document.querySelector(
+  "#rf40RewardClaim"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(!pendingReward){
+      return;
+    }
+
+
+    const level =
+      pendingReward.level;
+
+
+    const reward =
+      pendingReward.reward;
+
+
+    const claimedKey =
+      "rf40LevelReward_"
+      +
+      level;
+
+
+    if(
+      localStorage.getItem(
+        claimedKey
+      )
+      ===
+      "1"
+    ){
+
+      rewardPopup.classList.remove(
+        "show"
+      );
+
+
+      return;
+
+    }
+
+
+    localStorage.setItem(
+      claimedKey,
+      "1"
+    );
+
+
+    if(reward.coins){
+
+      localStorage.setItem(
+        "coins",
+        rf40Number(
+          "coins",
+          0
+        )
+        +
+        reward.coins
+      );
+
+    }
+
+
+    if(reward.gems){
+
+      localStorage.setItem(
+        "gems",
+        rf40Number(
+          "gems",
+          120
+        )
+        +
+        reward.gems
+      );
+
+    }
+
+
+    rewardPopup.classList.remove(
+      "show"
+    );
+
+
+    pendingReward =
+      null;
+
+
+    setTimeout(
+      function(){
+
+        location.reload();
+
+      },
+      400
+    );
+
+  }
+);
+
+
+/* =========================================
+   FACTORY STAGE
+   ========================================= */
+
+function rf40FactoryStage(
+  level
+){
+
+  document.body.classList.remove(
+    "rf40-stage-1",
+    "rf40-stage-2",
+    "rf40-stage-3",
+    "rf40-stage-4"
+  );
+
+
+  let stage =
+    1;
+
+
+  let text =
+    "🔧 Мастерская";
+
+
+  if(level >= 5){
+
+    stage =
+      2;
+
+
+    text =
+      "🏭 Мини-фабрика";
+
+  }
+
+
+  if(level >= 10){
+
+    stage =
+      3;
+
+
+    text =
+      "⚙️ Промышленный цех";
+
+  }
+
+
+  if(level >= 20){
+
+    stage =
+      4;
+
+
+    text =
+      "🚀 Мегафабрика";
+
+  }
+
+
+  document.body.classList.add(
+    "rf40-stage-"
+    +
+    stage
+  );
+
+
+  const badge =
+    document.querySelector(
+      "#rf40StageBadge"
+    );
+
+
+  if(badge){
+
+    badge.textContent =
+      text;
+
+  }
+
+}
+
+
+/* =========================================
+   UI UPDATE
+   ========================================= */
+
+let rf40LastLevel =
+  rf40Number(
+    "level",
+    1
+  );
+
+
+function rf40Update(){
+
+  const level =
+    rf40Number(
+      "level",
+      1
+    );
+
+
+  const xp =
+    rf40Number(
+      "xp",
+      0
+    );
+
+
+  const xpNeed =
+    Math.max(
+      rf40Number(
+        "xpNeed",
+        100
+      ),
+      1
+    );
+
+
+  const percent =
+    Math.min(
+      xp
+      /
+      xpNeed
+      *
+      100,
+      100
+    );
+
+
+  const fill =
+    document.querySelector(
+      "#rf40ProgressFill"
+    );
+
+
+  if(fill){
+
+    fill.style.width =
+      percent
+      +
+      "%";
+
+  }
+
+
+  const xpText =
+    document.querySelector(
+      "#rf40XpText"
+    );
+
+
+  if(xpText){
+
+    xpText.textContent =
+      rf40Compact(
+        xp
+      )
+      +
+      " / "
+      +
+      rf40Compact(
+        xpNeed
+      )
+      +
+      " XP";
+
+  }
+
+
+  const levelText =
+    document.querySelector(
+      "#rf40LevelText"
+    );
+
+
+  if(levelText){
+
+    levelText.textContent =
+      "Уровень "
+      +
+      level;
+
+  }
+
+
+  const next =
+    document.querySelector(
+      "#rf40Next"
+    );
+
+
+  if(next){
+
+    const left =
+      Math.max(
+        xpNeed
+        -
+        xp,
+        0
+      );
+
+
+    next.textContent =
+      "До следующего: "
+      +
+      rf40Compact(
+        left
+      );
+
+  }
+
+
+  /* milestones */
+
+  document
+  .querySelectorAll(
+    ".rf40-milestone"
+  )
+  .forEach(
+    item => {
+
+      const target =
+        Number(
+          item.dataset.level
+        );
+
+
+      item.classList.toggle(
+        "done",
+        level >= target
+      );
+
+
+      item.classList.toggle(
+        "current",
+        level < target
+        &&
+        (
+          target ===
+          [5,10,20,30]
+          .find(
+            value =>
+              value > level
+          )
+        )
+      );
+
+    }
+  );
+
+
+  rf40FactoryStage(
+    level
+  );
+
+
+  /*
+  Показываем награду только
+  при реальном повышении уровня.
+  */
+
+  if(
+    level
+    >
+    rf40LastLevel
+  ){
+
+    rf40ShowReward(
+      level
+    );
+
+  }
+
+
+  rf40LastLevel =
+    level;
+
+}
+
+
+/* =========================================
+   OLD LEVELS SAFETY
+   ========================================= */
+
+/*
+Если игрок уже выше уровня 1,
+старые уровни не начисляем автоматически.
+
+Это специально:
+не выдаём задним числом огромную пачку наград.
+Начисления начинаются с v40.
+*/
+
+if(
+  localStorage.getItem(
+    "rf40Installed"
+  )
+  !==
+  "1"
+){
+
+  localStorage.setItem(
+    "rf40Installed",
+    "1"
+  );
+
+
+  localStorage.setItem(
+    "rf40StartLevel",
+    String(
+      rf40LastLevel
+    )
+  );
+
+}
+
+
+/* =========================================
+   WATCH
+   ========================================= */
+
+rf40Update();
+
+
+setInterval(
+  rf40Update,
+  500
+);
+
+})();
+</script>
 </body>
 </html>
