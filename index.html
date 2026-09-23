@@ -6863,5 +6863,3176 @@ button:disabled{
 
 })();
 </script> 
+<style>
+/* ==========================================
+   ROBOFACTORY v36
+   EVENTS + ACHIEVEMENTS + SHOP + SKINS
+   ========================================== */
+
+/* ================= EVENTS ================= */
+
+#eventsScreen{
+  padding:14px 12px 105px !important;
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      #163b5a,
+      #071521 45%,
+      #040c14 100%
+    );
+}
+
+#eventsScreen > .title{
+  position:sticky;
+  top:0;
+  z-index:70;
+
+  margin:-14px -12px 10px;
+  padding:15px 14px 10px;
+
+  background:
+    rgba(5,16,27,.96);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+
+/* вкладки событий */
+
+.rf36-event-tabs{
+  position:sticky;
+  top:57px;
+  z-index:69;
+
+  display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:5px;
+
+  padding:5px;
+  margin-bottom:10px;
+
+  border-radius:15px;
+
+  background:#071724;
+
+  border:
+    1px solid #284962;
+}
+
+.rf36-event-tab{
+  min-height:44px;
+
+  padding:5px;
+
+  border-radius:11px;
+
+  background:transparent;
+
+  color:#859bad;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+.rf36-event-tab.active{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      #1699e7,
+      #0870ad
+    );
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.2);
+}
+
+
+/* верхняя статистика */
+
+.rf36-event-summary{
+  display:grid;
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:7px;
+
+  margin-bottom:12px;
+}
+
+.rf36-event-summary > div{
+  min-width:0;
+
+  padding:10px 5px;
+
+  text-align:center;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      #102d44,
+      #0a2032
+    );
+
+  border:
+    1px solid #315570;
+}
+
+.rf36-event-summary span{
+  display:block;
+
+  color:#93a9ba;
+
+  font-size:10px;
+  font-weight:800;
+}
+
+.rf36-event-summary b{
+  display:block;
+
+  margin-top:5px;
+
+  color:#61ef88;
+
+  font-size:17px;
+}
+
+
+/* существующие задания */
+
+#eventsScreen .rf36-panel{
+  padding:14px !important;
+
+  border-radius:18px !important;
+
+  border:
+    1px solid #315570 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0d293f,
+      #071d2e
+    ) !important;
+
+  box-shadow:
+    0 7px 16px rgba(0,0,0,.2);
+}
+
+
+/* секции */
+
+.rf36-hidden{
+  display:none !important;
+}
+
+.rf36-section-title{
+  padding:4px 2px 12px;
+}
+
+.rf36-section-title b{
+  display:block;
+
+  font-size:19px;
+}
+
+.rf36-section-title span{
+  display:block;
+
+  margin-top:3px;
+
+  color:#93a8b9;
+
+  font-size:11px;
+}
+
+
+/* ================= ACHIEVEMENTS ================= */
+
+.rf36-achievement{
+  display:grid;
+
+  grid-template-columns:
+    52px
+    minmax(0,1fr)
+    90px;
+
+  gap:9px;
+
+  align-items:center;
+
+  margin-bottom:9px;
+
+  padding:11px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0c293f,
+      #071c2d
+    );
+
+  border:
+    1px solid #2e526c;
+
+  transition:.2s;
+}
+
+.rf36-achievement.ready{
+  border-color:#e5ae32;
+
+  box-shadow:
+    0 0 15px rgba(255,185,45,.15);
+}
+
+.rf36-achievement.claimed{
+  opacity:.68;
+}
+
+.rf36-ach-icon{
+  width:50px;
+  height:50px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:15px;
+
+  background:#153b56;
+
+  font-size:28px;
+}
+
+.rf36-ach-main{
+  min-width:0;
+}
+
+.rf36-ach-title{
+  font-size:14px;
+  font-weight:1000;
+}
+
+.rf36-ach-desc{
+  margin-top:3px;
+
+  color:#9aafbf;
+
+  font-size:10px;
+}
+
+.rf36-ach-progress{
+  height:7px;
+
+  margin-top:8px;
+
+  border-radius:99px;
+
+  overflow:hidden;
+
+  background:#05111a;
+}
+
+.rf36-ach-progress > div{
+  width:0;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2ad867,
+      #67f28c
+    );
+
+  transition:width .25s;
+}
+
+.rf36-ach-meta{
+  display:flex;
+  justify-content:space-between;
+
+  margin-top:5px;
+
+  color:#a8bac8;
+
+  font-size:9px;
+}
+
+.rf36-ach-button{
+  min-height:52px;
+
+  padding:6px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      #2be876,
+      #0daf49
+    );
+
+  font-size:10px;
+  font-weight:900;
+}
+
+.rf36-ach-button:disabled{
+  background:#183a4c;
+  color:#8195a4;
+}
+
+
+/* ================= STREAK ================= */
+
+.rf36-streak-card{
+  padding:14px;
+
+  margin-bottom:10px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #362914,
+      #171d22
+    );
+
+  border:
+    1px solid #9e7726;
+}
+
+.rf36-section-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.rf36-section-head b{
+  display:block;
+
+  font-size:16px;
+}
+
+.rf36-section-head span{
+  display:block;
+
+  margin-top:3px;
+
+  color:#d2b87c;
+
+  font-size:10px;
+}
+
+.rf36-section-head strong{
+  color:#ffcc5c;
+
+  font-size:12px;
+}
+
+.rf36-week{
+  display:grid;
+
+  grid-template-columns:
+    repeat(7,1fr);
+
+  gap:4px;
+
+  margin-top:13px;
+}
+
+.rf36-day{
+  min-width:0;
+
+  padding:7px 2px;
+
+  border-radius:11px;
+
+  text-align:center;
+
+  background:#17232c;
+
+  border:
+    1px solid #314756;
+
+  opacity:.6;
+}
+
+.rf36-day.active{
+  opacity:1;
+
+  background:
+    linear-gradient(
+      #503817,
+      #292311
+    );
+
+  border-color:#d89e29;
+}
+
+.rf36-day span{
+  display:block;
+
+  font-size:8px;
+}
+
+.rf36-day b{
+  display:block;
+
+  margin:4px 0;
+
+  font-size:16px;
+}
+
+.rf36-day small{
+  display:block;
+
+  font-size:7px;
+  color:#f1d07c;
+}
+
+
+/* badge нижнего меню */
+
+.nav{
+  position:relative;
+}
+
+.rf36-nav-badge{
+  position:absolute;
+
+  top:5px;
+  right:10px;
+
+  min-width:18px;
+  height:18px;
+
+  display:grid !important;
+  place-items:center;
+
+  margin:0 !important;
+
+  border-radius:99px;
+
+  background:#ff4949;
+
+  color:white;
+
+  font-size:9px !important;
+
+  border:
+    2px solid #071521;
+}
+
+
+/* ================= SHOP ================= */
+
+#shopScreen{
+  padding:14px 12px 105px !important;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      #173c5d,
+      #071521 45%,
+      #040c14 100%
+    );
+}
+
+#shopScreen > .title{
+  position:sticky;
+  top:0;
+  z-index:70;
+
+  margin:-14px -12px 10px;
+
+  padding:15px 14px 10px;
+
+  background:
+    rgba(5,16,27,.96);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+
+/* баланс */
+
+.rf36-shop-wallet{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:8px;
+
+  margin-bottom:10px;
+}
+
+.rf36-shop-wallet > div{
+  padding:12px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      #102f48,
+      #091e30
+    );
+
+  border:
+    1px solid #315570;
+}
+
+.rf36-shop-wallet span{
+  display:block;
+
+  color:#96abba;
+
+  font-size:10px;
+}
+
+.rf36-shop-wallet b{
+  display:block;
+
+  margin-top:5px;
+
+  font-size:19px;
+}
+
+
+/* вкладки магазина */
+
+.rf36-shop-tabs{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:5px;
+
+  padding:5px;
+  margin-bottom:12px;
+
+  border-radius:15px;
+
+  background:#071724;
+
+  border:
+    1px solid #284962;
+}
+
+.rf36-shop-tabs button{
+  min-height:42px;
+
+  padding:5px;
+
+  border-radius:11px;
+
+  background:transparent;
+
+  color:#879cac;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+.rf36-shop-tabs button.active{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      #1699e7,
+      #0870ad
+    );
+}
+
+
+/* карточки товаров */
+
+.rf36-shop-card{
+  display:grid;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    86px;
+
+  gap:10px;
+
+  align-items:center;
+
+  min-height:90px;
+
+  padding:11px;
+
+  margin-bottom:9px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0d2a41,
+      #071c2d
+    );
+
+  border:
+    1px solid #315570;
+}
+
+.rf36-shop-card.featured{
+  border-color:#d99e2b;
+
+  box-shadow:
+    0 0 16px rgba(255,177,30,.1);
+}
+
+.rf36-shop-card.cyan{
+  border-color:#219cd0;
+}
+
+.rf36-shop-card.gold{
+  border-color:#d6a234;
+}
+
+.rf36-product-icon{
+  width:56px;
+  height:56px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:16px;
+
+  background:#153b56;
+
+  font-size:31px;
+}
+
+.rf36-shop-card b{
+  display:block;
+
+  font-size:14px;
+}
+
+.rf36-shop-card span{
+  display:block;
+
+  margin-top:4px;
+
+  color:#98adbd;
+
+  font-size:10px;
+}
+
+.rf36-shop-card button{
+  min-height:48px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      #2be876,
+      #0daf49
+    );
+
+  font-size:11px;
+  font-weight:1000;
+}
+
+.rf36-shop-card button:disabled{
+  background:#183a4c;
+  color:#8196a5;
+}
+
+
+/* Stars */
+
+.rf36-stars-card{
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+
+  gap:10px;
+
+  padding:13px;
+
+  margin-top:12px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #31295f,
+      #122744
+    );
+
+  border:
+    1px solid #6655b4;
+}
+
+.rf36-stars-card b{
+  display:block;
+}
+
+.rf36-stars-card span{
+  display:block;
+
+  max-width:260px;
+
+  margin-top:4px;
+
+  color:#b5abd8;
+
+  font-size:10px;
+}
+
+.rf36-stars-card button{
+  padding:10px;
+
+  border-radius:10px;
+
+  background:#2c3750;
+}
+
+
+/* пояснение */
+
+.rf36-shop-info{
+  padding:13px;
+
+  border-radius:16px;
+
+  background:#0b2234;
+
+  border:
+    1px solid #29485f;
+
+  color:#9eb1c0;
+
+  font-size:11px;
+
+  line-height:1.4;
+}
+
+
+/* сообщение */
+
+.rf36-shop-message{
+  position:fixed;
+
+  z-index:300;
+
+  left:50%;
+  bottom:92px;
+
+  width:
+    calc(100% - 40px);
+
+  max-width:390px;
+
+  padding:11px;
+
+  border-radius:14px;
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  text-align:center;
+
+  background:#0d293f;
+
+  border:
+    1px solid #315570;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.2s;
+}
+
+.rf36-shop-message.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+
+/* ================= ROBOT SKINS ================= */
+
+#robotSprite.rf36-skin-cyan{
+  filter:
+    saturate(1.35)
+    hue-rotate(145deg)
+    brightness(1.08)
+    drop-shadow(
+      0 0 14px rgba(0,225,255,.65)
+    ) !important;
+}
+
+#robotSprite.rf36-skin-gold{
+  filter:
+    sepia(.75)
+    saturate(2.1)
+    hue-rotate(350deg)
+    brightness(1.15)
+    drop-shadow(
+      0 0 14px rgba(255,186,39,.7)
+    ) !important;
+}
+
+
+/* small phones */
+
+@media(max-width:380px){
+
+  .rf36-achievement{
+    grid-template-columns:
+      46px
+      minmax(0,1fr)
+      78px;
+  }
+
+  .rf36-ach-icon{
+    width:44px;
+    height:44px;
+  }
+
+  .rf36-shop-card{
+    grid-template-columns:
+      50px
+      minmax(0,1fr)
+      78px;
+  }
+
+  .rf36-product-icon{
+    width:48px;
+    height:48px;
+  }
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* ==========================================
+   HELPERS
+   ========================================== */
+
+const events =
+  document.querySelector(
+    "#eventsScreen"
+  );
+
+
+const shop =
+  document.querySelector(
+    "#shopScreen"
+  );
+
+
+function n(
+  key,
+  fallback
+){
+
+  const raw =
+    localStorage.getItem(
+      key
+    );
+
+
+  if(
+    raw === null
+  ){
+    return fallback || 0;
+  }
+
+
+  const value =
+    Number(raw);
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(
+    value >=
+    1000000000
+  ){
+
+    return (
+      value
+      /
+      1000000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "B";
+
+  }
+
+
+  if(
+    value >=
+    1000000
+  ){
+
+    return (
+      value
+      /
+      1000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "M";
+
+  }
+
+
+  if(
+    value >=
+    1000
+  ){
+
+    return (
+      value
+      /
+      1000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+function dayKey(
+  offset
+){
+
+  const d =
+    new Date();
+
+
+  d.setDate(
+    d.getDate()
+    +
+    (
+      offset
+      ||
+      0
+    )
+  );
+
+
+  return (
+    d.getFullYear()
+    +
+    "-"
+    +
+    String(
+      d.getMonth()
+      +
+      1
+    )
+    .padStart(
+      2,
+      "0"
+    )
+    +
+    "-"
+    +
+    String(
+      d.getDate()
+    )
+    .padStart(
+      2,
+      "0"
+    )
+  );
+
+}
+
+
+/*
+После покупки или награды
+перезагружаем игру.
+
+Так основной игровой код снова
+загрузит обновлённые монеты/алмазы
+из localStorage.
+*/
+
+function reloadTo(
+  screen,
+  eventTab
+){
+
+  localStorage.setItem(
+    "rf36ReturnScreen",
+    screen
+  );
+
+
+  if(eventTab){
+
+    localStorage.setItem(
+      "rf36EventTab",
+      eventTab
+    );
+
+  }
+
+
+  location.reload();
+
+}
+
+
+/* ==========================================
+   ROBOT SKINS
+   ========================================== */
+
+function applyRobotSkin(){
+
+  const robot =
+    document.querySelector(
+      "#robotSprite"
+    );
+
+
+  if(!robot){
+    return;
+  }
+
+
+  robot.classList.remove(
+    "rf36-skin-cyan",
+    "rf36-skin-gold"
+  );
+
+
+  const skin =
+    localStorage.getItem(
+      "rfRobotSkin"
+    )
+    ||
+    "default";
+
+
+  if(
+    skin ===
+    "cyan"
+  ){
+
+    robot.classList.add(
+      "rf36-skin-cyan"
+    );
+
+  }
+
+
+  if(
+    skin ===
+    "gold"
+  ){
+
+    robot.classList.add(
+      "rf36-skin-gold"
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   EVENTS
+   ========================================== */
+
+let selectEventTab =
+  null;
+
+
+if(
+  events
+  &&
+  events.dataset.rf36Ready
+  !==
+  "1"
+){
+
+  events.dataset.rf36Ready =
+    "1";
+
+
+  const title =
+    Array.from(
+      events.children
+    )
+    .find(
+      el =>
+        el.classList
+        &&
+        el.classList.contains(
+          "title"
+        )
+    );
+
+
+  const oldPanels =
+    Array.from(
+      events.children
+    )
+    .filter(
+      el =>
+        el.classList
+        &&
+        el.classList.contains(
+          "panel"
+        )
+    );
+
+
+  /* TABS */
+
+  const tabs =
+    document.createElement(
+      "div"
+    );
+
+
+  tabs.className =
+    "rf36-event-tabs";
+
+
+  tabs.innerHTML = `
+    <button
+      class="rf36-event-tab active"
+      data-rf36-tab="tasks"
+    >
+      📋 Задания
+    </button>
+
+    <button
+      class="rf36-event-tab"
+      data-rf36-tab="achievements"
+    >
+      🏆 Достижения
+    </button>
+
+    <button
+      class="rf36-event-tab"
+      data-rf36-tab="bonuses"
+    >
+      🎁 Бонусы
+    </button>
+  `;
+
+
+  /* SUMMARY */
+
+  const summary =
+    document.createElement(
+      "div"
+    );
+
+
+  summary.className =
+    "rf36-event-summary";
+
+
+  summary.innerHTML = `
+    <div>
+      <span>👆 Кликов</span>
+      <b id="rf36Clicks">0</b>
+    </div>
+
+    <div>
+      <span>⭐ Уровень</span>
+      <b id="rf36Level">1</b>
+    </div>
+
+    <div>
+      <span>👷 Рабочих</span>
+      <b id="rf36Workers">0/10</b>
+    </div>
+  `;
+
+
+  /* SECTIONS */
+
+  const tasks =
+    document.createElement(
+      "div"
+    );
+
+
+  tasks.className =
+    "rf36-event-section";
+
+
+  tasks.dataset.section =
+    "tasks";
+
+
+  const achievements =
+    document.createElement(
+      "div"
+    );
+
+
+  achievements.className =
+    "rf36-event-section rf36-hidden";
+
+
+  achievements.dataset.section =
+    "achievements";
+
+
+  const bonuses =
+    document.createElement(
+      "div"
+    );
+
+
+  bonuses.className =
+    "rf36-event-section rf36-hidden";
+
+
+  bonuses.dataset.section =
+    "bonuses";
+
+
+  if(title){
+
+    title.insertAdjacentElement(
+      "afterend",
+      tabs
+    );
+
+
+    tabs.insertAdjacentElement(
+      "afterend",
+      summary
+    );
+
+
+    summary.insertAdjacentElement(
+      "afterend",
+      tasks
+    );
+
+
+    tasks.insertAdjacentElement(
+      "afterend",
+      achievements
+    );
+
+
+    achievements.insertAdjacentElement(
+      "afterend",
+      bonuses
+    );
+
+  }
+  else{
+
+    events.prepend(
+      tabs,
+      summary,
+      tasks,
+      achievements,
+      bonuses
+    );
+
+  }
+
+
+  /*
+  Первые 3 старых панели:
+  задания.
+
+  Последние 2:
+  ежедневный бонус и x2.
+  */
+
+  oldPanels.forEach(
+    (panel,index) => {
+
+      panel.classList.add(
+        "rf36-panel"
+      );
+
+
+      if(
+        index < 3
+      ){
+
+        tasks.appendChild(
+          panel
+        );
+
+      }
+      else{
+
+        bonuses.appendChild(
+          panel
+        );
+
+      }
+
+    }
+  );
+
+
+  /* STREAK */
+
+  const streakCard =
+    document.createElement(
+      "div"
+    );
+
+
+  streakCard.className =
+    "rf36-streak-card";
+
+
+  streakCard.innerHTML = `
+    <div class="rf36-section-head">
+
+      <div>
+        <b>🔥 Серия входов</b>
+
+        <span>
+          Заходи каждый день и увеличивай награду
+        </span>
+      </div>
+
+      <strong id="rf36StreakCount">
+        0 дней
+      </strong>
+
+    </div>
+
+    <div
+      class="rf36-week"
+      id="rf36Week"
+    >
+    </div>
+  `;
+
+
+  bonuses.prepend(
+    streakCard
+  );
+
+
+  /* ACHIEVEMENTS */
+
+  const achievementData =
+  [
+
+    {
+      id:"click500",
+      icon:"👆",
+      title:"Мастер клика",
+      desc:"Сделай 500 кликов",
+      target:500,
+      value:() =>
+        n(
+          "totalClicks",
+          0
+        ),
+      coins:5000,
+      gems:0
+    },
+
+    {
+      id:"level10",
+      icon:"⭐",
+      title:"Инженер II",
+      desc:"Достигни 10 уровня",
+      target:10,
+      value:() =>
+        n(
+          "level",
+          1
+        ),
+      coins:0,
+      gems:10
+    },
+
+    {
+      id:"workers10",
+      icon:"👷",
+      title:"Полная смена",
+      desc:"Найми 10 рабочих",
+      target:10,
+      value:() =>
+        n(
+          "workers",
+          0
+        ),
+      coins:25000,
+      gems:0
+    },
+
+    {
+      id:"conveyor5",
+      icon:"📦",
+      title:"Линия без остановки",
+      desc:"Прокачай конвейер до 5 уровня",
+      target:5,
+      value:() =>
+        n(
+          "conveyorLevel",
+          0
+        ),
+      coins:50000,
+      gems:0
+    },
+
+    {
+      id:"arm3",
+      icon:"🦾",
+      title:"Роботизация",
+      desc:"Прокачай роборуку до 3 уровня",
+      target:3,
+      value:() =>
+        n(
+          "armLevel",
+          0
+        ),
+      coins:75000,
+      gems:0
+    },
+
+    {
+      id:"factory1",
+      icon:"🏭",
+      title:"Настоящая фабрика",
+      desc:"Купи первое улучшение фабрики",
+      target:1,
+      value:() =>
+        n(
+          "factoryLevel",
+          0
+        ),
+      coins:100000,
+      gems:0
+    }
+
+  ];
+
+
+  achievements.innerHTML = `
+    <div class="rf36-section-title">
+
+      <b>
+        Достижения фабрики
+      </b>
+
+      <span>
+        Постоянные цели с отдельными наградами
+      </span>
+
+    </div>
+
+    <div id="rf36AchievementList">
+    </div>
+  `;
+
+
+  const achievementList =
+    achievements.querySelector(
+      "#rf36AchievementList"
+    );
+
+
+  achievementData.forEach(
+    achievement => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "rf36-achievement";
+
+
+      card.dataset.achievement =
+        achievement.id;
+
+
+      card.innerHTML = `
+        <div class="rf36-ach-icon">
+          ${achievement.icon}
+        </div>
+
+        <div class="rf36-ach-main">
+
+          <div class="rf36-ach-title">
+            ${achievement.title}
+          </div>
+
+          <div class="rf36-ach-desc">
+            ${achievement.desc}
+          </div>
+
+          <div class="rf36-ach-progress">
+            <div></div>
+          </div>
+
+          <div class="rf36-ach-meta">
+
+            <span class="rf36-ach-value">
+              0/${achievement.target}
+            </span>
+
+            <span>
+              ${
+                achievement.coins
+                ?
+                "⚙️ "
+                +
+                compact(
+                  achievement.coins
+                )
+                :
+                "💎 "
+                +
+                achievement.gems
+              }
+            </span>
+
+          </div>
+
+        </div>
+
+        <button class="rf36-ach-button">
+          Забрать
+        </button>
+      `;
+
+
+      const button =
+        card.querySelector(
+          ".rf36-ach-button"
+        );
+
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          const value =
+            achievement.value();
+
+
+          const claimKey =
+            "rf36Ach_"
+            +
+            achievement.id;
+
+
+          if(
+            localStorage.getItem(
+              claimKey
+            )
+            ===
+            "1"
+          ){
+
+            return;
+
+          }
+
+
+          if(
+            value
+            <
+            achievement.target
+          ){
+
+            return;
+
+          }
+
+
+          /*
+          Сначала помечаем награду
+          полученной.
+          */
+
+          localStorage.setItem(
+            claimKey,
+            "1"
+          );
+
+
+          if(
+            achievement.coins
+          ){
+
+            localStorage.setItem(
+              "coins",
+              n(
+                "coins",
+                0
+              )
+              +
+              achievement.coins
+            );
+
+          }
+
+
+          if(
+            achievement.gems
+          ){
+
+            localStorage.setItem(
+              "gems",
+              n(
+                "gems",
+                120
+              )
+              +
+              achievement.gems
+            );
+
+          }
+
+
+          reloadTo(
+            "eventsScreen",
+            "achievements"
+          );
+
+        }
+      );
+
+
+      achievementList.appendChild(
+        card
+      );
+
+    }
+  );
+
+
+  /* SWITCH EVENT TAB */
+
+  selectEventTab =
+    function(name){
+
+      events
+      .querySelectorAll(
+        ".rf36-event-tab"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.rf36Tab
+            ===
+            name
+          );
+
+        }
+      );
+
+
+      events
+      .querySelectorAll(
+        ".rf36-event-section"
+      )
+      .forEach(
+        section => {
+
+          section.classList.toggle(
+            "rf36-hidden",
+            section.dataset.section
+            !==
+            name
+          );
+
+        }
+      );
+
+    };
+
+
+  tabs
+  .querySelectorAll(
+    ".rf36-event-tab"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          selectEventTab(
+            button.dataset.rf36Tab
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* UPDATE EVENT SCREEN */
+
+  function updateEventScreen(){
+
+    const clicks =
+      n(
+        "totalClicks",
+        0
+      );
+
+
+    const level =
+      n(
+        "level",
+        1
+      );
+
+
+    const workers =
+      n(
+        "workers",
+        0
+      );
+
+
+    const streak =
+      n(
+        "dailyStreak",
+        0
+      );
+
+
+    const clickEl =
+      events.querySelector(
+        "#rf36Clicks"
+      );
+
+
+    const levelEl =
+      events.querySelector(
+        "#rf36Level"
+      );
+
+
+    const workersEl =
+      events.querySelector(
+        "#rf36Workers"
+      );
+
+
+    if(clickEl){
+
+      clickEl.textContent =
+        compact(
+          clicks
+        );
+
+    }
+
+
+    if(levelEl){
+
+      levelEl.textContent =
+        level;
+
+    }
+
+
+    if(workersEl){
+
+      workersEl.textContent =
+        workers
+        +
+        "/10";
+
+    }
+
+
+    const streakCount =
+      events.querySelector(
+        "#rf36StreakCount"
+      );
+
+
+    if(streakCount){
+
+      streakCount.textContent =
+        streak
+        +
+        " дней";
+
+    }
+
+
+    const week =
+      events.querySelector(
+        "#rf36Week"
+      );
+
+
+    if(week){
+
+      week.innerHTML =
+        "";
+
+
+      for(
+        let i=1;
+        i<=7;
+        i++
+      ){
+
+        const day =
+          document.createElement(
+            "div"
+          );
+
+
+        const active =
+          i
+          <=
+          streak;
+
+
+        day.className =
+          "rf36-day"
+          +
+          (
+            active
+            ?
+            " active"
+            :
+            ""
+          );
+
+
+        day.innerHTML = `
+          <span>
+            День ${i}
+          </span>
+
+          <b>
+            ${active ? "✅" : "🎁"}
+          </b>
+
+          <small>
+            ⚙️ ${compact(i*500)}
+          </small>
+        `;
+
+
+        week.appendChild(
+          day
+        );
+
+      }
+
+    }
+
+
+    let readyCount =
+      0;
+
+
+    achievementData.forEach(
+      achievement => {
+
+        const card =
+          achievements.querySelector(
+            '[data-achievement="'
+            +
+            achievement.id
+            +
+            '"]'
+          );
+
+
+        if(!card){
+          return;
+        }
+
+
+        const value =
+          achievement.value();
+
+
+        const progress =
+          Math.min(
+            value
+            /
+            achievement.target
+            *
+            100,
+            100
+          );
+
+
+        const claimed =
+          localStorage.getItem(
+            "rf36Ach_"
+            +
+            achievement.id
+          )
+          ===
+          "1";
+
+
+        const ready =
+          value
+          >=
+          achievement.target;
+
+
+        card
+        .querySelector(
+          ".rf36-ach-progress > div"
+        )
+        .style.width =
+          progress
+          +
+          "%";
+
+
+        card
+        .querySelector(
+          ".rf36-ach-value"
+        )
+        .textContent =
+          Math.min(
+            value,
+            achievement.target
+          )
+          +
+          "/"
+          +
+          achievement.target;
+
+
+        const button =
+          card.querySelector(
+            ".rf36-ach-button"
+          );
+
+
+        button.disabled =
+          !ready
+          ||
+          claimed;
+
+
+        button.textContent =
+          claimed
+          ?
+          "✅ Получено"
+          :
+          ready
+            ?
+            "Забрать"
+            :
+            "В процессе";
+
+
+        card.classList.toggle(
+          "ready",
+          ready
+          &&
+          !claimed
+        );
+
+
+        card.classList.toggle(
+          "claimed",
+          claimed
+        );
+
+
+        if(
+          ready
+          &&
+          !claimed
+        ){
+
+          readyCount++;
+
+        }
+
+      }
+    );
+
+
+    /* BADGE */
+
+    const nav =
+      document.querySelector(
+        '.nav[data-screen="eventsScreen"]'
+      );
+
+
+    if(nav){
+
+      let badge =
+        nav.querySelector(
+          ".rf36-nav-badge"
+        );
+
+
+      if(
+        readyCount
+        >
+        0
+      ){
+
+        if(!badge){
+
+          badge =
+            document.createElement(
+              "span"
+            );
+
+
+          badge.className =
+            "rf36-nav-badge";
+
+
+          nav.appendChild(
+            badge
+          );
+
+        }
+
+
+        badge.textContent =
+          readyCount;
+
+      }
+      else if(badge){
+
+        badge.remove();
+
+      }
+
+    }
+
+  }
+
+
+  updateEventScreen();
+
+
+  setInterval(
+    updateEventScreen,
+    1000
+  );
+
+}
+
+
+/* ==========================================
+   SHOP
+   ========================================== */
+
+if(
+  shop
+  &&
+  shop.dataset.rf36Ready
+  !==
+  "1"
+){
+
+  shop.dataset.rf36Ready =
+    "1";
+
+
+  const title =
+    Array.from(
+      shop.children
+    )
+    .find(
+      el =>
+        el.classList
+        &&
+        el.classList.contains(
+          "title"
+        )
+    );
+
+
+  /*
+  Удаляем только старые карточки магазина.
+  Заголовок и кнопку назад сохраняем.
+  */
+
+  Array.from(
+    shop.children
+  )
+  .forEach(
+    el => {
+
+      if(
+        el !== title
+      ){
+
+        el.remove();
+
+      }
+
+    }
+  );
+
+
+  const shell =
+    document.createElement(
+      "div"
+    );
+
+
+  shell.className =
+    "rf36-shop";
+
+
+  shell.innerHTML = `
+
+    <div class="rf36-shop-wallet">
+
+      <div>
+        <span>⚙️ Детали</span>
+        <b id="rf36ShopCoins">0</b>
+      </div>
+
+      <div>
+        <span>💎 Алмазы</span>
+        <b id="rf36ShopGems">120</b>
+      </div>
+
+    </div>
+
+
+    <div class="rf36-shop-tabs">
+
+      <button
+        class="active"
+        data-shop-tab="resources"
+      >
+        📦 Ресурсы
+      </button>
+
+      <button
+        data-shop-tab="boosts"
+      >
+        ⚡ Бусты
+      </button>
+
+      <button
+        data-shop-tab="skins"
+      >
+        🎨 Скины
+      </button>
+
+    </div>
+
+
+    <!-- RESOURCES -->
+
+    <div
+      class="rf36-shop-section"
+      data-shop-section="resources"
+    >
+
+      <div class="rf36-shop-card">
+
+        <div class="rf36-product-icon">
+          📦
+        </div>
+
+        <div>
+          <b>
+            Контейнер деталей
+          </b>
+
+          <span>
+            +25 000 ⚙️ сразу
+          </span>
+        </div>
+
+        <button
+          data-product="coins25"
+        >
+          💎 25
+        </button>
+
+      </div>
+
+
+      <div class="rf36-shop-card featured">
+
+        <div class="rf36-product-icon">
+          🧰
+        </div>
+
+        <div>
+          <b>
+            Большой контейнер
+          </b>
+
+          <span>
+            +100 000 ⚙️ сразу
+          </span>
+        </div>
+
+        <button
+          data-product="coins100"
+        >
+          💎 60
+        </button>
+
+      </div>
+
+
+      <div class="rf36-stars-card">
+
+        <div>
+
+          <b>
+            ⭐ Telegram Stars
+          </b>
+
+          <span>
+            Покупку алмазов за Stars подключим через Telegram Mini App SDK.
+          </span>
+
+        </div>
+
+        <button disabled>
+          Скоро
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- BOOSTS -->
+
+    <div
+      class="rf36-shop-section rf36-hidden"
+      data-shop-section="boosts"
+    >
+
+      <div class="rf36-shop-card featured">
+
+        <div class="rf36-product-icon">
+          ⚡
+        </div>
+
+        <div>
+
+          <b>
+            Энергобуст x2
+          </b>
+
+          <span>
+            +10 минут двойного дохода
+          </span>
+
+        </div>
+
+        <button
+          data-product="boost10"
+        >
+          💎 40
+        </button>
+
+      </div>
+
+
+      <div class="rf36-shop-info">
+        Если x2 уже работает, дополнительные 10 минут добавятся к оставшемуся времени.
+      </div>
+
+    </div>
+
+
+    <!-- SKINS -->
+
+    <div
+      class="rf36-shop-section rf36-hidden"
+      data-shop-section="skins"
+    >
+
+      <div class="rf36-shop-card">
+
+        <div class="rf36-product-icon">
+          🤖
+        </div>
+
+        <div>
+
+          <b>
+            Заводской корпус
+          </b>
+
+          <span>
+            Стандартный внешний вид
+          </span>
+
+        </div>
+
+        <button
+          data-skin="default"
+        >
+          Надеть
+        </button>
+
+      </div>
+
+
+      <div class="rf36-shop-card cyan">
+
+        <div class="rf36-product-icon">
+          💠
+        </div>
+
+        <div>
+
+          <b>
+            Neon Cyan
+          </b>
+
+          <span>
+            Холодная неоновая подсветка
+          </span>
+
+        </div>
+
+        <button
+          data-skin="cyan"
+        >
+          💎 80
+        </button>
+
+      </div>
+
+
+      <div class="rf36-shop-card gold">
+
+        <div class="rf36-product-icon">
+          👑
+        </div>
+
+        <div>
+
+          <b>
+            Factory Gold
+          </b>
+
+          <span>
+            Золотой корпус и тёплое свечение
+          </span>
+
+        </div>
+
+        <button
+          data-skin="gold"
+        >
+          💎 120
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="rf36-shop-message"
+      id="rf36ShopMessage"
+    >
+    </div>
+  `;
+
+
+  if(title){
+
+    title.insertAdjacentElement(
+      "afterend",
+      shell
+    );
+
+  }
+  else{
+
+    shop.appendChild(
+      shell
+    );
+
+  }
+
+
+  const shopMessage =
+    shell.querySelector(
+      "#rf36ShopMessage"
+    );
+
+
+  function showShopMessage(
+    text
+  ){
+
+    shopMessage.textContent =
+      text;
+
+
+    shopMessage.classList.add(
+      "show"
+    );
+
+
+    clearTimeout(
+      showShopMessage.timer
+    );
+
+
+    showShopMessage.timer =
+      setTimeout(
+        function(){
+
+          shopMessage.classList.remove(
+            "show"
+          );
+
+        },
+        1600
+      );
+
+  }
+
+
+  /* SHOP TABS */
+
+  function chooseShopTab(
+    name
+  ){
+
+    shell
+    .querySelectorAll(
+      ".rf36-shop-tabs button"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.shopTab
+          ===
+          name
+        );
+
+      }
+    );
+
+
+    shell
+    .querySelectorAll(
+      ".rf36-shop-section"
+    )
+    .forEach(
+      section => {
+
+        section.classList.toggle(
+          "rf36-hidden",
+          section.dataset.shopSection
+          !==
+          name
+        );
+
+      }
+    );
+
+  }
+
+
+  shell
+  .querySelectorAll(
+    ".rf36-shop-tabs button"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          chooseShopTab(
+            button.dataset.shopTab
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* PRODUCTS */
+
+  function buyProduct(
+    id
+  ){
+
+    const gems =
+      n(
+        "gems",
+        120
+      );
+
+
+    const catalog =
+    {
+
+      coins25:{
+        cost:25
+      },
+
+      coins100:{
+        cost:60
+      },
+
+      boost10:{
+        cost:40
+      }
+
+    };
+
+
+    const product =
+      catalog[id];
+
+
+    if(!product){
+      return;
+    }
+
+
+    if(
+      gems
+      <
+      product.cost
+    ){
+
+      showShopMessage(
+        "💎 Не хватает алмазов"
+      );
+
+      return;
+
+    }
+
+
+    /* снимаем алмазы */
+
+    localStorage.setItem(
+      "gems",
+      gems
+      -
+      product.cost
+    );
+
+
+    /* 25K */
+
+    if(
+      id ===
+      "coins25"
+    ){
+
+      localStorage.setItem(
+        "coins",
+        n(
+          "coins",
+          0
+        )
+        +
+        25000
+      );
+
+    }
+
+
+    /* 100K */
+
+    if(
+      id ===
+      "coins100"
+    ){
+
+      localStorage.setItem(
+        "coins",
+        n(
+          "coins",
+          0
+        )
+        +
+        100000
+      );
+
+    }
+
+
+    /* +10 min x2 */
+
+    if(
+      id ===
+      "boost10"
+    ){
+
+      const oldEnd =
+        n(
+          "boostEnd",
+          0
+        );
+
+
+      const start =
+        Math.max(
+          Date.now(),
+          oldEnd
+        );
+
+
+      localStorage.setItem(
+        "boostEnd",
+        start
+        +
+        10
+        *
+        60
+        *
+        1000
+      );
+
+
+      localStorage.setItem(
+        "lastBoostDate",
+        dayKey(0)
+      );
+
+    }
+
+
+    reloadTo(
+      "shopScreen"
+    );
+
+  }
+
+
+  shell
+  .querySelectorAll(
+    "[data-product]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          buyProduct(
+            button.dataset.product
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* SKINS */
+
+  function selectSkin(
+    skin
+  ){
+
+    if(
+      skin ===
+      "default"
+    ){
+
+      localStorage.setItem(
+        "rfRobotSkin",
+        "default"
+      );
+
+
+      applyRobotSkin();
+
+      updateShop();
+
+      return;
+
+    }
+
+
+    const owned =
+      localStorage.getItem(
+        "rfOwnedSkin_"
+        +
+        skin
+      )
+      ===
+      "1";
+
+
+    if(owned){
+
+      localStorage.setItem(
+        "rfRobotSkin",
+        skin
+      );
+
+
+      applyRobotSkin();
+
+      updateShop();
+
+      return;
+
+    }
+
+
+    const cost =
+      skin ===
+      "cyan"
+      ?
+      80
+      :
+      120;
+
+
+    const gems =
+      n(
+        "gems",
+        120
+      );
+
+
+    if(
+      gems
+      <
+      cost
+    ){
+
+      showShopMessage(
+        "💎 Не хватает алмазов"
+      );
+
+      return;
+
+    }
+
+
+    localStorage.setItem(
+      "gems",
+      gems
+      -
+      cost
+    );
+
+
+    localStorage.setItem(
+      "rfOwnedSkin_"
+      +
+      skin,
+      "1"
+    );
+
+
+    localStorage.setItem(
+      "rfRobotSkin",
+      skin
+    );
+
+
+    reloadTo(
+      "shopScreen"
+    );
+
+  }
+
+
+  shell
+  .querySelectorAll(
+    "[data-skin]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          selectSkin(
+            button.dataset.skin
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* UPDATE SHOP */
+
+  function updateShop(){
+
+    const coins =
+      n(
+        "coins",
+        0
+      );
+
+
+    const gems =
+      n(
+        "gems",
+        120
+      );
+
+
+    const equipped =
+      localStorage.getItem(
+        "rfRobotSkin"
+      )
+      ||
+      "default";
+
+
+    shell
+    .querySelector(
+      "#rf36ShopCoins"
+    )
+    .textContent =
+      compact(
+        coins
+      );
+
+
+    shell
+    .querySelector(
+      "#rf36ShopGems"
+    )
+    .textContent =
+      compact(
+        gems
+      );
+
+
+    /* товары */
+
+    shell
+    .querySelectorAll(
+      "[data-product]"
+    )
+    .forEach(
+      button => {
+
+        const id =
+          button.dataset.product;
+
+
+        const price =
+          id ===
+          "coins25"
+          ?
+          25
+          :
+          id ===
+          "coins100"
+            ?
+            60
+            :
+            40;
+
+
+        button.disabled =
+          gems
+          <
+          price;
+
+      }
+    );
+
+
+    /* скины */
+
+    shell
+    .querySelectorAll(
+      "[data-skin]"
+    )
+    .forEach(
+      button => {
+
+        const skin =
+          button.dataset.skin;
+
+
+        if(
+          skin ===
+          "default"
+        ){
+
+          button.disabled =
+            false;
+
+
+          button.textContent =
+            equipped
+            ===
+            "default"
+            ?
+            "✅ Надето"
+            :
+            "Надеть";
+
+
+          return;
+
+        }
+
+
+        const owned =
+          localStorage.getItem(
+            "rfOwnedSkin_"
+            +
+            skin
+          )
+          ===
+          "1";
+
+
+        const price =
+          skin ===
+          "cyan"
+          ?
+          80
+          :
+          120;
+
+
+        if(
+          equipped ===
+          skin
+        ){
+
+          button.disabled =
+            true;
+
+
+          button.textContent =
+            "✅ Надето";
+
+        }
+        else if(owned){
+
+          button.disabled =
+            false;
+
+
+          button.textContent =
+            "Надеть";
+
+        }
+        else{
+
+          button.disabled =
+            gems
+            <
+            price;
+
+
+          button.textContent =
+            "💎 "
+            +
+            price;
+
+        }
+
+      }
+    );
+
+  }
+
+
+  updateShop();
+
+
+  setInterval(
+    updateShop,
+    800
+  );
+
+}
+
+
+/* APPLY SKIN */
+
+applyRobotSkin();
+
+
+setInterval(
+  applyRobotSkin,
+  1500
+);
+
+
+/* ==========================================
+   RETURN AFTER PURCHASE / CLAIM
+   ========================================== */
+
+setTimeout(
+  function(){
+
+    const screen =
+      localStorage.getItem(
+        "rf36ReturnScreen"
+      );
+
+
+    if(!screen){
+      return;
+    }
+
+
+    localStorage.removeItem(
+      "rf36ReturnScreen"
+    );
+
+
+    const navButton =
+      document.querySelector(
+        '.nav[data-screen="'
+        +
+        screen
+        +
+        '"]'
+      );
+
+
+    if(navButton){
+
+      navButton.click();
+
+    }
+
+
+    if(
+      screen ===
+      "eventsScreen"
+    ){
+
+      const tab =
+        localStorage.getItem(
+          "rf36EventTab"
+        )
+        ||
+        "tasks";
+
+
+      localStorage.removeItem(
+        "rf36EventTab"
+      );
+
+
+      if(selectEventTab){
+
+        selectEventTab(
+          tab
+        );
+
+      }
+
+    }
+
+  },
+  80
+);
+
+})();
+</script>
 </body>
 </html>
