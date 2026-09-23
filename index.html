@@ -11060,6 +11060,1142 @@ window.addEventListener(
 
 
 })();
-</script>  
+</script>
+<style>
+/* =========================================
+   ROBOFACTORY v39
+   OFFLINE + LEVEL FX + TOASTS
+   ========================================= */
+
+.rf39-toast{
+  position:fixed;
+
+  z-index:9999;
+
+  left:50%;
+  bottom:
+    calc(
+      96px
+      +
+      env(safe-area-inset-bottom)
+    );
+
+  width:
+    calc(100% - 34px);
+
+  max-width:390px;
+
+  padding:12px 14px;
+
+  border-radius:16px;
+
+  background:
+    rgba(7,28,44,.96);
+
+  border:
+    1px solid #315b78;
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.35);
+
+  color:#fff;
+
+  text-align:center;
+
+  font-size:12px;
+  font-weight:900;
+
+  transform:
+    translateX(-50%)
+    translateY(18px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.rf39-toast.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+
+/* LEVEL UP */
+
+.rf39-levelup{
+  position:fixed;
+
+  z-index:10000;
+
+  left:50%;
+  top:42%;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.7);
+
+  min-width:220px;
+
+  padding:18px;
+
+  border-radius:22px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30,73,103,.98),
+      rgba(7,28,44,.98)
+    );
+
+  border:
+    1px solid #44d8ff;
+
+  box-shadow:
+    0 0 35px rgba(55,202,255,.25);
+
+  opacity:0;
+
+  pointer-events:none;
+}
+
+.rf39-levelup.show{
+  animation:
+    rf39LevelUp
+    .75s
+    ease-out;
+}
+
+.rf39-levelup-icon{
+  font-size:44px;
+}
+
+.rf39-levelup-title{
+  margin-top:7px;
+
+  font-size:22px;
+  font-weight:1000;
+
+  color:#68e5ff;
+}
+
+.rf39-levelup-text{
+  margin-top:5px;
+
+  font-size:12px;
+  color:#c4d9e6;
+}
+
+
+@keyframes rf39LevelUp{
+
+  0%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      scale(.6);
+  }
+
+  25%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      scale(1.08);
+  }
+
+  70%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      scale(1);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      scale(.95);
+  }
+
+}
+
+
+/* OFFLINE CARD */
+
+.rf39-offline{
+  position:fixed;
+
+  z-index:10001;
+
+  left:50%;
+  top:50%;
+
+  width:
+    calc(100% - 36px);
+
+  max-width:390px;
+
+  padding:18px;
+
+  border-radius:22px;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.92);
+
+  background:
+    linear-gradient(
+      145deg,
+      #102f48,
+      #071b2c
+    );
+
+  border:
+    1px solid #3e6d8d;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.rf39-offline.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+
+  pointer-events:auto;
+}
+
+.rf39-offline h3{
+  margin:0;
+
+  font-size:21px;
+}
+
+.rf39-offline p{
+  margin:
+    6px 0 0;
+
+  color:#9eb4c4;
+
+  font-size:12px;
+}
+
+.rf39-offline-reward{
+  margin-top:15px;
+
+  padding:13px;
+
+  border-radius:16px;
+
+  background:#071521;
+
+  text-align:center;
+}
+
+.rf39-offline-reward span{
+  display:block;
+
+  color:#91a8b8;
+
+  font-size:10px;
+}
+
+.rf39-offline-reward b{
+  display:block;
+
+  margin-top:5px;
+
+  color:#61ef88;
+
+  font-size:25px;
+}
+
+.rf39-offline button{
+  width:100%;
+
+  min-height:52px;
+
+  margin-top:13px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0daf4a
+    );
+
+  color:#fff;
+
+  font-weight:1000;
+}
+
+
+/* небольшой импульс покупки */
+
+.rf39-purchase-hit{
+  animation:
+    rf39Purchase
+    .28s
+    ease-out;
+}
+
+@keyframes rf39Purchase{
+
+  0%{
+    transform:scale(1);
+  }
+
+  45%{
+    transform:scale(.97);
+    filter:brightness(1.2);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf39Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf39Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(
+    value >=
+    1000000000
+  ){
+
+    return (
+      value
+      /
+      1000000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "B";
+
+  }
+
+
+  if(
+    value >=
+    1000000
+  ){
+
+    return (
+      value
+      /
+      1000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "M";
+
+  }
+
+
+  if(
+    value >=
+    1000
+  ){
+
+    return (
+      value
+      /
+      1000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   TOAST
+   ========================================= */
+
+const toast =
+  document.createElement(
+    "div"
+  );
+
+
+toast.className =
+  "rf39-toast";
+
+
+document.body.appendChild(
+  toast
+);
+
+
+function rf39Toast(
+  text
+){
+
+  toast.textContent =
+    text;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    rf39Toast.timer
+  );
+
+
+  rf39Toast.timer =
+    setTimeout(
+      function(){
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      1900
+    );
+
+}
+
+
+/* =========================================
+   LEVEL UP
+   ========================================= */
+
+const levelPopup =
+  document.createElement(
+    "div"
+  );
+
+
+levelPopup.className =
+  "rf39-levelup";
+
+
+levelPopup.innerHTML = `
+  <div class="rf39-levelup-icon">
+    ⭐
+  </div>
+
+  <div class="rf39-levelup-title">
+    НОВЫЙ УРОВЕНЬ!
+  </div>
+
+  <div class="rf39-levelup-text">
+  </div>
+`;
+
+
+document.body.appendChild(
+  levelPopup
+);
+
+
+let lastLevel =
+  rf39Number(
+    "level",
+    1
+  );
+
+
+function rf39CheckLevel(){
+
+  const level =
+    rf39Number(
+      "level",
+      1
+    );
+
+
+  if(
+    level
+    >
+    lastLevel
+  ){
+
+    levelPopup
+    .querySelector(
+      ".rf39-levelup-text"
+    )
+    .textContent =
+      "Уровень "
+      +
+      level;
+
+
+    levelPopup.classList.remove(
+      "show"
+    );
+
+
+    void levelPopup.offsetWidth;
+
+
+    levelPopup.classList.add(
+      "show"
+    );
+
+
+    try{
+
+      const tg =
+        window.Telegram
+        &&
+        window.Telegram.WebApp;
+
+
+      if(
+        tg
+        &&
+        tg.HapticFeedback
+      ){
+
+        tg.HapticFeedback
+        .notificationOccurred(
+          "success"
+        );
+
+      }
+
+    }
+    catch(e){}
+
+  }
+
+
+  lastLevel =
+    level;
+
+}
+
+
+/* =========================================
+   PASSIVE RATE DETECTION
+   ========================================= */
+
+function rf39PassiveRate(){
+
+  /*
+  Сначала пытаемся взять готовое значение
+  из localStorage, если основной код его хранит.
+  */
+
+  const keys =
+  [
+    "passivePerSecond",
+    "passiveRate",
+    "perSecond",
+    "incomePerSecond",
+    "passive"
+  ];
+
+
+  for(
+    const key
+    of
+    keys
+  ){
+
+    const raw =
+      localStorage.getItem(
+        key
+      );
+
+
+    if(
+      raw !== null
+    ){
+
+      const value =
+        Number(raw);
+
+
+      if(
+        Number.isFinite(value)
+        &&
+        value >= 0
+      ){
+
+        return value;
+
+      }
+
+    }
+
+  }
+
+
+  /*
+  Если готового значения нет,
+  используем только те источники,
+  чьи значения уже определены механикой игры.
+  */
+
+  const workers =
+    rf39Number(
+      "workers",
+      0
+    );
+
+
+  const conveyor =
+    rf39Number(
+      "conveyorLevel",
+      0
+    );
+
+
+  const arm =
+    rf39Number(
+      "armLevel",
+      0
+    );
+
+
+  const factory =
+    rf39Number(
+      "factoryLevel",
+      0
+    );
+
+
+  return (
+    workers * 2
+    +
+    conveyor * 5
+    +
+    arm * 25
+    +
+    factory * 100
+  );
+
+}
+
+
+/* =========================================
+   OFFLINE INCOME
+   ========================================= */
+
+const offlineBox =
+  document.createElement(
+    "div"
+  );
+
+
+offlineBox.className =
+  "rf39-offline";
+
+
+offlineBox.innerHTML = `
+  <h3>
+    💤 Фабрика работала
+  </h3>
+
+  <p id="rf39OfflineTime">
+  </p>
+
+  <div class="rf39-offline-reward">
+
+    <span>
+      Заработано оффлайн
+    </span>
+
+    <b id="rf39OfflineReward">
+      ⚙️ 0
+    </b>
+
+  </div>
+
+  <button id="rf39OfflineClaim">
+    Забрать
+  </button>
+`;
+
+
+document.body.appendChild(
+  offlineBox
+);
+
+
+const lastActive =
+  Number(
+    localStorage.getItem(
+      "rfLastActive"
+    )
+  )
+  ||
+  Date.now();
+
+
+const now =
+  Date.now();
+
+
+let offlineSeconds =
+  Math.floor(
+    (
+      now
+      -
+      lastActive
+    )
+    /
+    1000
+  );
+
+
+/*
+Максимум 8 часов оффлайн-дохода.
+Так экономика не улетает в космос
+после недельного отсутствия.
+*/
+
+offlineSeconds =
+  Math.min(
+    offlineSeconds,
+    8
+    *
+    60
+    *
+    60
+  );
+
+
+const passive =
+  rf39PassiveRate();
+
+
+const offlineReward =
+  Math.floor(
+    offlineSeconds
+    *
+    passive
+  );
+
+
+function rf39FormatTime(
+  seconds
+){
+
+  const hours =
+    Math.floor(
+      seconds
+      /
+      3600
+    );
+
+
+  const minutes =
+    Math.floor(
+      (
+        seconds
+        %
+        3600
+      )
+      /
+      60
+    );
+
+
+  if(
+    hours > 0
+  ){
+
+    return (
+      hours
+      +
+      " ч "
+      +
+      minutes
+      +
+      " мин"
+    );
+
+  }
+
+
+  return (
+    minutes
+    +
+    " мин"
+  );
+
+}
+
+
+/*
+Показываем окно только если игрок
+отсутствовал минимум 2 минуты
+и есть пассивный доход.
+*/
+
+if(
+  offlineSeconds >= 120
+  &&
+  offlineReward > 0
+){
+
+  offlineBox
+  .querySelector(
+    "#rf39OfflineTime"
+  )
+  .textContent =
+    "Тебя не было "
+    +
+    rf39FormatTime(
+      offlineSeconds
+    );
+
+
+  offlineBox
+  .querySelector(
+    "#rf39OfflineReward"
+  )
+  .textContent =
+    "⚙️ "
+    +
+    rf39Compact(
+      offlineReward
+    );
+
+
+  setTimeout(
+    function(){
+
+      offlineBox.classList.add(
+        "show"
+      );
+
+    },
+    450
+  );
+
+}
+
+
+offlineBox
+.querySelector(
+  "#rf39OfflineClaim"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    const alreadyClaimed =
+      sessionStorage.getItem(
+        "rf39OfflineClaimed"
+      )
+      ===
+      "1";
+
+
+    if(alreadyClaimed){
+
+      offlineBox.classList.remove(
+        "show"
+      );
+
+
+      return;
+
+    }
+
+
+    sessionStorage.setItem(
+      "rf39OfflineClaimed",
+      "1"
+    );
+
+
+    const currentCoins =
+      rf39Number(
+        "coins",
+        0
+      );
+
+
+    localStorage.setItem(
+      "coins",
+      currentCoins
+      +
+      offlineReward
+    );
+
+
+    localStorage.setItem(
+      "rfLastActive",
+      String(
+        Date.now()
+      )
+    );
+
+
+    offlineBox.classList.remove(
+      "show"
+    );
+
+
+    rf39Toast(
+      "+"
+      +
+      rf39Compact(
+        offlineReward
+      )
+      +
+      " ⚙️ оффлайн"
+    );
+
+
+    /*
+    Небольшая перезагрузка,
+    чтобы основной код игры сразу
+    перечитал новый баланс.
+    */
+
+    setTimeout(
+      function(){
+
+        location.reload();
+
+      },
+      650
+    );
+
+  }
+);
+
+
+/* =========================================
+   SAVE ACTIVE TIME
+   ========================================= */
+
+function rf39SaveActive(){
+
+  localStorage.setItem(
+    "rfLastActive",
+    String(
+      Date.now()
+    )
+  );
+
+}
+
+
+document.addEventListener(
+  "visibilitychange",
+  function(){
+
+    if(
+      document.visibilityState
+      ===
+      "hidden"
+    ){
+
+      rf39SaveActive();
+
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  "pagehide",
+  rf39SaveActive
+);
+
+
+/*
+Пока игра открыта, обновляем отметку.
+*/
+
+setInterval(
+  rf39SaveActive,
+  30000
+);
+
+
+/* =========================================
+   PURCHASE FEEDBACK
+   ========================================= */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const button =
+      event.target.closest(
+        "button"
+      );
+
+
+    if(
+      !button
+      ||
+      button.disabled
+    ){
+
+      return;
+
+    }
+
+
+    const text =
+      (
+        button.textContent
+        ||
+        ""
+      )
+      .toLowerCase();
+
+
+    const purchaseWords =
+    [
+      "купить",
+      "нанять",
+      "забрать",
+      "улучшить",
+      "надеть"
+    ];
+
+
+    const purchase =
+      purchaseWords.some(
+        word =>
+          text.includes(
+            word
+          )
+      );
+
+
+    if(!purchase){
+      return;
+    }
+
+
+    button.classList.remove(
+      "rf39-purchase-hit"
+    );
+
+
+    void button.offsetWidth;
+
+
+    button.classList.add(
+      "rf39-purchase-hit"
+    );
+
+  },
+  true
+);
+
+
+/* =========================================
+   WATCH LEVEL
+   ========================================= */
+
+setInterval(
+  rf39CheckLevel,
+  400
+);
+
+
+/* =========================================
+   INITIAL SAVE
+   ========================================= */
+
+setTimeout(
+  rf39SaveActive,
+  1000
+);
+
+})();
+</script>
 </body>
 </html>
