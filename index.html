@@ -13533,5 +13533,1408 @@ setInterval(
 
 })();
 </script>
+<style>
+/* =========================================
+   ROBOFACTORY v41
+   COMBO + SUPPLY DROP
+   ========================================= */
+
+/* ================= COMBO ================= */
+
+.rf41-combo{
+  position:absolute;
+
+  z-index:45;
+
+  left:50%;
+  top:145px;
+
+  transform:
+    translateX(-50%)
+    scale(.9);
+
+  min-width:125px;
+
+  padding:7px 12px;
+
+  border-radius:99px;
+
+  text-align:center;
+
+  background:
+    rgba(7,27,42,.9);
+
+  border:
+    1px solid #315c79;
+
+  box-shadow:
+    0 7px 18px rgba(0,0,0,.25);
+
+  backdrop-filter:
+    blur(8px);
+
+  opacity:.5;
+
+  transition:
+    opacity .2s,
+    transform .2s,
+    border-color .2s;
+}
+
+.rf41-combo.active{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    scale(1);
+
+  border-color:#40ddff;
+
+  box-shadow:
+    0 0 18px rgba(44,213,255,.22);
+}
+
+.rf41-combo.hot{
+  border-color:#ffb934;
+
+  box-shadow:
+    0 0 22px rgba(255,177,35,.3);
+
+  animation:
+    rf41ComboHot
+    .8s
+    ease-in-out
+    infinite;
+}
+
+.rf41-combo-title{
+  color:#9eb4c4;
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.rf41-combo-value{
+  margin-top:2px;
+
+  font-size:17px;
+  font-weight:1000;
+
+  color:#fff;
+}
+
+.rf41-combo-bar{
+  height:4px;
+
+  margin-top:5px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:#06131d;
+}
+
+.rf41-combo-fill{
+  width:0;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #28ccff,
+      #63ef8b,
+      #ffbf3e
+    );
+
+  transition:width .12s;
+}
+
+@keyframes rf41ComboHot{
+
+  0%,
+  100%{
+    transform:
+      translateX(-50%)
+      scale(1);
+  }
+
+  50%{
+    transform:
+      translateX(-50%)
+      scale(1.05);
+  }
+
+}
+
+
+/* ================= OVERDRIVE ================= */
+
+.rf41-overdrive{
+  position:fixed;
+
+  z-index:10030;
+
+  left:50%;
+  top:38%;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.6);
+
+  width:240px;
+
+  padding:18px;
+
+  text-align:center;
+
+  border-radius:23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(67,48,15,.98),
+      rgba(12,29,39,.98)
+    );
+
+  border:
+    1px solid #ffc64c;
+
+  box-shadow:
+    0 0 40px rgba(255,177,38,.35);
+
+  opacity:0;
+
+  pointer-events:none;
+}
+
+.rf41-overdrive.show{
+  animation:
+    rf41Overdrive
+    .85s
+    ease-out;
+}
+
+.rf41-overdrive-icon{
+  font-size:45px;
+}
+
+.rf41-overdrive-title{
+  margin-top:4px;
+
+  color:#ffd56a;
+
+  font-size:22px;
+  font-weight:1000;
+}
+
+.rf41-overdrive-reward{
+  margin-top:6px;
+
+  color:#72ef93;
+
+  font-size:17px;
+  font-weight:1000;
+}
+
+@keyframes rf41Overdrive{
+
+  0%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      scale(.55);
+  }
+
+  25%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      scale(1.1);
+  }
+
+  70%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      scale(1);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      scale(.92);
+  }
+
+}
+
+
+/* ================= SUPPLY DROP ================= */
+
+.rf41-supply{
+  position:absolute;
+
+  z-index:55;
+
+  right:18px;
+  top:205px;
+
+  width:82px;
+
+  padding:7px;
+
+  text-align:center;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #153c57,
+      #0b263a
+    );
+
+  border:
+    1px solid #42d9ff;
+
+  box-shadow:
+    0 0 22px rgba(50,209,255,.28);
+
+  opacity:0;
+
+  transform:
+    translateY(-20px)
+    scale(.8);
+
+  pointer-events:none;
+
+  transition:.3s;
+}
+
+.rf41-supply.show{
+  opacity:1;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  pointer-events:auto;
+
+  animation:
+    rf41SupplyFloat
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+.rf41-supply-icon{
+  font-size:38px;
+
+  filter:
+    drop-shadow(
+      0 5px 5px rgba(0,0,0,.3)
+    );
+}
+
+.rf41-supply-title{
+  margin-top:2px;
+
+  color:#b7ebff;
+
+  font-size:8px;
+  font-weight:1000;
+}
+
+.rf41-supply-timer{
+  margin-top:3px;
+
+  color:#ffd36d;
+
+  font-size:8px;
+}
+
+@keyframes rf41SupplyFloat{
+
+  0%,
+  100%{
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  50%{
+    transform:
+      translateY(-7px)
+      scale(1.03);
+  }
+
+}
+
+
+/* ================= SUPPLY REWARD ================= */
+
+.rf41-supply-popup{
+  position:fixed;
+
+  z-index:10040;
+
+  left:50%;
+  top:50%;
+
+  width:
+    calc(100% - 38px);
+
+  max-width:350px;
+
+  padding:19px;
+
+  border-radius:23px;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.9);
+
+  background:
+    linear-gradient(
+      145deg,
+      #123a54,
+      #071b2b
+    );
+
+  border:
+    1px solid #4cdcff;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+  text-align:center;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.22s;
+}
+
+.rf41-supply-popup.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,-50%)
+    scale(1);
+
+  pointer-events:auto;
+}
+
+.rf41-supply-popup-icon{
+  font-size:50px;
+}
+
+.rf41-supply-popup h3{
+  margin:
+    5px 0 0;
+
+  font-size:21px;
+}
+
+.rf41-supply-popup p{
+  margin:
+    5px 0 0;
+
+  color:#9eb4c4;
+
+  font-size:11px;
+}
+
+.rf41-supply-popup-reward{
+  margin-top:13px;
+
+  padding:12px;
+
+  border-radius:15px;
+
+  background:#061521;
+
+  color:#6df091;
+
+  font-size:23px;
+  font-weight:1000;
+}
+
+.rf41-supply-popup button{
+  width:100%;
+
+  min-height:50px;
+
+  margin-top:12px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      #2be875,
+      #0daf49
+    );
+
+  color:#fff;
+
+  font-weight:1000;
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf41Number(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    (
+      fallback
+      ||
+      0
+    );
+
+}
+
+
+function rf41Compact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000){
+
+    return (
+      value/1000000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value/1000
+    )
+    .toFixed(1)
+    .replace(
+      ".0",
+      ""
+    )
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+function rf41AddCoins(
+  amount
+){
+
+  const current =
+    rf41Number(
+      "coins",
+      0
+    );
+
+
+  localStorage.setItem(
+    "coins",
+    current
+    +
+    Math.max(
+      0,
+      Math.floor(amount)
+    )
+  );
+
+}
+
+
+/* =========================================
+   HERO
+   ========================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+const tapZone =
+  document.querySelector(
+    "#tapZone"
+  );
+
+
+if(
+  !hero
+  ||
+  !tapZone
+){
+
+  return;
+
+}
+
+
+/* =========================================
+   COMBO UI
+   ========================================= */
+
+const combo =
+  document.createElement(
+    "div"
+  );
+
+
+combo.className =
+  "rf41-combo";
+
+
+combo.innerHTML = `
+
+  <div class="rf41-combo-title">
+    ⚡ КОМБО
+  </div>
+
+  <div
+    class="rf41-combo-value"
+    id="rf41ComboValue"
+  >
+    0 / 25
+  </div>
+
+  <div class="rf41-combo-bar">
+
+    <div
+      class="rf41-combo-fill"
+      id="rf41ComboFill"
+    >
+    </div>
+
+  </div>
+
+`;
+
+
+hero.appendChild(
+  combo
+);
+
+
+/* =========================================
+   OVERDRIVE POPUP
+   ========================================= */
+
+const overdrive =
+  document.createElement(
+    "div"
+  );
+
+
+overdrive.className =
+  "rf41-overdrive";
+
+
+overdrive.innerHTML = `
+
+  <div class="rf41-overdrive-icon">
+    ⚡
+  </div>
+
+  <div class="rf41-overdrive-title">
+    OVERDRIVE!
+  </div>
+
+  <div
+    class="rf41-overdrive-reward"
+    id="rf41OverdriveReward"
+  >
+  </div>
+
+`;
+
+
+document.body.appendChild(
+  overdrive
+);
+
+
+/* =========================================
+   COMBO LOGIC
+   ========================================= */
+
+let comboCount =
+  0;
+
+
+let comboTimer =
+  null;
+
+
+function rf41ResetCombo(){
+
+  comboCount =
+    0;
+
+
+  combo.classList.remove(
+    "active",
+    "hot"
+  );
+
+
+  document.querySelector(
+    "#rf41ComboValue"
+  )
+  .textContent =
+    "0 / 25";
+
+
+  document.querySelector(
+    "#rf41ComboFill"
+  )
+  .style.width =
+    "0%";
+
+}
+
+
+function rf41TriggerOverdrive(){
+
+  const level =
+    Math.max(
+      rf41Number(
+        "level",
+        1
+      ),
+      1
+    );
+
+
+  const reward =
+    level
+    *
+    250;
+
+
+  /*
+  Небольшая задержка,
+  чтобы основной обработчик клика
+  успел записать свой баланс.
+  */
+
+  setTimeout(
+    function(){
+
+      rf41AddCoins(
+        reward
+      );
+
+    },
+    25
+  );
+
+
+  document.querySelector(
+    "#rf41OverdriveReward"
+  )
+  .textContent =
+    "+"
+    +
+    rf41Compact(
+      reward
+    )
+    +
+    " ⚙️";
+
+
+  overdrive.classList.remove(
+    "show"
+  );
+
+
+  void overdrive.offsetWidth;
+
+
+  overdrive.classList.add(
+    "show"
+  );
+
+
+  try{
+
+    const tg =
+      window.Telegram
+      &&
+      window.Telegram.WebApp;
+
+
+    if(
+      tg
+      &&
+      tg.HapticFeedback
+    ){
+
+      tg.HapticFeedback
+      .notificationOccurred(
+        "success"
+      );
+
+    }
+
+  }
+  catch(e){}
+
+
+  comboCount =
+    0;
+
+}
+
+
+function rf41ComboClick(){
+
+  comboCount++;
+
+
+  combo.classList.add(
+    "active"
+  );
+
+
+  if(
+    comboCount
+    >=
+    18
+  ){
+
+    combo.classList.add(
+      "hot"
+    );
+
+  }
+
+
+  document.querySelector(
+    "#rf41ComboValue"
+  )
+  .textContent =
+    Math.min(
+      comboCount,
+      25
+    )
+    +
+    " / 25";
+
+
+  document.querySelector(
+    "#rf41ComboFill"
+  )
+  .style.width =
+    Math.min(
+      comboCount
+      /
+      25
+      *
+      100,
+      100
+    )
+    +
+    "%";
+
+
+  clearTimeout(
+    comboTimer
+  );
+
+
+  comboTimer =
+    setTimeout(
+      rf41ResetCombo,
+      1800
+    );
+
+
+  if(
+    comboCount
+    >=
+    25
+  ){
+
+    clearTimeout(
+      comboTimer
+    );
+
+
+    rf41TriggerOverdrive();
+
+
+    setTimeout(
+      rf41ResetCombo,
+      500
+    );
+
+  }
+
+}
+
+
+tapZone.addEventListener(
+  "pointerdown",
+  rf41ComboClick
+);
+
+
+/* =========================================
+   SUPPLY DROP
+   ========================================= */
+
+const supply =
+  document.createElement(
+    "div"
+  );
+
+
+supply.className =
+  "rf41-supply";
+
+
+supply.innerHTML = `
+
+  <div class="rf41-supply-icon">
+    📦
+  </div>
+
+  <div class="rf41-supply-title">
+    СНАБЖЕНИЕ
+  </div>
+
+  <div
+    class="rf41-supply-timer"
+    id="rf41SupplyTimer"
+  >
+    Забрать
+  </div>
+
+`;
+
+
+hero.appendChild(
+  supply
+);
+
+
+/* reward popup */
+
+const supplyPopup =
+  document.createElement(
+    "div"
+  );
+
+
+supplyPopup.className =
+  "rf41-supply-popup";
+
+
+supplyPopup.innerHTML = `
+
+  <div class="rf41-supply-popup-icon">
+    📦
+  </div>
+
+  <h3>
+    Контейнер снабжения
+  </h3>
+
+  <p>
+    Автоматическая доставка фабрики
+  </p>
+
+  <div
+    class="rf41-supply-popup-reward"
+    id="rf41SupplyReward"
+  >
+  </div>
+
+  <button id="rf41SupplyClaim">
+    Забрать
+  </button>
+
+`;
+
+
+document.body.appendChild(
+  supplyPopup
+);
+
+
+let supplyExpires =
+  0;
+
+
+let supplyReward =
+  0;
+
+
+let supplyGemReward =
+  0;
+
+
+function rf41ScheduleSupply(){
+
+  /*
+  Для тестирования не заставляем
+  ждать полжизни.
+
+  Контейнер появляется каждые
+  2-4 минуты.
+  */
+
+  const delay =
+    (
+      120
+      +
+      Math.floor(
+        Math.random()
+        *
+        121
+      )
+    )
+    *
+    1000;
+
+
+  localStorage.setItem(
+    "rf41NextSupply",
+    String(
+      Date.now()
+      +
+      delay
+    )
+  );
+
+}
+
+
+function rf41ShowSupply(){
+
+  supplyExpires =
+    Date.now()
+    +
+    45
+    *
+    1000;
+
+
+  localStorage.setItem(
+    "rf41SupplyExpires",
+    String(
+      supplyExpires
+    )
+  );
+
+
+  supply.classList.add(
+    "show"
+  );
+
+}
+
+
+function rf41HideSupply(){
+
+  supply.classList.remove(
+    "show"
+  );
+
+
+  localStorage.removeItem(
+    "rf41SupplyExpires"
+  );
+
+
+  rf41ScheduleSupply();
+
+}
+
+
+/* нажимаем на контейнер */
+
+supply.addEventListener(
+  "click",
+  function(){
+
+    const level =
+      Math.max(
+        rf41Number(
+          "level",
+          1
+        ),
+        1
+      );
+
+
+    /*
+    12% шанс получить алмазы.
+    Иначе получаем детали.
+    */
+
+    if(
+      Math.random()
+      <
+      .12
+    ){
+
+      supplyGemReward =
+        1
+        +
+        Math.floor(
+          Math.random()
+          *
+          3
+        );
+
+
+      supplyReward =
+        0;
+
+
+      document.querySelector(
+        "#rf41SupplyReward"
+      )
+      .textContent =
+        "💎 "
+        +
+        supplyGemReward;
+
+    }
+    else{
+
+      supplyGemReward =
+        0;
+
+
+      supplyReward =
+        level
+        *
+        (
+          500
+          +
+          Math.floor(
+            Math.random()
+            *
+            501
+          )
+        );
+
+
+      document.querySelector(
+        "#rf41SupplyReward"
+      )
+      .textContent =
+        "⚙️ "
+        +
+        rf41Compact(
+          supplyReward
+        );
+
+    }
+
+
+    supplyPopup.classList.add(
+      "show"
+    );
+
+  }
+);
+
+
+/* получение */
+
+document.querySelector(
+  "#rf41SupplyClaim"
+)
+.addEventListener(
+  "click",
+  function(){
+
+    if(
+      supplyGemReward
+      >
+      0
+    ){
+
+      localStorage.setItem(
+        "gems",
+        rf41Number(
+          "gems",
+          120
+        )
+        +
+        supplyGemReward
+      );
+
+    }
+
+
+    if(
+      supplyReward
+      >
+      0
+    ){
+
+      rf41AddCoins(
+        supplyReward
+      );
+
+    }
+
+
+    supplyReward =
+      0;
+
+
+    supplyGemReward =
+      0;
+
+
+    supplyPopup.classList.remove(
+      "show"
+    );
+
+
+    rf41HideSupply();
+
+
+    /*
+    Основной код перечитает
+    обновлённые значения.
+    */
+
+    setTimeout(
+      function(){
+
+        location.reload();
+
+      },
+      350
+    );
+
+  }
+);
+
+
+/* =========================================
+   SUPPLY TIMER
+   ========================================= */
+
+function rf41UpdateSupply(){
+
+  const now =
+    Date.now();
+
+
+  let expires =
+    Number(
+      localStorage.getItem(
+        "rf41SupplyExpires"
+      )
+    )
+    ||
+    0;
+
+
+  let next =
+    Number(
+      localStorage.getItem(
+        "rf41NextSupply"
+      )
+    )
+    ||
+    0;
+
+
+  if(
+    expires
+    >
+    now
+  ){
+
+    supplyExpires =
+      expires;
+
+
+    supply.classList.add(
+      "show"
+    );
+
+
+    const seconds =
+      Math.ceil(
+        (
+          expires
+          -
+          now
+        )
+        /
+        1000
+      );
+
+
+    document.querySelector(
+      "#rf41SupplyTimer"
+    )
+    .textContent =
+      seconds
+      +
+      " сек";
+
+
+    return;
+
+  }
+
+
+  if(
+    expires
+    > 0
+    &&
+    expires
+    <=
+    now
+  ){
+
+    rf41HideSupply();
+
+    return;
+
+  }
+
+
+  if(
+    !next
+  ){
+
+    rf41ScheduleSupply();
+
+    return;
+
+  }
+
+
+  if(
+    next
+    <=
+    now
+  ){
+
+    rf41ShowSupply();
+
+  }
+
+}
+
+
+/* =========================================
+   FIRST INSTALL
+   ========================================= */
+
+/*
+При первой установке v41
+контейнер появится быстрее,
+через 30 секунд.
+
+Потом уже работает обычный
+интервал 2-4 минуты.
+*/
+
+if(
+  localStorage.getItem(
+    "rf41Installed"
+  )
+  !==
+  "1"
+){
+
+  localStorage.setItem(
+    "rf41Installed",
+    "1"
+  );
+
+
+  localStorage.setItem(
+    "rf41NextSupply",
+    String(
+      Date.now()
+      +
+      30000
+    )
+  );
+
+}
+
+
+/* =========================================
+   RUN
+   ========================================= */
+
+rf41UpdateSupply();
+
+
+setInterval(
+  rf41UpdateSupply,
+  500
+);
+
+})();
+</script>
 </body>
 </html>
