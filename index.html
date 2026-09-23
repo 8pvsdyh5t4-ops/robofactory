@@ -23506,5 +23506,178 @@ setInterval(rf47UpgradeAllBoxes, 800);
 
 }
 </style>
+<style>
+/* ================================
+   RF BOX + LIVE UI FIX
+   вставить в самый низ файла
+   ================================ */
+
+:root{
+  /* Если нужно будет чуть поднять/опустить коробки,
+     меняй только это значение */
+  --rf-belt-y: 72.8%;
+}
+
+/* КОРОБКИ */
+.moving-box{
+  position:absolute !important;
+  top:var(--rf-belt-y) !important;
+  bottom:auto !important;
+  margin:0 !important;
+
+  width:72px !important;
+  height:52px !important;
+  border-radius:14px !important;
+  overflow:hidden !important;
+  z-index:18 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:linear-gradient(180deg,#294d69 0%, #16293f 100%) !important;
+  border:2px solid rgba(108,225,255,.58) !important;
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.34),
+    inset 0 0 0 2px rgba(255,255,255,.04),
+    0 0 14px rgba(58,188,255,.18) !important;
+}
+
+/* внутренняя панель */
+.moving-box::before{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border-radius:10px;
+  background:linear-gradient(
+    180deg,
+    rgba(154,240,255,.20) 0%,
+    rgba(255,255,255,.04) 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+}
+
+/* надпись RF */
+.moving-box::after{
+  content:"RF";
+  position:relative;
+  z-index:2;
+  min-width:34px;
+  height:22px;
+  padding:0 8px;
+  border-radius:999px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-weight:800;
+  font-size:14px;
+  letter-spacing:.5px;
+  color:#fff;
+
+  background:linear-gradient(180deg,#ffd66e 0%, #ffb63c 100%);
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+
+/* старое содержимое коробки скрываем */
+.moving-box > *{
+  display:none !important;
+}
+
+/* движение коробок */
+.moving-box.b1{
+  animation:rfBoxMove 7.2s linear infinite !important;
+}
+.moving-box.b2{
+  animation:rfBoxMove 7.2s linear infinite !important;
+  animation-delay:-2.4s !important;
+}
+.moving-box.b3{
+  animation:rfBoxMove 7.2s linear infinite !important;
+  animation-delay:-4.8s !important;
+}
+
+@keyframes rfBoxMove{
+  0%{
+    left:-86px;
+  }
+  100%{
+    left:calc(100% + 86px);
+  }
+}
+</style>
+
+<script>
+/* ================================
+   RF FIX SCRIPT
+   ================================ */
+(function(){
+
+  function forceUIRefresh(){
+    try{ if(typeof update === "function") update(); }catch(e){}
+    try{ if(typeof render === "function") render(); }catch(e){}
+    try{ if(typeof refreshUI === "function") refreshUI(); }catch(e){}
+    try{ if(typeof save === "function") save(); }catch(e){}
+  }
+
+  function fixBoxes(){
+    let boxes = Array.from(document.querySelectorAll(".moving-box"));
+    if(!boxes.length) return;
+
+    /* если коробок меньше 3 — доклонируем */
+    if(boxes.length === 1){
+      const clone2 = boxes[0].cloneNode(true);
+      const clone3 = boxes[0].cloneNode(true);
+      boxes[0].parentNode.appendChild(clone2);
+      boxes[0].parentNode.appendChild(clone3);
+      boxes = Array.from(document.querySelectorAll(".moving-box"));
+    } else if(boxes.length === 2){
+      const clone3 = boxes[0].cloneNode(true);
+      boxes[0].parentNode.appendChild(clone3);
+      boxes = Array.from(document.querySelectorAll(".moving-box"));
+    }
+
+    boxes.forEach((box, index) => {
+      box.classList.remove("b1", "b2", "b3");
+      box.classList.add("b" + ((index % 3) + 1));
+
+      box.style.bottom = "auto";
+      box.style.margin = "0";
+      box.style.top = "var(--rf-belt-y)";
+    });
+  }
+
+  function softRefreshAfterAction(){
+    requestAnimationFrame(forceUIRefresh);
+    setTimeout(forceUIRefresh, 60);
+    setTimeout(forceUIRefresh, 180);
+    setTimeout(forceUIRefresh, 350);
+
+    setTimeout(fixBoxes, 40);
+    setTimeout(fixBoxes, 180);
+  }
+
+  /* при загрузке */
+  window.addEventListener("load", function(){
+    fixBoxes();
+    forceUIRefresh();
+
+    setTimeout(fixBoxes, 120);
+    setTimeout(fixBoxes, 350);
+  });
+
+  /* после любого нажатия по кнопкам */
+  document.addEventListener("click", function(e){
+    const btn = e.target.closest(
+      "button, .btn, .shop-btn, .upgrade-btn, .action-btn, .buy-btn"
+    );
+    if(!btn) return;
+
+    softRefreshAfterAction();
+  }, true);
+
+})();
+</script>  
 </body>
 </html>
