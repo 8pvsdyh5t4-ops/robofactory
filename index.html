@@ -26372,5 +26372,91 @@ setInterval(
 
 })();
 </script>  
+<style>
+.rf-profile-open{
+  position:fixed;
+  z-index:15000;
+
+  top:
+    calc(
+      14px
+      +
+      env(safe-area-inset-top)
+    );
+
+  right:14px;
+
+  width:48px;
+  height:48px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #159ee8,
+      #08699f
+    );
+
+  border:
+    1px solid #55d6ff;
+
+  box-shadow:
+    0 8px 22px
+    rgba(0,0,0,.35);
+
+  color:white;
+
+  font-size:22px;
+}
+</style>
+
+<script>
+(function(){
+
+"use strict";
+
+const button =
+  document.createElement(
+    "button"
+  );
+
+button.className =
+  "rf-profile-open";
+
+button.innerHTML =
+  "👤";
+
+button.setAttribute(
+  "aria-label",
+  "Профиль"
+);
+
+button.addEventListener(
+  "click",
+  function(){
+
+    if(
+      typeof window.rfOpenProfile
+      ===
+      "function"
+    ){
+
+      window.rfOpenProfile();
+
+    }
+
+  }
+);
+
+document.body.appendChild(
+  button
+);
+
+})();
+</script>  
 </body>
 </html>
