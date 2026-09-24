@@ -26458,5 +26458,141 @@ document.body.appendChild(
 
 })();
 </script>  
+<style>
+/* =========================================
+   ROBOFACTORY PROFILE NAV BUTTON
+   ========================================= */
+
+/* теперь внизу 6 кнопок */
+
+.bottom{
+  grid-template-columns:
+    repeat(6,1fr)
+    !important;
+}
+
+
+/* чуть уменьшаем,
+   чтобы всё аккуратно помещалось */
+
+.bottom .nav,
+.rf-profile-nav{
+  background:transparent;
+
+  color:#8ea6ba;
+
+  font-size:8px;
+  font-weight:900;
+
+  border:0;
+
+  padding:6px 2px;
+}
+
+
+.bottom .nav span,
+.rf-profile-nav span{
+  display:block;
+
+  margin-bottom:4px;
+
+  font-size:22px;
+}
+
+
+.rf-profile-nav{
+  width:100%;
+  height:100%;
+}
+
+
+.rf-profile-nav:active{
+  background:
+    rgba(20,125,190,.18);
+}
+
+
+/*
+Убираем старую плавающую
+кнопку профиля сверху.
+*/
+
+.rf-profile-open{
+  display:none !important;
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+const bottom =
+  document.querySelector(
+    ".bottom"
+  );
+
+
+if(!bottom){
+  return;
+}
+
+
+/*
+Не создаём кнопку второй раз,
+если код случайно загрузился повторно.
+*/
+
+if(
+  bottom.querySelector(
+    ".rf-profile-nav"
+  )
+){
+  return;
+}
+
+
+const profileButton =
+  document.createElement(
+    "button"
+  );
+
+
+profileButton.className =
+  "rf-profile-nav";
+
+
+profileButton.innerHTML = `
+  <span>👤</span>
+  Профиль
+`;
+
+
+profileButton.addEventListener(
+  "click",
+  function(){
+
+    if(
+      typeof window.rfOpenProfile
+      ===
+      "function"
+    ){
+
+      window.rfOpenProfile();
+
+    }
+
+  }
+);
+
+
+bottom.appendChild(
+  profileButton
+);
+
+})();
+</script>  
 </body>
 </html>
