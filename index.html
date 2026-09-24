@@ -24412,5 +24412,418 @@ rfProdUpdate();
 
 })();
 </script>  
+<script>
+/* =========================================
+   ROBOFACTORY OFFLINE INCOME FIX v2
+   защита баланса от перезаписи
+   ========================================= */
+
+(function(){
+
+"use strict";
+
+
+function rfOff2Num(key,fallback){
+
+  const value =
+    Number(
+      localStorage.getItem(key)
+    );
+
+  return Number.isFinite(value)
+    ? value
+    : fallback;
+}
+
+
+/* =========================================
+   ЗАЩИТА БАЛАНСА
+   ========================================= */
+
+/*
+Если мы только что начислили оффлайн-доход,
+старые циклы игры не смогут записать
+меньшее значение поверх него.
+*/
+
+const rfOff2PreviousSetItem =
+  Storage.prototype.setItem;
+
+
+Storage.prototype.setItem =
+  function(key,value){
+
+    if(key === "coins"){
+
+      const floor =
+        Number(
+          localStorage.getItem(
+            "rfOfflineBalanceFloor"
+          )
+        );
+
+
+      const incoming =
+        Number(value);
+
+
+      if(
+        Number.isFinite(floor)
+        &&
+        floor > 0
+        &&
+        Number.isFinite(incoming)
+        &&
+        incoming < floor
+      ){
+
+        return;
+      }
+    }
+
+
+    return rfOff2PreviousSetItem.call(
+      this,
+      key,
+      value
+    );
+  };
+
+
+/* =========================================
+   РАСЧЁТ ДОХОДА
+   ========================================= */
+
+function rfOff2Passive(){
+
+  const auto =
+    rfOff2Num(
+      "autoLevel",
+      0
+    );
+
+
+  const workers =
+    rfOff2Num(
+      "workers",
+      0
+    );
+
+
+  const conveyor =
+    rfOff2Num(
+      "conveyorLevel",
+      0
+    );
+
+
+  const arm =
+    rfOff2Num(
+      "armLevel",
+      0
+    );
+
+
+  const factory =
+    rfOff2Num(
+      "factoryLevel",
+      0
+    );
+
+
+  return (
+    auto
+    +
+    workers * 2
+    +
+    conveyor * 5
+    +
+    arm * 25
+    +
+    factory * 100
+  );
+}
+
+
+/*
+Сохраняем момент входа прямо сейчас,
+пока старый v39 ещё не успел обновить
+rfLastActive через свой таймер.
+*/
+
+const rfOff2EntryTime =
+  Date.now();
+
+
+const rfOff2LastActive =
+  rfOff2Num(
+    "rfLastActive",
+    rfOff2EntryTime
+  );
+
+
+let rfOff2Seconds =
+  Math.floor(
+    (
+      rfOff2EntryTime
+      -
+      rfOff2LastActive
+    )
+    /
+    1000
+  );
+
+
+rfOff2Seconds =
+  Math.max(
+    0,
+    Math.min(
+      rfOff2Seconds,
+      8 * 60 * 60
+    )
+  );
+
+
+const rfOff2Reward =
+  Math.floor(
+    rfOff2Seconds
+    *
+    rfOff2Passive()
+  );
+
+
+/* =========================================
+   ПЕРЕХВАТ КНОПКИ РАНЬШЕ СТАРОГО v39
+   ========================================= */
+
+/*
+ВАЖНО:
+слушаем WINDOW capture.
+
+Он срабатывает раньше старого
+document capture обработчика.
+*/
+
+window.addEventListener(
+  "click",
+  function(event){
+
+    const target =
+      event.target;
+
+
+    if(
+      !(target instanceof Element)
+    ){
+      return;
+    }
+
+
+    const button =
+      target.closest(
+        "#rf39OfflineClaim"
+      );
+
+
+    if(!button){
+      return;
+    }
+
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+
+    /* защита от двойного получения */
+
+    if(
+      sessionStorage.getItem(
+        "rfOfflineV2Claimed"
+      )
+      ===
+      "1"
+    ){
+      return;
+    }
+
+
+    if(
+      rfOff2Reward <= 0
+    ){
+
+      const box =
+        document.querySelector(
+          ".rf39-offline"
+        );
+
+
+      if(box){
+        box.classList.remove("show");
+      }
+
+
+      return;
+    }
+
+
+    sessionStorage.setItem(
+      "rfOfflineV2Claimed",
+      "1"
+    );
+
+
+    const before =
+      rfOff2Num(
+        "coins",
+        0
+      );
+
+
+    /*
+    Начисляем награду.
+
+    v45/v46 могут сверху применить
+    бонус зоны и престижа.
+    */
+
+    localStorage.setItem(
+      "coins",
+      before
+      +
+      rfOff2Reward
+    );
+
+
+    /*
+    Читаем РЕАЛЬНЫЙ итог после
+    всех множителей.
+    */
+
+    const creditedBalance =
+      rfOff2Num(
+        "coins",
+        before + rfOff2Reward
+      );
+
+
+    /*
+    Запоминаем минимально допустимый баланс.
+    Теперь старый игровой цикл не сможет
+    затереть награду.
+    */
+
+    localStorage.setItem(
+      "rfOfflineBalanceFloor",
+      String(
+        creditedBalance
+      )
+    );
+
+
+    localStorage.setItem(
+      "rfLastActive",
+      String(
+        Date.now()
+      )
+    );
+
+
+    const box =
+      document.querySelector(
+        ".rf39-offline"
+      );
+
+
+    if(box){
+      box.classList.remove("show");
+    }
+
+
+    /*
+    Показываем итог сразу на экране.
+    */
+
+    const coinsEl =
+      document.getElementById(
+        "coins"
+      );
+
+
+    if(coinsEl){
+
+      coinsEl.textContent =
+        creditedBalance >= 1000000
+        ?
+        (
+          creditedBalance / 1000000
+        )
+        .toFixed(1)
+        .replace(".0","")
+        +
+        "M"
+        :
+        creditedBalance >= 1000
+        ?
+        (
+          creditedBalance / 1000
+        )
+        .toFixed(1)
+        .replace(".0","")
+        +
+        "K"
+        :
+        Math.floor(
+          creditedBalance
+        );
+    }
+
+
+    /*
+    Перезагружаем страницу,
+    уже имея защищённый баланс.
+    */
+
+    setTimeout(
+      function(){
+
+        location.reload();
+
+      },
+      80
+    );
+
+  },
+  true
+);
+
+
+/* =========================================
+   СНЯТИЕ ЗАЩИТЫ ПОСЛЕ ПЕРЕЗАГРУЗКИ
+   ========================================= */
+
+/*
+После загрузки основная переменная coins
+уже прочитает правильное значение.
+
+Через 2 секунды защита больше не нужна.
+*/
+
+setTimeout(
+  function(){
+
+    localStorage.removeItem(
+      "rfOfflineBalanceFloor"
+    );
+
+    sessionStorage.removeItem(
+      "rfOfflineV2Claimed"
+    );
+
+  },
+  2000
+);
+
+})();
+</script>
 </body>
 </html>
