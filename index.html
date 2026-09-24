@@ -24825,5 +24825,601 @@ setTimeout(
 
 })();
 </script>
+<script>
+/* =========================================
+   ROBOFACTORY v48
+   TELEGRAM CLOUD SAVE
+   ========================================= */
+
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   TELEGRAM
+   ========================================= */
+
+const tg =
+  window.Telegram
+  &&
+  window.Telegram.WebApp;
+
+
+if(
+  !tg
+  ||
+  !tg.CloudStorage
+){
+
+  /*
+  Игра открыта не через Telegram.
+  Оставляем обычный localStorage.
+  */
+
+  return;
+
+}
+
+
+try{
+  tg.ready();
+}
+catch(e){}
+
+
+const cloud =
+  tg.CloudStorage;
+
+
+const CLOUD_KEY =
+  "rf_save_v1";
+
+
+/* =========================================
+   КЛЮЧИ ИГРЫ
+   ========================================= */
+
+const SAVE_KEYS =
+[
+  "coins",
+  "gems",
+
+  "perClick",
+
+  "level",
+  "xp",
+  "xpNeed",
+
+  "totalClicks",
+
+  "clickLevel",
+  "upgradeCost",
+
+  "autoLevel",
+  "passiveCost",
+
+  "conveyorLevel",
+  "conveyorCost",
+
+  "armLevel",
+  "armCost",
+
+  "factoryLevel",
+  "factoryCost",
+
+  "workers",
+  "workerCost",
+
+  "dailyStreak",
+  "lastDailyDate",
+
+  "boostEnd",
+  "lastBoostDate",
+
+  "rfPrestigeCount",
+  "rfPrestigeCores",
+
+  "prestigeMultiplier",
+  "rfPrestigeMultiplier",
+
+  "rfCurrentLocation",
+
+  "rfZoneUnlocked_city",
+  "rfZoneUnlocked_space",
+
+  "rfProdRaw",
+  "rfProdParts",
+  "rfProdModules",
+  "rfProdRobots"
+];
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rf48Number(
+  value,
+  fallback
+){
+
+  const number =
+    Number(value);
+
+
+  return Number.isFinite(number)
+    ?
+    number
+    :
+    fallback;
+
+}
+
+
+function rf48User(){
+
+  const user =
+    tg.initDataUnsafe
+    &&
+    tg.initDataUnsafe.user;
+
+
+  if(!user){
+
+    return null;
+
+  }
+
+
+  return {
+
+    id:
+      user.id,
+
+    firstName:
+      user.first_name
+      ||
+      "",
+
+    username:
+      user.username
+      ||
+      ""
+
+  };
+
+}
+
+
+/* =========================================
+   BUILD SAVE
+   ========================================= */
+
+function rf48BuildSave(){
+
+  const data =
+  {};
+
+
+  SAVE_KEYS.forEach(
+    key => {
+
+      const value =
+        localStorage.getItem(
+          key
+        );
+
+
+      if(
+        value !== null
+      ){
+
+        data[key] =
+          value;
+
+      }
+
+    }
+  );
+
+
+  return {
+
+    version:1,
+
+    savedAt:
+      Date.now(),
+
+    user:
+      rf48User(),
+
+    game:
+      data
+
+  };
+
+}
+
+
+/* =========================================
+   WRITE CLOUD
+   ========================================= */
+
+let saving =
+  false;
+
+
+let saveTimer =
+  null;
+
+
+function rf48SaveCloud(){
+
+  if(saving){
+    return;
+  }
+
+
+  saving =
+    true;
+
+
+  const save =
+    rf48BuildSave();
+
+
+  let json;
+
+
+  try{
+
+    json =
+      JSON.stringify(
+        save
+      );
+
+  }
+  catch(e){
+
+    saving =
+      false;
+
+    return;
+
+  }
+
+
+  cloud.setItem(
+    CLOUD_KEY,
+    json,
+    function(
+      error,
+      stored
+    ){
+
+      saving =
+        false;
+
+
+      if(
+        error
+        ||
+        stored === false
+      ){
+
+        return;
+
+      }
+
+
+      localStorage.setItem(
+        "rf48LastCloudSync",
+        String(
+          save.savedAt
+        )
+      );
+
+
+      localStorage.setItem(
+        "rf48CloudLinked",
+        "1"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   RESTORE
+   ========================================= */
+
+function rf48Restore(
+  save
+){
+
+  if(
+    !save
+    ||
+    !save.game
+  ){
+
+    return;
+  }
+
+
+  Object.entries(
+    save.game
+  )
+  .forEach(
+    ([key,value]) => {
+
+      /*
+      Используем нативный setItem,
+      чтобы старые бонусные перехватчики
+      v45/v46 не умножали баланс
+      во время восстановления.
+      */
+
+      try{
+
+        Storage
+        .prototype
+        .setItem
+        .call(
+          localStorage,
+          key,
+          String(value)
+        );
+
+      }
+      catch(e){
+
+        localStorage.setItem(
+          key,
+          String(value)
+        );
+
+      }
+
+    }
+  );
+
+
+  localStorage.setItem(
+    "rf48LastCloudSync",
+    String(
+      save.savedAt
+      ||
+      Date.now()
+    )
+  );
+
+
+  localStorage.setItem(
+    "rf48CloudLinked",
+    "1"
+  );
+
+
+  sessionStorage.setItem(
+    "rf48Restored",
+    "1"
+  );
+
+
+  location.reload();
+
+}
+
+
+/* =========================================
+   FIRST START
+   ========================================= */
+
+function rf48Start(){
+
+  cloud.getItem(
+    CLOUD_KEY,
+    function(
+      error,
+      value
+    ){
+
+      if(error){
+
+        return;
+
+      }
+
+
+      /*
+      Облачного сохранения ещё нет.
+      Загружаем текущую игру.
+      */
+
+      if(!value){
+
+        rf48SaveCloud();
+
+        return;
+
+      }
+
+
+      let save;
+
+
+      try{
+
+        save =
+          JSON.parse(
+            value
+          );
+
+      }
+      catch(e){
+
+        rf48SaveCloud();
+
+        return;
+
+      }
+
+
+      const linked =
+        localStorage.getItem(
+          "rf48CloudLinked"
+        )
+        ===
+        "1";
+
+
+      const restored =
+        sessionStorage.getItem(
+          "rf48Restored"
+        )
+        ===
+        "1";
+
+
+      /*
+      Текущий телефон уже связан
+      с облачным сохранением.
+      */
+
+      if(linked){
+
+        const cloudTime =
+          rf48Number(
+            save.savedAt,
+            0
+          );
+
+
+        const localTime =
+          rf48Number(
+            localStorage.getItem(
+              "rf48LastCloudSync"
+            ),
+            0
+          );
+
+
+        /*
+        Облако новее локальной копии.
+        Например игрок играл на другом устройстве.
+        */
+
+        if(
+          cloudTime
+          >
+          localTime
+          &&
+          !restored
+        ){
+
+          rf48Restore(
+            save
+          );
+
+          return;
+
+        }
+
+
+        /*
+        Локальная игра актуальна.
+        */
+
+        rf48SaveCloud();
+
+        return;
+
+      }
+
+
+      /*
+      ПЕРВОЕ подключение этого устройства.
+
+      Чтобы случайно не затереть текущий
+      прогресс старым облачным сохранением,
+      первую локальную игру считаем основной.
+      */
+
+      localStorage.setItem(
+        "rf48CloudLinked",
+        "1"
+      );
+
+
+      rf48SaveCloud();
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   AUTO SAVE
+   ========================================= */
+
+/*
+Сохраняем примерно раз в 15 секунд.
+
+Не каждую секунду.
+CloudStorage тоже заслуживает
+хотя бы минимального уважения.
+*/
+
+setInterval(
+  rf48SaveCloud,
+  15000
+);
+
+
+/*
+Когда игрок сворачивает Mini App,
+сохраняем ещё раз.
+*/
+
+document.addEventListener(
+  "visibilitychange",
+  function(){
+
+    if(
+      document.visibilityState
+      ===
+      "hidden"
+    ){
+
+      rf48SaveCloud();
+
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  "pagehide",
+  rf48SaveCloud
+);
+
+
+/* =========================================
+   INITIAL
+   ========================================= */
+
+setTimeout(
+  rf48Start,
+  1200
+);
+
+})();
+</script>  
 </body>
 </html>
