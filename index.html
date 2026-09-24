@@ -25421,5 +25421,956 @@ setTimeout(
 
 })();
 </script>  
+<style>
+/* =========================================
+   ROBOFACTORY PLAYER PROFILE
+   ========================================= */
+
+.rf-profile-overlay{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    16px
+    calc(18px + env(safe-area-inset-bottom));
+
+  background:
+    rgba(3,10,17,.88);
+
+  backdrop-filter:
+    blur(10px);
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:.2s;
+}
+
+.rf-profile-overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.rf-profile-card{
+  width:100%;
+  max-width:390px;
+
+  max-height:88vh;
+  overflow:auto;
+
+  padding:16px;
+
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #102c43,
+      #071724
+    );
+
+  border:
+    1px solid #315b78;
+
+  box-shadow:
+    0 20px 60px
+    rgba(0,0,0,.45);
+}
+
+.rf-profile-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.rf-profile-avatar{
+  width:58px;
+  height:58px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #169bdc,
+      #0a567e
+    );
+
+  border:
+    1px solid #4ccfff;
+
+  font-size:25px;
+  font-weight:1000;
+}
+
+.rf-profile-name{
+  min-width:0;
+  flex:1;
+}
+
+.rf-profile-name b{
+  display:block;
+
+  font-size:18px;
+}
+
+.rf-profile-name span{
+  display:block;
+
+  margin-top:4px;
+
+  color:#92a9bb;
+
+  font-size:10px;
+}
+
+.rf-profile-close{
+  width:38px;
+  height:38px;
+
+  border-radius:12px;
+
+  background:#173448;
+
+  color:#fff;
+
+  font-size:17px;
+}
+
+
+/* STATS */
+
+.rf-profile-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:8px;
+
+  margin-top:15px;
+}
+
+.rf-profile-stat{
+  padding:11px;
+
+  border-radius:15px;
+
+  background:#081d2c;
+
+  border:
+    1px solid #2b4c63;
+}
+
+.rf-profile-stat span{
+  display:block;
+
+  color:#8fa6b7;
+
+  font-size:9px;
+}
+
+.rf-profile-stat b{
+  display:block;
+
+  margin-top:5px;
+
+  font-size:15px;
+}
+
+
+/* EXTRA */
+
+.rf-profile-section{
+  margin-top:12px;
+
+  padding:12px;
+
+  border-radius:16px;
+
+  background:#0a2233;
+
+  border:
+    1px solid #294a62;
+}
+
+.rf-profile-section-title{
+  font-size:12px;
+  font-weight:1000;
+}
+
+.rf-profile-row{
+  display:flex;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-top:8px;
+
+  color:#a9bac7;
+
+  font-size:10px;
+}
+
+.rf-profile-row b{
+  color:#fff;
+}
+</style>
+
+
+<script>
+(function(){
+
+"use strict";
+
+
+/* =========================================
+   HELPERS
+   ========================================= */
+
+function rfProfileNum(
+  key,
+  fallback
+){
+
+  const value =
+    Number(
+      localStorage.getItem(
+        key
+      )
+    );
+
+
+  return Number.isFinite(value)
+    ?
+    value
+    :
+    fallback;
+
+}
+
+
+function rfProfileCompact(
+  value
+){
+
+  value =
+    Math.floor(
+      Number(value)
+      ||
+      0
+    );
+
+
+  if(value >= 1000000000){
+
+    return (
+      value / 1000000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "B";
+
+  }
+
+
+  if(value >= 1000000){
+
+    return (
+      value / 1000000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "M";
+
+  }
+
+
+  if(value >= 1000){
+
+    return (
+      value / 1000
+    )
+    .toFixed(1)
+    .replace(".0","")
+    +
+    "K";
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* =========================================
+   TELEGRAM USER
+   ========================================= */
+
+const tg =
+  window.Telegram
+  &&
+  window.Telegram.WebApp;
+
+
+const user =
+  tg
+  &&
+  tg.initDataUnsafe
+  &&
+  tg.initDataUnsafe.user
+    ?
+    tg.initDataUnsafe.user
+    :
+    null;
+
+
+function rfProfileName(){
+
+  if(!user){
+    return "Игрок RoboFactory";
+  }
+
+
+  return (
+    [
+      user.first_name,
+      user.last_name
+    ]
+    .filter(Boolean)
+    .join(" ")
+    ||
+    "Игрок RoboFactory"
+  );
+
+}
+
+
+function rfProfileUsername(){
+
+  if(
+    user
+    &&
+    user.username
+  ){
+
+    return "@"
+      +
+      user.username;
+
+  }
+
+
+  return "Telegram Player";
+
+}
+
+
+function rfProfileAvatarLetter(){
+
+  const name =
+    rfProfileName();
+
+
+  return (
+    name
+    .trim()
+    .charAt(0)
+    .toUpperCase()
+    ||
+    "R"
+  );
+
+}
+
+
+/* =========================================
+   GAME STATS
+   ========================================= */
+
+function rfProfileZone(){
+
+  const id =
+    localStorage.getItem(
+      "rfCurrentLocation"
+    )
+    ||
+    "garage";
+
+
+  const names =
+  {
+    garage:
+      "🏭 Гараж",
+
+    city:
+      "🏙️ Город",
+
+    space:
+      "🚀 Космопорт"
+  };
+
+
+  return (
+    names[id]
+    ||
+    names.garage
+  );
+
+}
+
+
+function rfProfileIncome(){
+
+  const auto =
+    rfProfileNum(
+      "autoLevel",
+      0
+    );
+
+
+  const workers =
+    rfProfileNum(
+      "workers",
+      0
+    );
+
+
+  const conveyor =
+    rfProfileNum(
+      "conveyorLevel",
+      0
+    );
+
+
+  const arm =
+    rfProfileNum(
+      "armLevel",
+      0
+    );
+
+
+  const factory =
+    rfProfileNum(
+      "factoryLevel",
+      0
+    );
+
+
+  let income =
+    auto
+    +
+    workers * 2
+    +
+    conveyor * 5
+    +
+    arm * 25
+    +
+    factory * 100;
+
+
+  const prestige =
+    rfProfileNum(
+      "rfPrestigeMultiplier",
+      1
+    );
+
+
+  income *=
+    Math.max(
+      prestige,
+      1
+    );
+
+
+  const zone =
+    localStorage.getItem(
+      "rfCurrentLocation"
+    );
+
+
+  if(zone === "city"){
+    income *= 1.25;
+  }
+
+
+  if(zone === "space"){
+    income *= 1.60;
+  }
+
+
+  const boostEnd =
+    rfProfileNum(
+      "boostEnd",
+      0
+    );
+
+
+  if(
+    Date.now()
+    <
+    boostEnd
+  ){
+
+    income *= 2;
+
+  }
+
+
+  return Math.floor(
+    income
+  );
+
+}
+
+
+/* =========================================
+   UI
+   ========================================= */
+
+const overlay =
+  document.createElement(
+    "div"
+  );
+
+
+overlay.className =
+  "rf-profile-overlay";
+
+
+overlay.innerHTML = `
+
+  <div class="rf-profile-card">
+
+    <div class="rf-profile-head">
+
+      <div
+        class="rf-profile-avatar"
+        id="rfProfileAvatar"
+      >
+        R
+      </div>
+
+      <div class="rf-profile-name">
+
+        <b id="rfProfileName">
+          Игрок
+        </b>
+
+        <span id="rfProfileUsername">
+          Telegram Player
+        </span>
+
+      </div>
+
+      <button
+        class="rf-profile-close"
+        id="rfProfileClose"
+      >
+        ✕
+      </button>
+
+    </div>
+
+
+    <div class="rf-profile-grid">
+
+      <div class="rf-profile-stat">
+        <span>⭐ УРОВЕНЬ</span>
+        <b id="rfProfileLevel">1</b>
+      </div>
+
+      <div class="rf-profile-stat">
+        <span>⚙️ БАЛАНС</span>
+        <b id="rfProfileCoins">0</b>
+      </div>
+
+      <div class="rf-profile-stat">
+        <span>⚡ ДОХОД / С</span>
+        <b id="rfProfileIncome">0</b>
+      </div>
+
+      <div class="rf-profile-stat">
+        <span>🔩 ЯДРА</span>
+        <b id="rfProfileCores">0</b>
+      </div>
+
+      <div class="rf-profile-stat">
+        <span>👆 КЛИКОВ</span>
+        <b id="rfProfileClicks">0</b>
+      </div>
+
+      <div class="rf-profile-stat">
+        <span>🤖 РОБОТОВ</span>
+        <b id="rfProfileRobots">0</b>
+      </div>
+
+    </div>
+
+
+    <div class="rf-profile-section">
+
+      <div class="rf-profile-section-title">
+        🏭 Фабрика
+      </div>
+
+      <div class="rf-profile-row">
+
+        <span>
+          Текущая зона
+        </span>
+
+        <b id="rfProfileZone">
+          🏭 Гараж
+        </b>
+
+      </div>
+
+      <div class="rf-profile-row">
+
+        <span>
+          Рабочие
+        </span>
+
+        <b id="rfProfileWorkers">
+          0 / 10
+        </b>
+
+      </div>
+
+      <div class="rf-profile-row">
+
+        <span>
+          Престижи
+        </span>
+
+        <b id="rfProfilePrestige">
+          0
+        </b>
+
+      </div>
+
+      <div class="rf-profile-row">
+
+        <span>
+          Алмазы
+        </span>
+
+        <b id="rfProfileGems">
+          💎 0
+        </b>
+
+      </div>
+
+    </div>
+
+  </div>
+`;
+
+
+document.body.appendChild(
+  overlay
+);
+
+
+/* =========================================
+   UPDATE
+   ========================================= */
+
+function rfProfileUpdate(){
+
+  document
+  .querySelector(
+    "#rfProfileName"
+  )
+  .textContent =
+    rfProfileName();
+
+
+  document
+  .querySelector(
+    "#rfProfileUsername"
+  )
+  .textContent =
+    rfProfileUsername();
+
+
+  document
+  .querySelector(
+    "#rfProfileAvatar"
+  )
+  .textContent =
+    rfProfileAvatarLetter();
+
+
+  document
+  .querySelector(
+    "#rfProfileLevel"
+  )
+  .textContent =
+    rfProfileNum(
+      "level",
+      1
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileCoins"
+  )
+  .textContent =
+    rfProfileCompact(
+      rfProfileNum(
+        "coins",
+        0
+      )
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileIncome"
+  )
+  .textContent =
+    "+"
+    +
+    rfProfileCompact(
+      rfProfileIncome()
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileCores"
+  )
+  .textContent =
+    rfProfileNum(
+      "rfPrestigeCores",
+      0
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileClicks"
+  )
+  .textContent =
+    rfProfileCompact(
+      rfProfileNum(
+        "totalClicks",
+        0
+      )
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileRobots"
+  )
+  .textContent =
+    rfProfileCompact(
+      rfProfileNum(
+        "rfProdRobots",
+        0
+      )
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileZone"
+  )
+  .textContent =
+    rfProfileZone();
+
+
+  document
+  .querySelector(
+    "#rfProfileWorkers"
+  )
+  .textContent =
+    rfProfileNum(
+      "workers",
+      0
+    )
+    +
+    " / 10";
+
+
+  document
+  .querySelector(
+    "#rfProfilePrestige"
+  )
+  .textContent =
+    rfProfileNum(
+      "rfPrestigeCount",
+      0
+    );
+
+
+  document
+  .querySelector(
+    "#rfProfileGems"
+  )
+  .textContent =
+    "💎 "
+    +
+    rfProfileCompact(
+      rfProfileNum(
+        "gems",
+        0
+      )
+    );
+
+}
+
+
+/* =========================================
+   OPEN / CLOSE
+   ========================================= */
+
+function rfOpenProfile(){
+
+  rfProfileUpdate();
+
+
+  overlay.classList.add(
+    "show"
+  );
+
+
+  try{
+
+    tg
+    &&
+    tg.HapticFeedback
+    &&
+    tg.HapticFeedback
+    .impactOccurred(
+      "light"
+    );
+
+  }
+  catch(e){}
+
+}
+
+
+function rfCloseProfile(){
+
+  overlay.classList.remove(
+    "show"
+  );
+
+}
+
+
+document
+.querySelector(
+  "#rfProfileClose"
+)
+.addEventListener(
+  "click",
+  rfCloseProfile
+);
+
+
+overlay.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      event.target
+      ===
+      overlay
+    ){
+
+      rfCloseProfile();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   DEEP LINK
+   ========================================= */
+
+/*
+Если открыть игру так:
+
+...?profile=1
+
+профиль откроется автоматически.
+*/
+
+const params =
+  new URLSearchParams(
+    location.search
+  );
+
+
+if(
+  params.get(
+    "profile"
+  )
+  ===
+  "1"
+){
+
+  setTimeout(
+    rfOpenProfile,
+    900
+  );
+
+}
+
+
+/*
+Позже сможем открыть профиль
+и из других частей игры:
+window.rfOpenProfile()
+*/
+
+window.rfOpenProfile =
+  rfOpenProfile;
+
+
+/* =========================================
+   LIVE UPDATE
+   ========================================= */
+
+setInterval(
+  function(){
+
+    if(
+      overlay.classList.contains(
+        "show"
+      )
+    ){
+
+      rfProfileUpdate();
+
+    }
+
+  },
+  1000
+);
+
+})();
+</script>  
 </body>
 </html>
