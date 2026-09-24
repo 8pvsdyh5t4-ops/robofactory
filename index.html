@@ -26594,5 +26594,73 @@ bottom.appendChild(
 
 })();
 </script>  
+<style>
+/* Убираем правые кнопки: Задания / Достижения / Магазин */
+.rf-right-menu,
+.rf-side-menu,
+.rf-side-actions,
+.right-menu,
+.side-menu,
+.side-actions,
+.tasks-panel,
+.achievements-panel,
+.shop-panel {
+  display: none !important;
+}
+
+/* Если сами кнопки имеют свои классы */
+.rf-btn-tasks,
+.rf-btn-achievements,
+.rf-btn-shop,
+.btn-tasks,
+.btn-achievements,
+.btn-shop {
+  display: none !important;
+}
+</style>
+
+<script>
+(() => {
+  const labels = ['Задания', 'Достижения', 'Магазин'];
+
+  // 1. Прячем элементы по тексту
+  const all = [...document.querySelectorAll('button, a, div')];
+
+  all.forEach(el => {
+    const txt = (el.textContent || '').replace(/\s+/g, ' ').trim();
+
+    if (labels.some(label => txt === label || txt.includes(label))) {
+      const target =
+        el.closest('button, a, .menu-item, .side-btn, .rf-side-btn, .rf-action, .action-btn, .panel-btn, .nav-card, div') || el;
+
+      target.style.display = 'none';
+      target.style.visibility = 'hidden';
+      target.style.pointerEvents = 'none';
+    }
+  });
+
+  // 2. Дополнительно ищем правый вертикальный блок и убираем его целиком
+  [...document.querySelectorAll('div, nav, aside')].forEach(el => {
+    const st = getComputedStyle(el);
+    const text = (el.innerText || '').trim();
+
+    const isRightSide =
+      (st.position === 'fixed' || st.position === 'absolute') &&
+      parseInt(st.right || '999', 10) <= 30 &&
+      el.offsetWidth <= 220;
+
+    const hasMenuTexts =
+      text.includes('Задания') ||
+      text.includes('Достижения') ||
+      text.includes('Магазин');
+
+    if (isRightSide && hasMenuTexts) {
+      el.style.display = 'none';
+      el.style.visibility = 'hidden';
+      el.style.pointerEvents = 'none';
+    }
+  });
+})();
+</script>  
 </body>
 </html>
